@@ -2,8 +2,6 @@ package com.moneylover;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -15,20 +13,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.moneylover.ui.StartActivity;
+import com.moneylover.ui.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int SPLASH_SCREEN = 2000;
-
     private Animation zoomOutAnimation;
     private ImageView image;
-    private final Handler handler = new Handler(Looper.getMainLooper());
-    private final Runnable splashRunnable = () -> {
-        Intent intent = new Intent(MainActivity.this, StartActivity.class);
-        startActivity(intent);
-        finish();
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         zoomInAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-            }
+            public void onAnimationStart(Animation animation) {}
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -60,18 +49,26 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
+            public void onAnimationRepeat(Animation animation) {}
         });
 
+        zoomOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in_animation, 0);
+                finish();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
+
         image.startAnimation(zoomInAnimation);
-
-        handler.postDelayed(splashRunnable, SPLASH_SCREEN);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        handler.removeCallbacks(splashRunnable);
     }
 }
