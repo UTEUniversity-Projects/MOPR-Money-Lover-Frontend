@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MoneyLover</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="login">Đăng nhập</string>
+    <string name="forgotpassword">Quên mật khẩu</string>
+    <string name="or">Hoặc</string>
+    <string name="register">Đăng ký</string>
 </resources>

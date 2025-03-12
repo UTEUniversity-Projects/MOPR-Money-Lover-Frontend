@@ -38,6 +38,7 @@ dependencies {
 
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.circleimageview)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     testImplementation(libs.junit)
