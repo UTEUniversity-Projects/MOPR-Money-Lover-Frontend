@@ -5,20 +5,18 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_fade"
-    tools:context=".MainActivity">
+    tools:context=".ui.StartActivity">
 
-    <ImageView
-        android:id="@+id/imgVLogo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:contentDescription="Logo"
-        android:src="@drawable/logo"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome !"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.5" />
+        android:textSize="40sp"
+        android:id="@+id/tvWelcome"
+        android:visibility="invisible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
