@@ -13,7 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.moneylover.ui.LoginActivity;
+import com.moneylover.ui.app.AppActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, AppActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in_animation, 0);
                 finish();

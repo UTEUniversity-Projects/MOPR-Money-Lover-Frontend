@@ -2,21 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/loginLayout"
+    android:id="@+id/registerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
     android:orientation="vertical"
-    android:windowSoftInputMode="adjustResize"
-    tools:context=".ui.LoginActivity">
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imgProfile"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/logo_no_text" />
+    tools:context=".ui.auth.RegisterFragment">
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,7 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginVertical="10dp"
         android:fontFamily="@font/inter_medium"
-        android:text="@string/login"
+        android:text="@string/register"
         android:textSize="25sp" />
 
     <LinearLayout
@@ -35,9 +25,12 @@
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@id/textInputEmail"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            app:boxStrokeColor="@color/sea_green">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtEmail"
@@ -54,7 +47,10 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true">
+            android:layout_marginBottom="5dp"
+            app:boxStrokeColor="@color/sea_green"
+            app:passwordToggleEnabled="true"
+            android:id="@+id/textInputPassword">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtPassword"
@@ -67,30 +63,36 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnForgotPassword"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@android:color/transparent"
-            android:text="@string/forgotpassword"
-            android:textAllCaps="false"
-            android:textColor="@color/sea_green"
-            android:textSize="15sp"
-            app:elevation="0dp" />
+            android:layout_marginBottom="5dp"
+            app:boxStrokeColor="@color/sea_green"
+            app:passwordToggleEnabled="true"
+            android:id="@+id/textInputRePassword">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtRePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="@string/rePassword"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:backgroundTint="@color/sea_green"
-            android:text="@string/login"
+            android:text="@string/register"
             android:textColor="@color/white"
             android:textSize="15sp"
-            app:cornerRadius="3dp" />
+            app:cornerRadius="5dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -123,14 +125,14 @@
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRegister"
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/sea_green"
-            android:text="@string/register"
+            android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="15sp"
-            app:cornerRadius="5dp" />
+            app:cornerRadius="3dp" />
 
     </LinearLayout>
 
