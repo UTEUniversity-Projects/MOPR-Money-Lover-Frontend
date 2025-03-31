@@ -15,14 +15,12 @@
         <item name="android:textColor">@color/sea_green</item>
     </style>
 
-    <style name="fab_3_rounded">
+    <style name="rounded_full">
         <item name="cornerSize">50%</item>
     </style>
 
     <style name="BottomNavTextActive" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:fontFamily">@font/inter_bold</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
 </resources>
