@@ -1,11 +1,11 @@
 package com.moneylover;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,28 +13,29 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.moneylover.ui.app.AppActivity;
+import com.moneylover.databinding.ActivityMainBinding;
+import com.moneylover.ui.main.onboarding.OnboardingActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ActivityMainBinding binding;
     private Animation zoomOutAnimation;
-    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        image = findViewById(R.id.imgVLogo);
 
         Animation zoomInAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_in_animation);
         zoomOutAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_out_animation);
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                image.startAnimation(zoomOutAnimation);
+                binding.imgVLogo.startAnimation(zoomOutAnimation);
             }
 
             @Override
@@ -58,9 +59,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Intent intent = new Intent(MainActivity.this, AppActivity.class);
+                SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                boolean firstTime = prefs.getBoolean("firstTime", true);
+
+                Intent intent = new Intent(MainActivity.this, OnboardingActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.fade_in_animation, 0);
                 finish();
             }
 
@@ -68,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationRepeat(Animation animation) {}
         });
 
-
-        image.startAnimation(zoomInAnimation);
+        binding.imgVLogo.startAnimation(zoomInAnimation);
     }
 }

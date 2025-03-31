@@ -16,6 +16,28 @@
     <string name="wallet">Sổ giao dịch</string>
     <string name="budget">Ngân sách</string>
     <string name="account">Tài khoản</string>
+    <string name="next">Tiếp</string>
+    <string name="prev">Trước</string>
+    <string name="network_error">Không thể kết nối, vui lòng kiểm tra kết nối mạng của bạn.</string>
+    <string name="network_error_button_retry">Thử lại</string>
+    <string name="network_error_button_exit">Thoát</string>
+    <string name="hi">Hi!</string>
+    <string name="eatAndOrder">Eat and Order</string>
+    <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="support">Support</string>
+    <string name="setting">Setting</string>
+    <string name="shop">Shop</string>
+    <string name="free_ship">Free Ship</string>
+    <string name="day_free_ship">14/2 - 28-2</string>
+    <string name="order_now">Order Now</string>
+    <string name="categories">Categories</string>
+    <string name="log_out">LOG OUT</string>
+    <string name="undeveloped_feature">Tính năng đang được phát triển</string>
+    <string name="msg_loading">Vui lòng chờ...</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>
