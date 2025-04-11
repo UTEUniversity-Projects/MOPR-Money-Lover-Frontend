@@ -25,13 +25,13 @@
             android:name=".ui.main.onboarding.OnboardingActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.app.AppActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.auth.AuthActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.app.AppActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.MoneyLover">
             <intent-filter>
