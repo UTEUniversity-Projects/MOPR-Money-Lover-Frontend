@@ -1,7 +1,8 @@
 package com.moneylover.data.model.others;
 
+import android.view.Gravity;
+import android.widget.Toast;
 import android.content.Context;
-
 import es.dmoral.toasty.Toasty;
 import lombok.Data;
 
@@ -14,31 +15,41 @@ public class ToastMessage {
 
     private int type;
     private String message;
+    private int gravity;
 
     public ToastMessage(int type, String message) {
-        this.type = type;
-        this.message = message;
+        this(type, message, Gravity.BOTTOM);
     }
 
-    public void showMessage(Context context){
-        switch (type){
+    public ToastMessage(int type, String message, int gravity) {
+        this.type = type;
+        this.message = message;
+        this.gravity = gravity;
+    }
+
+    public void showMessage(Context context) {
+        Toast toast = null;
+
+        switch (type) {
             case TYPE_NORMAL:
-                Toasty.normal(context, message).show();
+                toast = Toasty.normal(context, message);
                 break;
             case TYPE_SUCCESS:
-                Toasty.success(context, message).show();
+                toast = Toasty.success(context, message);
                 break;
             case TYPE_WARNING:
-                Toasty.warning(context,message).show();
+                toast = Toasty.warning(context, message);
                 break;
             case TYPE_ERROR:
-                Toasty.error(context,message).show();
+                toast = Toasty.error(context, message);
                 break;
             default:
                 break;
         }
+
+        if (toast != null) {
+            toast.setGravity(gravity, 0, 100);
+            toast.show();
+        }
     }
-
-
-
 }

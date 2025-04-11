@@ -35,8 +35,6 @@ public class AppRepository implements Repository {
         return mPreferencesHelper;
     }
 
-
-
     /**
     *  ################################## Remote api ##################################
     */

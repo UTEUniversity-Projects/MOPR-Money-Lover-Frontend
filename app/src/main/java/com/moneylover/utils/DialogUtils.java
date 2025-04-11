@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.moneylover.R;
 
+
 public class DialogUtils {
 
     private DialogUtils(){
@@ -32,16 +33,16 @@ public class DialogUtils {
                 .show();
         TextView message = dialog.findViewById(android.R.id.message);
         if (message != null) {
-            message.setTextSize(context.getResources().getDimension(R.dimen._7ssp));
+            message.setTextSize(context.getResources().getDimension(com.intuit.ssp.R.dimen._7ssp));
         }
         Button buttonPositive = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         if (buttonPositive != null) {
-            buttonPositive.setTextSize(context.getResources().getDimension(R.dimen._6ssp));
+            buttonPositive.setTextSize(context.getResources().getDimension(com.intuit.ssp.R.dimen._6ssp));
         }
 
         Button buttonN = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
         if (buttonN != null) {
-            buttonN.setTextSize(context.getResources().getDimension(R.dimen._6ssp));
+            buttonN.setTextSize(context.getResources().getDimension(com.intuit.ssp.R.dimen._6ssp));
         }
         return dialog;
     }

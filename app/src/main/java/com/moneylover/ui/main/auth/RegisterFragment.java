@@ -1,164 +1,165 @@
 package com.moneylover.ui.main.auth;
 
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
+import com.moneylover.BR;
 import com.moneylover.R;
-import com.moneylover.constants.Constants;
+import com.moneylover.constants.ErrorCode;
+import com.moneylover.data.model.api.ResponseWrapper;
+import com.moneylover.data.model.api.request.RequestRegisterRequest;
+import com.moneylover.data.model.api.response.RequestRegisterResponse;
 import com.moneylover.databinding.FragmentRegisterBinding;
-import com.moneylover.ui.base.BaseFragment2;
+import com.moneylover.di.component.FragmentComponent;
+import com.moneylover.ui.base.fragment.BaseFragment;
+import com.moneylover.ui.main.MainCallback;
+import com.moneylover.utils.DeviceUtils;
+import com.moneylover.utils.FormUtils;
+import com.moneylover.utils.NavigationUtils;
+import com.moneylover.utils.NetworkUtils;
+
+import org.json.JSONObject;
 
 import java.util.Objects;
-import java.util.regex.Pattern;
 
-public class RegisterFragment extends BaseFragment2 {
-    private FragmentRegisterBinding binding;
+import okhttp3.ResponseBody;
+import retrofit2.HttpException;
+import timber.log.Timber;
+
+public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, RegisterViewModel> {
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentRegisterBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+    public int getBindingVariable() {
+        return BR.vm;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected int getLayoutId() {
+        return R.layout.fragment_register;
+    }
 
-        binding.edtEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+    @Override
+    protected void performDataBinding() {
+        binding.setF(this);
+        binding.setVm(viewModel);
+    }
 
+    @Override
+    protected void performDependencyInjection(FragmentComponent buildComponent) {
+        buildComponent.inject(this);
+    }
+
+    public boolean validateEmail() {
+        return FormUtils.validateEmail(binding.edtEmail, binding.textInputEmail, "Email là bắt buộc !", "Email không đúng định dạng !");
+    }
+
+    public boolean validatePassword() {
+        return FormUtils.validatePassword(binding.edtPassword, binding.textInputPassword,
+                "Mật khẩu là bắt buộc !",
+                "Mật khẩu phải từ 8 ký tự trở lên !",
+                "Mật khẩu phải có ít nhất 1 ký tự chữ hoa, 1 ký tự chữ thường, 1 ký tự số và 1 ký tự đặc biệt !");
+    }
+
+    public boolean validateConfirmPassword() {
+
+        return FormUtils.validateConfirmPassword(binding.edtPassword, binding.edtConfirmPassword,
+                binding.textInputConfirmPassword,
+                "Mật khẩu xác nhận không được để trống !",
+                "Mật khẩu xác nhận không khớp !");
+    }
+
+    public void onEmailTextChanged(CharSequence s, int start, int before, int count) {
+        validateEmail();
+    }
+
+    public void onPasswordTextChanged(CharSequence s, int start, int before, int count) {
+        validatePassword();
+    }
+
+    public void onConfirmPasswordTextChanged(CharSequence s, int start, int before, int count) {
+        validateConfirmPassword();
+    }
+
+    public void onLoginClick() {
+        NavigationUtils.navigateToFragment((AuthActivity) getActivity(), R.id.fragmentContainer, LoginFragment.class);
+    }
+
+    public void onRegisterClick() {
+//        viewModel.initializeRecaptchaClient();
+//        viewModel.executeRecaptchaTask();
+
+        if (!validateEmail() || !validatePassword() || !validateConfirmPassword()) {
+            viewModel.showWarningMessage("Thông tin không hợp lệ !");
+            return;
+        }
+
+        String email = Objects.requireNonNull(binding.edtEmail.getText()).toString().trim();
+        String password = Objects.requireNonNull(binding.edtPassword.getText()).toString().trim();
+
+        RequestRegisterRequest request = RequestRegisterRequest.builder().email(email).password(password).build();
+
+        viewModel.doRequestRegister(new MainCallback<ResponseWrapper<RequestRegisterResponse>>() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String email = s.toString().trim();
-                if (!email.isEmpty() && Pattern.matches(Constants.EMAIL_REGEX, email)) {
-                    binding.textInputEmail.setError(null);
-                    binding.textInputEmail.setErrorEnabled(false);
+            public void doError(Throwable error) {
+                Timber.tag("RegisterFragment").e("Response: %s", error.getMessage());
+                viewModel.hideLoading();
+                if (!DeviceUtils.isNetworkAvailable(requireContext())) {
+                    viewModel.showErrorMessage("Vui lòng kiểm tra kết nối mạng !");
+                    return;
                 }
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        binding.edtPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String password = s.toString().trim();
-
-                if (password.isEmpty()) {
-                    binding.textInputPassword.setError("Mật khẩu không được để trống !");
-                    binding.textInputPassword.setErrorEnabled(true);
-                } else if (password.length() < 8) {
-                    binding.textInputPassword.setError("Mật khẩu phải có ít nhất 8 ký tự !");
-                    binding.textInputPassword.setErrorEnabled(true);
-                } else if (!Pattern.matches(Constants.PASSWORD_REGEX, password)) {
-                    binding.textInputPassword.setError("Mật khẩu phải chứa ít nhất 1 ký tự in hoa, 1 ký tự đặc biệt và 1 ký tự số !");
-                    binding.textInputPassword.setErrorEnabled(true);
-                } else {
-                    binding.textInputPassword.setError(null);
-                    binding.textInputPassword.setErrorEnabled(false);
+                if (NetworkUtils.checkNetworkError(error)) {
+                    viewModel.showErrorMessage("Có lỗi kết nối đến server !");
+                    return;
                 }
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+                if (error instanceof HttpException) {
+                    HttpException httpException = (HttpException) error;
+                    ResponseBody errorBody = httpException.response().errorBody();
 
-        binding.edtRePassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+                    if (errorBody != null) {
+                        try {
+                            String errorJson = errorBody.string();
+                            Timber.d("Error body: %s", errorJson);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String password = binding.edtPassword.getText().toString().trim();
-                String rePassword = s.toString().trim();
+                            JSONObject json = new JSONObject(errorJson);
+                            String errorCode = json.optString("code");
 
-                if (!rePassword.isEmpty() && !rePassword.equals(password)) {
-                    binding.textInputRePassword.setError("Mật khẩu nhập lại không khớp!");
-                    binding.textInputRePassword.setErrorEnabled(true);
-                } else {
-                    binding.textInputRePassword.setError(null);
-                    binding.textInputRePassword.setErrorEnabled(false);
+                            Timber.d("Mã lỗi: %s", errorCode);
+
+                            if (ErrorCode.ACCOUNT_EMAIL_EXISTED.getCode().equals(errorCode)) {
+                                viewModel.showErrorMessage("Email đã tồn tại !");
+                                binding.edtEmail.requestFocus();
+                                binding.textInputEmail.setError("Email đã tồn tại !");
+                                binding.textInputEmail.setErrorEnabled(true);
+                            }
+
+                        } catch (Exception e) {
+                            Timber.e(e, "Lỗi khi parse errorBody");
+                        }
+                    }
+                    return;
                 }
+
+                viewModel.showErrorMessage("Đăng ký thất bại !");
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-
-        binding.btnLogin.setOnClickListener(v -> navigateToFragment(R.id.fragmentContainer, new LoginFragment()));
-
-        binding.btnRegister.setOnClickListener(v -> {
-            String email = Objects.requireNonNull(binding.edtEmail.getText()).toString().trim();
-            String password = binding.edtPassword.getText().toString().trim();
-            String rePassword = binding.edtRePassword.getText().toString().trim();
-
-            boolean isValid = true;
-
-            if (email.isEmpty()) {
-                binding.textInputEmail.setError("Email không được để trống!");
-                binding.textInputEmail.setErrorEnabled(true);
-                isValid = false;
-            } else if (!Pattern.matches(Constants.EMAIL_REGEX, email)) {
-                binding.textInputEmail.setError("Email không hợp lệ!");
-                binding.textInputEmail.setErrorEnabled(true);
-                isValid = false;
-            } else {
-                binding.textInputEmail.setError(null);
-                binding.textInputEmail.setErrorEnabled(false);
+            public void doSuccess() {
             }
 
-            if (password.isEmpty()) {
-                binding.textInputPassword.setError("Mật khẩu không được để trống!");
-                binding.textInputPassword.setErrorEnabled(true);
-                isValid = false;
-            } else if (password.length() < 8) {
-                binding.textInputPassword.setError("Mật khẩu phải có ít nhất 8 ký tự!");
-                binding.textInputPassword.setErrorEnabled(true);
-                isValid = false;
-            } else if (!Pattern.matches(Constants.PASSWORD_REGEX, password)) {
-                binding.textInputPassword.setError("Mật khẩu phải chứa ít nhất 1 ký tự in hoa, 1 ký tự đặc biệt và 1 ký tự số!");
-                binding.textInputPassword.setErrorEnabled(true);
-                isValid = false;
-            } else {
-                binding.textInputPassword.setError(null);
-                binding.textInputPassword.setErrorEnabled(false);
+            @Override
+            public void doSuccess(ResponseWrapper<RequestRegisterResponse> response) {
+                viewModel.hideLoading();
+                Timber.tag("RegisterFragment").d("Response: %s", response.toString());
+                viewModel.showSuccessMessage("Mã OTP đã được gửi đến email !");
+                viewModel.setRegisterToken(response.getData().getToken());
+                NavigationUtils.navigateToFragmentClearBackStack((AuthActivity) getActivity(), R.id.fragmentContainer, RegisterOtpVerificationFragment.class);
             }
 
-            if (rePassword.isEmpty()) {
-                binding.textInputRePassword.setError("Vui lòng nhập lại mật khẩu!");
-                binding.textInputRePassword.setErrorEnabled(true);
-                isValid = false;
-            } else if (!rePassword.equals(password)) {
-                binding.textInputRePassword.setError("Mật khẩu nhập lại không khớp!");
-                binding.textInputRePassword.setErrorEnabled(true);
-                isValid = false;
-            } else {
-                binding.textInputRePassword.setError(null);
-                binding.textInputRePassword.setErrorEnabled(false);
+            @Override
+            public void doFail() {
+                Timber.tag("RegisterFragment").d("Response: %s", "doFail");
             }
 
-            if (isValid) {
-            }
-        });
+        }, request);
 
     }
 

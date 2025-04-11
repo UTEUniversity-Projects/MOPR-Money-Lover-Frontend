@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
-        <item>@font/inter</item>
-        <item>@font/inter_semibold</item>
+        <item>@font/be_vietnam_pro_bold</item>
+        <item>@font/be_vietnam_pro_extrabold</item>
+        <item>@font/be_vietnam_pro_medium</item>
+        <item>@font/be_vietnam_pro_semibold</item>
     </array>
 </resources>

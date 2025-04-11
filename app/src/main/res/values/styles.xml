@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="OtpEditTextStyle">
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">50dp</item>
@@ -11,16 +12,43 @@
         <item name="android:background">@drawable/bg_otp_input</item>
     </style>
 
-    <style name="EditTextCursorColor">
-        <item name="android:textColor">@color/sea_green</item>
-    </style>
-
     <style name="rounded_full">
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="BottomNavTextActive" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:textSize">12sp</item>
+    <style name="ItemMenuActive" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:fontFamily">@font/be_vietnam_pro_medium</item>
+        <item name="android:textSize">@dimen/_9ssp</item>
+    </style>
+
+    <style name="ItemMenuInActive">
+        <item name="android:textSize">@dimen/_8ssp</item>
+    </style>
+
+    <style name="TextInputEditTextStyleColor" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textColorHint">@color/black</item>
+        <item name="android:textCursorDrawable">@drawable/custom_caret</item>
+        <item name="boxStrokeColor">@color/sea_green</item>
+        <item name="boxStrokeErrorColor">@color/red</item>
+        <item name="cursorColor">@color/sea_green</item>
+        <item name="cursorErrorColor">@color/red</item>
+        <item name="errorTextColor">@color/red</item>
+        <item name="hintTextColor">@color/sea_green</item>
+    </style>
+
+    <style name="AuthTitleStyle">
+        <item name="android:textSize">@dimen/_15sdp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="DescriptionStyle">
+        <item name="android:textSize">@dimen/_12sdp</item>
+    </style>
+
+    <style name="TooltipTextAppearance">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_9ssp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

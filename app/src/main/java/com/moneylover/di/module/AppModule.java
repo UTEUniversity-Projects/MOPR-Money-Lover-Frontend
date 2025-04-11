@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.moneylover.BuildConfig;
 import com.moneylover.constants.Constants;
 import com.moneylover.data.AppRepository;
 import com.moneylover.data.Repository;
@@ -20,10 +21,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import de.hdodenhof.circleimageview.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
@@ -33,8 +34,9 @@ public class AppModule {
     @ApiInfo
     @Singleton
     String provideBaseUrl() {
-        return com.moneylover.BuildConfig.BASE_URL;
+        return BuildConfig.BASE_URL;
     }
+
 
     @Provides
     @Singleton
@@ -65,7 +67,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    AuthInterceptor proviceAuthInterceptor(PreferencesService appPreferencesService, Application application) {
+    AuthInterceptor proviceAuthInterceptor(PreferencesService appPreferencesService, Application application){
         return new AuthInterceptor(appPreferencesService, application);
     }
 
@@ -104,6 +106,7 @@ public class AppModule {
     }
 
 
+
     // Create Retrofit
     @Provides
     @Singleton
@@ -112,6 +115,7 @@ public class AppModule {
                 .client(client)
                 .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
     }
 
@@ -128,6 +132,5 @@ public class AppModule {
     public Repository provideDataManager(AppRepository appRepository) {
         return appRepository;
     }
-
 
 }

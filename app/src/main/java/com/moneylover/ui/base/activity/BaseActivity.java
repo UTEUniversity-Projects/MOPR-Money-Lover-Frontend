@@ -10,11 +10,12 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowInsets;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
-import androidx.annotation.AnimRes;
-import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +24,6 @@ import androidx.databinding.Observable;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.moneylover.MVVMApplication;
@@ -38,7 +37,7 @@ import com.moneylover.utils.DialogUtils;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity{
+public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity {
 
     protected B viewBinding;
 
@@ -65,29 +64,31 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         performDependencyInjection(getBuildComponent());
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         performDataBinding();
         updateCurrentAcitivity();
 
         viewModel.setToken(token);
         viewModel.setDeviceId(deviceId);
-        viewModel.mIsLoading.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback(){
+        viewModel.mIsLoading.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
 
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                if(((ObservableBoolean)sender).get()){
+                if (((ObservableBoolean) sender).get()) {
                     showProgressbar(getResources().getString(com.moneylover.R.string.msg_loading));
-                }else{
+                } else {
                     hideProgress();
                 }
             }
         });
         viewModel.mErrorMessage.observe(this, toastMessage -> {
-            if(toastMessage!=null){
+            if (toastMessage != null) {
                 toastMessage.showMessage(getApplicationContext());
             }
         });
-        viewModel.progressBarMsg.observe(this, progressBarMsg ->{
-            if (progressBarMsg != null){
+        viewModel.progressBarMsg.observe(this, progressBarMsg -> {
+            if (progressBarMsg != null) {
                 changeProgressBarMsg(progressBarMsg);
             }
         });
@@ -97,15 +98,17 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
-                if (action==null){
+                if (action == null) {
                     return;
                 }
-                if (action.equals(Constants.ACTION_EXPIRED_TOKEN)){
+                if (action.equals(Constants.ACTION_EXPIRED_TOKEN)) {
                     doExpireSession();
                 }
             }
         };
         setupHideKeyboardOnTouch();
+
+
     }
 
     @Override
@@ -136,6 +139,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
             requestPermissions(permissions, requestCode);
         }
     }
+
     @SuppressLint("ClickableViewAccessibility")
     private void setupHideKeyboardOnTouch() {
         View rootView = findViewById(android.R.id.content);
@@ -145,6 +149,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
             return true;
         });
     }
+
     public void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -161,7 +166,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
         viewBinding.executePendingBindings();
     }
 
-    public void showProgressbar(String msg){
+    public void showProgressbar(String msg) {
         if (progressDialog != null) {
             progressDialog.dismiss();
             progressDialog = null;
@@ -170,9 +175,9 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
         progressDialog.show();
     }
 
-    public void changeProgressBarMsg(String msg){
-        if (progressDialog != null){
-            ((TextView)progressDialog.findViewById(R.id.progressbar_msg)).setText(msg);
+    public void changeProgressBarMsg(String msg) {
+        if (progressDialog != null) {
+            ((TextView) progressDialog.findViewById(R.id.progressbar_msg)).setText(msg);
         }
     }
 
@@ -183,65 +188,45 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
         }
     }
 
-
     private ActivityComponent getBuildComponent() {
-        return DaggerActivityComponent.builder()
-                .appComponent(((MVVMApplication)getApplication()).getAppComponent())
-                .activityModule(new ActivityModule(this))
-                .build();
+        return DaggerActivityComponent.builder().appComponent(((MVVMApplication) getApplication()).getAppComponent()).activityModule(new ActivityModule(this)).build();
     }
 
     public abstract void performDependencyInjection(ActivityComponent buildComponent);
 
-    private void updateCurrentAcitivity(){
-        MVVMApplication mvvmApplication = (MVVMApplication)application;
+    private void updateCurrentAcitivity() {
+        MVVMApplication mvvmApplication = (MVVMApplication) application;
         mvvmApplication.setCurrentActivity(this);
     }
 
-    public boolean showHeader(){
+    public boolean showHeader() {
         return false;
     }
 
     ObservableField<String> leftTitle;
     ObservableField<String> centerTitle;
-    public void setCenterTitle(String msg){
-        if (centerTitle == null){
+
+    public void setCenterTitle(String msg) {
+        if (centerTitle == null) {
             centerTitle = new ObservableField<>(msg);
         } else {
             centerTitle.set(msg);
         }
     }
-    public void setLeftTitle(String msg){
-        if (leftTitle == null){
+
+    public void setLeftTitle(String msg) {
+        if (leftTitle == null) {
             leftTitle = new ObservableField<>(msg);
         } else {
             leftTitle.set(msg);
         }
     }
 
-    /**
-     * Chuyển đổi Fragment với ID container tùy chỉnh
-     *
-     * @param containerId ID của container chứa Fragment
-     * @param fragment Fragment mới cần thay thế
-     */
-    protected void navigateToFragment(@IdRes int containerId, Fragment fragment) {
-        navigateToFragment(containerId, fragment, R.anim.fade_in_animation, R.anim.fade_out_animation);
-    }
-
-    /**
-     * Chuyển đổi Fragment với ID container và animation tùy chỉnh
-     *
-     * @param containerId ID của container chứa Fragment
-     * @param fragment Fragment mới cần thay thế
-     * @param enterAnim Animation khi vào
-     * @param exitAnim Animation khi ra
-     */
-    protected void navigateToFragment(@IdRes int containerId, Fragment fragment, @AnimRes int enterAnim, @AnimRes int exitAnim) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(enterAnim, exitAnim, enterAnim, exitAnim);
-        transaction.replace(containerId, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+    protected void showStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            getWindow().getInsetsController().show(WindowInsets.Type.statusBars());
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
     }
 }

@@ -14,7 +14,6 @@ public interface Repository {
 
     PreferencesService getSharedPreferences();
 
-
     /**
      *  ################################## Remote api ##################################
      */

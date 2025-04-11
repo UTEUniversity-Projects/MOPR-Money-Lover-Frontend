@@ -7,5 +7,9 @@ public class Constants {
     public static final String VALUE_BEARER_TOKEN_DEFAULT="NULL";
     public static final String VALUE_USER_NAME="NULL";
     public static final String PREF_NAME = "mvvm.prefs";
-
+    public static final String LOGIN_TYPE = "LOGIN";
+    public static final String REGISTER_TYPE = "REGISTER";
+    public static final String REGISTER_TOKEN = "REGISTER_TOKEN";
+    public static final String FORGOT_PASSWORD_TOKEN = "FORGOT_PASSWORD_TOKEN";
+    public static final String ACCESS_TOKEN = "ACCESS_TOKEN";
 }

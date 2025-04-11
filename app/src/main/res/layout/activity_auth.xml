@@ -15,32 +15,33 @@
         android:id="@+id/authLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
+        android:clickable="true"
         android:orientation="vertical"
         tools:context=".ui.main.auth.AuthActivity"
-        android:paddingTop="10dp">
+        android:paddingTop="@dimen/_10sdp">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:contentDescription="TODO"
-            android:src="@drawable/ic_back" />
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:src="@drawable/ic_back"
+            android:onClick="@{() -> a.onBack()}"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgProfile"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_90sdp"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:src="@drawable/logo_no_text" />
 
         <FrameLayout
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="@dimen/_12sdp" />
     </LinearLayout>
 </layout>
