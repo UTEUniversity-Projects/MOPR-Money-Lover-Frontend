@@ -2,14 +2,16 @@ package com.moneylover.ui.base.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
-import androidx.annotation.AnimRes;
-import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -17,7 +19,6 @@ import androidx.databinding.Observable;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.moneylover.MVVMApplication;
 import com.moneylover.R;
@@ -37,7 +38,6 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends BaseFrag
 
     private Dialog progressDialog;
 
-
     @Named("access_token")
     @Inject
     protected String token;
@@ -53,6 +53,7 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends BaseFrag
         viewModel.mErrorMessage.observe(getViewLifecycleOwner(), toastMessage -> {
             if (toastMessage != null) {
                 toastMessage.showMessage(requireContext());
+                viewModel.mErrorMessage.setValue(null);
             }
         });
         viewModel.mIsLoading.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
@@ -66,8 +67,33 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends BaseFrag
                 }
             }
         });
+
         setupHideKeyboardOnTouch(binding.getRoot());
         return binding.getRoot();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        view.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                View focusedView = requireActivity().getCurrentFocus();
+                if (focusedView instanceof EditText) {
+                    Rect outRect = new Rect();
+                    focusedView.getGlobalVisibleRect(outRect);
+                    if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                        focusedView.clearFocus();
+                        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        if (imm != null) {
+                            imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+                        }
+                    }
+                }
+            }
+            return false;
+        });
     }
 
     @Override
@@ -122,32 +148,6 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends BaseFrag
         }
     }
 
-    /**
-     * Chuyển đổi Fragment với ID container tùy chỉnh
-     *
-     * @param containerId ID của container chứa Fragment
-     * @param fragment Fragment mới cần thay thế
-     */
-    protected void navigateToFragment(@IdRes int containerId, Fragment fragment) {
-        navigateToFragment(containerId, fragment, R.anim.fade_in_animation, R.anim.fade_out_animation);
-    }
 
-    /**
-     * Chuyển đổi Fragment với ID container và animation tùy chỉnh
-     *
-     * @param containerId ID của container chứa Fragment
-     * @param fragment Fragment mới cần thay thế
-     * @param enterAnim Animation khi vào
-     * @param exitAnim Animation khi ra
-     */
-    protected void navigateToFragment(@IdRes int containerId, Fragment fragment, @AnimRes int enterAnim, @AnimRes int exitAnim) {
-        if (getActivity() == null) return;
-
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(enterAnim, exitAnim, enterAnim, exitAnim);
-        transaction.replace(containerId, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 
 }

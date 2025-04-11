@@ -1,130 +1,114 @@
 package com.moneylover.ui.main.auth;
 
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
+import com.moneylover.BR;
 import com.moneylover.R;
-import com.moneylover.constants.Constants;
 import com.moneylover.databinding.FragmentLoginBinding;
-import com.moneylover.ui.base.BaseFragment2;
+import com.moneylover.di.component.FragmentComponent;
+import com.moneylover.ui.base.fragment.BaseFragment;
+import com.moneylover.ui.main.app.AppActivity;
+import com.moneylover.utils.FormUtils;
+import com.moneylover.utils.NavigationUtils;
 
-import java.util.regex.Pattern;
+public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewModel> {
 
-public class LoginFragment extends BaseFragment2 {
-    private FragmentLoginBinding binding;
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentLoginBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+    public int getBindingVariable() {
+        return BR.vm;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected int getLayoutId() {
+        return R.layout.fragment_login;
+    }
 
-        MaterialButton btnLogin = binding.btnLogin;
-        MaterialButton btnRegister = binding.btnRegister;
-        MaterialButton btnForgotPassword = binding.btnForgotPassword;
+    @Override
+    protected void performDataBinding() {
+        binding.setF(this);
+        binding.setVm(viewModel);
+    }
 
-        TextInputLayout textInputEmail = binding.textInputEmail;
-        TextInputEditText edtEmail = binding.edtEmail;
+    @Override
+    protected void performDependencyInjection(FragmentComponent buildComponent) {
+        buildComponent.inject(this);
+    }
 
-        TextInputLayout textInputPassword = binding.textInputPassword;
-        TextInputEditText edtPassword = binding.edtPassword;
+    private boolean validateEmail() {
+        return FormUtils.validateEmail(binding.edtEmail, binding.textInputEmail, "Email là bắt buộc !", "Email không đúng định dạng !");
+    }
 
-        edtEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+    private boolean validatePassword() {
+        return FormUtils.validatePassword(binding.edtPassword, binding.textInputPassword,
+                "Mật khẩu là bắt buộc !",
+                "Mật khẩu phải từ 8 ký tự trở lên !",
+                "Mật khẩu phải có ít nhất 1 ký tự chữ hoa, 1 ký tự chữ thường, 1 ký tự số và 1 ký tự đặc biệt !");
+    }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String email = s.toString().trim();
-                if (!email.isEmpty() && Pattern.matches(Constants.EMAIL_REGEX, email)) {
-                    textInputEmail.setError(null);
-                    textInputEmail.setErrorEnabled(false);
-                }
-            }
+    public void onLoginClick() {
+//        if (!validateEmail() || !validatePassword()) {
+//            viewModel.showWarningMessage("Email hoặc mật khẩu không hợp hệ !");
+//            return;
+//        }
+//
+//        LoginRequest request = LoginRequest.builder().email(binding.edtEmail.getText().toString().trim()).password(binding.edtPassword.getText().toString().trim()).build();
+//        viewModel.doLogin(new MainCallback<ResponseWrapper<LoginResponse>>() {
+//            @Override
+//            public void doError(Throwable error) {
+//                Timber.tag("LoginViewModel").e(error);
+//                viewModel.hideLoading();
+//                if (!DeviceUtils.isNetworkAvailable(requireContext())) {
+//                    viewModel.showErrorMessage("Vui lòng kiểm tra kết nối mạng !");
+//                    return;
+//                }
+//
+//                if (error instanceof SocketTimeoutException) {
+//                    viewModel.showErrorMessage("Có lỗi kết nối đến server !");
+//                    return;
+//                }
+//
+//                if (error.getMessage() != null && error.getMessage().contains(HttpStatusCode.UNAUTHORIZED.getCode())) {
+//                    viewModel.showErrorMessage("Email hoặc mật khẩu không đúng !");
+//                    return;
+//                }
+//
+//                viewModel.showErrorMessage("Đăng nhập thất bại !");
+//            }
+//
+//            @Override
+//            public void doSuccess() {
+//            }
+//
+//            @Override
+//            public void doSuccess(ResponseWrapper<LoginResponse> response) {
+//                viewModel.hideLoading();
+//                hideKeyboard();
+//                Timber.tag("LoginViewModel").d("Response: %s", response.toString());
+//                viewModel.showSuccessMessage("Đăng nhập thành công !");
+//                viewModel.setAccessToken(response.getData().getAccessToken());
+//                NavigationUtils.navigateToActivityClearStack((AuthActivity) getActivity(), AppActivity.class, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+//            }
+//
+//            @Override
+//            public void doFail() {
+//            }
+//
+//        }, request);
+        NavigationUtils.navigateToActivityClearStack((AuthActivity) getActivity(), AppActivity.class);
+    }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+    public void onEmailTextChanged(CharSequence s, int start, int before, int count) {
+        validateEmail();
+    }
 
-        edtPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+    public void onPasswordTextChanged(CharSequence s, int start, int before, int count) {
+        validatePassword();
+    }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String password = s.toString().trim();
+    public void onRegisterClick() {
+        NavigationUtils.navigateToFragment((AuthActivity) getActivity(), R.id.fragmentContainer, RegisterFragment.class);
+    }
 
-                if (password.isEmpty()) {
-                    textInputPassword.setError("Mật khẩu không được để trống !");
-                    textInputPassword.setErrorEnabled(true);
-                } else if (password.length() < 8) {
-                    textInputPassword.setError("Mật khẩu phải có ít nhất 8 ký tự !");
-                    textInputPassword.setErrorEnabled(true);
-                } else if (!Pattern.matches(Constants.PASSWORD_REGEX, password)) {
-                    textInputPassword.setError("Mật khẩu phải chứa ít nhất 1 ký tự in hoa, 1 ký tự đặc biệt và 1 ký tự số !");
-                    textInputPassword.setErrorEnabled(true);
-                } else {
-                    textInputPassword.setError(null);
-                    textInputPassword.setErrorEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        btnLogin.setOnClickListener(v -> {
-            String email = edtEmail.getText().toString().trim();
-            String password = edtPassword.getText().toString().trim();
-
-            boolean hasError = false;
-
-            if (email.isEmpty()) {
-                textInputEmail.setError("Email là bắt buộc !");
-                textInputEmail.setErrorEnabled(true);
-                hasError = true;
-            } else if (!Pattern.matches(Constants.EMAIL_REGEX, email)) {
-                textInputEmail.setError("Email không đúng định dạng !");
-                textInputEmail.setErrorEnabled(true);
-                hasError = true;
-            }
-
-            if (password.isEmpty()) {
-                textInputPassword.setError("Mật khẩu là bắt buộc !");
-                textInputPassword.setErrorEnabled(true);
-                hasError = true;
-            } else if (password.length() < 6) {
-                textInputPassword.setError("Mật khẩu phải có ít nhất 6 ký tự !");
-                textInputPassword.setErrorEnabled(true);
-                hasError = true;
-            }
-
-            if (!hasError) {
-            }
-        });
-
-        btnRegister.setOnClickListener(v -> navigateToFragment(R.id.fragmentContainer, new RegisterFragment()));
-
-        btnForgotPassword.setOnClickListener(v -> navigateToFragment(R.id.fragmentContainer, new ForgotPasswordFragment()));
+    public void onForgotPasswordClick() {
+        NavigationUtils.navigateToFragment((AuthActivity) getActivity(), R.id.fragmentContainer, ForgotPasswordFragment.class);
     }
 
     @Override
@@ -132,4 +116,5 @@ public class LoginFragment extends BaseFragment2 {
         super.onDestroyView();
         binding = null;
     }
+
 }

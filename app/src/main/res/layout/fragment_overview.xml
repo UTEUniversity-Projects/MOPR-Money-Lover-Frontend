@@ -1,15 +1,109 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.main.app.OverviewFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
+    <data>
+
+        <variable
+            name="f"
+            type="com.moneylover.ui.main.app.overview.OverviewFragment" />
+
+        <variable
+            name="vm"
+            type="com.moneylover.ui.main.app.overview.OverviewViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/root_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/overview"
-        android:textAlignment="center"
-        android:gravity="center"/>
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_12sdp">
+
+                <LinearLayout
+                    android:id="@+id/layout_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/be_vietnam_pro_medium"
+                        android:text="-50,000 ₫"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18sdp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/iv_eye"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:src="@drawable/ic_eye" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_tooltip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_total_balance_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:text="Tổng số dư"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_2sdp">
+
+                        <ImageView
+                            android:id="@+id/iv_info"
+                            android:layout_width="@dimen/_14sdp"
+                            android:layout_height="@dimen/_14sdp"
+                            android:layout_marginStart="@dimen/_6sdp"
+                            android:onClick="@{()->f.showTooltip()}"
+                            android:src="@drawable/ic_info" />
+                    </FrameLayout>
+                </LinearLayout>
+
+                <!-- Bạn có thể thêm phần nội dung khác vào đây -->
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Floating elements như bell và search nên nằm ngoài scroll -->
+        <ImageView
+            android:id="@+id/iv_bell"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:src="@drawable/ic_bell" />
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_toStartOf="@id/iv_bell"
+            android:src="@drawable/ic_search" />
+    </RelativeLayout>
+
+</layout>

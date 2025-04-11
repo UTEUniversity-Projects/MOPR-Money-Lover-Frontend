@@ -30,7 +30,6 @@ import java.util.Enumeration;
 import java.util.List;
 
 
-
 public final class NetworkUtils {
 
     private NetworkUtils() {
@@ -145,5 +144,6 @@ public final class NetworkUtils {
         }
         return throwable instanceof IOException || throwable instanceof SocketTimeoutException || throwable instanceof UnknownHostException;
     }
+
 
 }

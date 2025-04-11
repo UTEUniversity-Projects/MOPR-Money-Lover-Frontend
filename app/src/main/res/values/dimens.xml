@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="_7ssp">7sp</dimen>
-    <dimen name="_6ssp">6sp</dimen>
-    <dimen name="_15sdp">15dp</dimen>
+    <dimen name="button_text_size">@dimen/_11sdp</dimen>
 </resources>

@@ -29,7 +29,7 @@ public class BaseViewModel extends ViewModel {
     @Getter
     protected final MVVMApplication application;
 
-    public BaseViewModel(Repository repository, MVVMApplication application){
+    public BaseViewModel(Repository repository, MVVMApplication application) {
         this.repository = repository;
         this.application = application;
         this.compositeDisposable = new CompositeDisposable();
@@ -41,33 +41,50 @@ public class BaseViewModel extends ViewModel {
         super.onCleared();
     }
 
-    public void showLoading(){
+    public void showLoading() {
         mIsLoading.set(true);
     }
 
-    public void hideLoading(){
+    public void hideLoading() {
         mIsLoading.set(false);
     }
 
-    public void showSuccessMessage(String message){
-        mErrorMessage.setValue(new ToastMessage(ToastMessage.TYPE_SUCCESS,message));
+    public void showSuccessMessage(String message) {
+        mErrorMessage.setValue(new ToastMessage(ToastMessage.TYPE_SUCCESS, message));
     }
 
-    public void showNormalMessage(String message){
-        mErrorMessage.setValue(new ToastMessage(ToastMessage.TYPE_NORMAL,message));
+    public void showNormalMessage(String message) {
+        mErrorMessage.setValue(new ToastMessage(ToastMessage.TYPE_NORMAL, message));
     }
 
-    public void showWarningMessage(String message){
-        mErrorMessage.setValue(new ToastMessage(ToastMessage.TYPE_WARNING,message));
+    public void showWarningMessage(String message) {
+        mErrorMessage.setValue(new ToastMessage(ToastMessage.TYPE_WARNING, message));
     }
 
-    public void showErrorMessage(String message){
-        mErrorMessage.setValue(new ToastMessage(ToastMessage.TYPE_ERROR,message));
+    public void showErrorMessage(String message) {
+        mErrorMessage.setValue(new ToastMessage(ToastMessage.TYPE_ERROR, message));
     }
 
-    public void changeProgressBarMsg(String message){
+    public void showSuccessMessage(String message, int gravity) {
+        mErrorMessage.setValue(new ToastMessage(ToastMessage.TYPE_SUCCESS, message, gravity));
+    }
+
+    public void showNormalMessage(String message, int gravity) {
+        mErrorMessage.setValue(new ToastMessage(ToastMessage.TYPE_NORMAL, message, gravity));
+    }
+
+    public void showWarningMessage(String message, int gravity) {
+        mErrorMessage.setValue(new ToastMessage(ToastMessage.TYPE_WARNING, message, gravity));
+    }
+
+    public void showErrorMessage(String message, int gravity) {
+        mErrorMessage.setValue(new ToastMessage(ToastMessage.TYPE_ERROR, message, gravity));
+    }
+
+    public void changeProgressBarMsg(String message) {
         progressBarMsg.setValue(message);
     }
+
     public void showDevelopmentMessage() {
         showNormalMessage("Tính năng đang được phát triển");
     }

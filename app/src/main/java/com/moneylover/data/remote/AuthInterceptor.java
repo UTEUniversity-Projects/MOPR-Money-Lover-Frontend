@@ -34,7 +34,7 @@ public class AuthInterceptor implements Interceptor {
         if (isIgnore != null && isIgnore.equals("1")) {
             Request.Builder newRequest = chain.request().newBuilder();
             newRequest.removeHeader("IgnoreAuth");
-            newRequest.addHeader("X-tenant", "nix");
+            newRequest.addHeader("X-tenant", "dopamine");
             return chain.proceed(newRequest.build());
         }
 
@@ -44,11 +44,11 @@ public class AuthInterceptor implements Interceptor {
         if (token != null && !token.equals("")) {
             newRequest.addHeader("Authorization", "Bearer " + token);
         }
-        newRequest.addHeader("X-tenant", "nix");
+        newRequest.addHeader("X-tenant", "dopamine");
 
         Response origResponse = chain.proceed(newRequest.build());
         if (origResponse.code() == 403 || origResponse.code() == 401) {
-            LogService.i("Error http =====================> code: "+origResponse.code());
+            LogService.i("Error http ==================''''''''''''''''===> code: " + origResponse.code());
             appPreferences.removeKey(PreferencesService.KEY_BEARER_TOKEN);
             Intent intent = new Intent();
             intent.setAction(Constants.ACTION_EXPIRED_TOKEN);

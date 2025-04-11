@@ -1,43 +1,32 @@
 <resources>
-    <string name="app_name">MoneyLover</string>
+    <string name="app_name">Money Lover</string>
     <string name="email">Email</string>
     <string name="password">Mật khẩu</string>
     <string name="login">Đăng nhập</string>
     <string name="forgotPassword">Quên mật khẩu</string>
     <string name="or">Hoặc</string>
     <string name="register">Đăng ký</string>
-    <string name="rePassword">Nhập lại mật khẩu</string>
+    <string name="confirmPassword">Nhập lại mật khẩu</string>
     <string name="sendOTP">Gửi mã xác nhận</string>
     <string name="forgotPasswordTitle">Nhập email để nhận OTP</string>
     <string name="otpVerificationTitle">Nhập mã OTP</string>
     <string name="enterOtp">Nhập mã OTP đã được gửi đến email của bạn</string>
-    <string name="verifyOTP">Xác nhận OTP</string>
+    <string name="verifyOTP">Xác nhận</string>
     <string name="overview">Tổng quan</string>
     <string name="wallet">Sổ giao dịch</string>
     <string name="budget">Ngân sách</string>
     <string name="account">Tài khoản</string>
-    <string name="next">Tiếp</string>
-    <string name="prev">Trước</string>
     <string name="network_error">Không thể kết nối, vui lòng kiểm tra kết nối mạng của bạn.</string>
     <string name="network_error_button_retry">Thử lại</string>
     <string name="network_error_button_exit">Thoát</string>
-    <string name="hi">Hi!</string>
-    <string name="eatAndOrder">Eat and Order</string>
-    <string name="search">Search</string>
-    <string name="home">Home</string>
-    <string name="profile">Profile</string>
-    <string name="support">Support</string>
-    <string name="setting">Setting</string>
-    <string name="shop">Shop</string>
-    <string name="free_ship">Free Ship</string>
-    <string name="day_free_ship">14/2 - 28-2</string>
-    <string name="order_now">Order Now</string>
-    <string name="categories">Categories</string>
-    <string name="log_out">LOG OUT</string>
     <string name="undeveloped_feature">Tính năng đang được phát triển</string>
     <string name="msg_loading">Vui lòng chờ...</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="please_wait">Vui lòng chờ...</string>
+    <string name="button_to_send_otp">Button to send OTP</string>
+    <string name="resetPassword">Đặt lại mật khẩu</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="balance_tooltip">Được tính dựa trên số dư của các ví nằm trong tổng</string>
 
 </resources>

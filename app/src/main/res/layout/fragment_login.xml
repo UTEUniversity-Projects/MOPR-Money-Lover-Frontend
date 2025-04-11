@@ -1,136 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/loginLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.main.auth.LoginFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginVertical="10dp"
-        android:fontFamily="@font/inter_medium"
-        android:text="@string/login"
-        android:textSize="25sp" />
+    <data>
+
+        <variable
+            name="f"
+            type="com.moneylover.ui.main.auth.LoginFragment" />
+
+        <variable
+            name="vm"
+            type="com.moneylover.ui.main.auth.LoginViewModel" />
+    </data>
 
     <LinearLayout
+        android:id="@+id/loginLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.main.auth.LoginFragment">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputEmail"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            app:hintTextColor="@color/sea_green"
-            app:boxStrokeColor="@color/sea_green"
-            app:endIconMode="clear_text">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:textColorHint="@color/sea_green"
-                android:textCursorDrawable="@null"
-                android:theme="@style/EditTextCursorColor" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputPassword"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            app:hintTextColor="@color/sea_green"
-            app:boxStrokeColor="@color/sea_green"
-            app:passwordToggleEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:textColorHint="@color/sea_green"
-                android:textCursorDrawable="@null"
-                android:theme="@style/EditTextCursorColor" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnForgotPassword"
-            style="?android:attr/borderlessButtonStyle"
+        <TextView
+            style="@style/AuthTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@android:color/transparent"
-            android:text="@string/forgotPassword"
-            android:textAllCaps="false"
-            android:textColor="@color/sea_green"
-            android:textSize="15sp"
-            app:elevation="0dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/sea_green"
-            android:text="@string/login"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            app:cornerRadius="3dp" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:fontFamily="@font/be_vietnam_pro_medium"
+            android:text="@string/login" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:orientation="vertical">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="@android:color/darker_gray" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputEmail"
+                style="@style/TextInputEditTextStyleColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text">
 
-            <TextView
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/be_vietnam_pro"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:onTextChanged="@{f::onEmailTextChanged}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputPassword"
+                style="@style/TextInputEditTextStyleColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorIconDrawable="@null"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/be_vietnam_pro"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:onTextChanged="@{f::onPasswordTextChanged}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnForgotPassword"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_medium"
-                android:paddingHorizontal="10dp"
-                android:text="@string/or"
-                android:textAllCaps="true"
-                android:textColor="@color/dim_gray"
-                android:textSize="16sp" />
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/be_vietnam_pro_medium"
+                android:foreground="@null"
+                android:onClick="@{() -> f.onForgotPasswordClick()}"
+                android:text="@string/forgotPassword"
+                android:textAllCaps="false"
+                android:textColor="@color/sea_green"
+                android:textSize="@dimen/_12sdp"
+                app:elevation="0dp"
+                app:shapeAppearanceOverlay="@style/rounded_full" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="@android:color/darker_gray" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:backgroundTint="@color/sea_green"
+                android:fontFamily="@font/be_vietnam_pro_medium"
+                android:onClick="@{() -> f.onLoginClick()}"
+                android:text="@string/login"
+                android:textColor="@color/white"
+                android:textSize="@dimen/button_text_size"
+                app:shapeAppearanceOverlay="@style/rounded_full" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/darker_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/be_vietnam_pro_medium"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:text="@string/or"
+                    android:textAllCaps="true"
+                    android:textColor="@color/dim_gray"
+                    android:textSize="@dimen/_12sdp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/darker_gray" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/be_vietnam_pro_medium"
+                android:onClick="@{() -> f.onRegisterClick()}"
+                android:text="@string/register"
+                android:textColor="@color/sea_green"
+                android:textSize="@dimen/button_text_size"
+                app:shapeAppearanceOverlay="@style/rounded_full" />
+
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/sea_green"
-            android:text="@string/register"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            app:cornerRadius="5dp" />
-
     </LinearLayout>
-
-</LinearLayout>
+</layout>

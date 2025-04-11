@@ -1,76 +1,56 @@
 package com.moneylover;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.annotation.Nullable;
 
+import com.moneylover.constants.Constants;
 import com.moneylover.databinding.ActivityMainBinding;
+import com.moneylover.di.component.ActivityComponent;
+import com.moneylover.ui.base.activity.BaseActivity;
+import com.moneylover.ui.main.app.AppActivity;
 import com.moneylover.ui.main.onboarding.OnboardingActivity;
+import com.moneylover.utils.JwtUtils;
+import com.moneylover.utils.NavigationUtils;
 
-public class MainActivity extends AppCompatActivity {
-
-    private ActivityMainBinding binding;
-    private Animation zoomOutAnimation;
+public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-        Animation zoomInAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_in_animation);
-        zoomOutAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_out_animation);
-
-        zoomInAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                binding.imgVLogo.startAnimation(zoomOutAnimation);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
-
-        zoomOutAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-                boolean firstTime = prefs.getBoolean("firstTime", true);
-
-                Intent intent = new Intent(MainActivity.this, OnboardingActivity.class);
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
-
-        binding.imgVLogo.startAnimation(zoomInAnimation);
+    public int getLayoutId() {
+        return R.layout.activity_main;
     }
+
+    @Override
+    public int getBindingVariable() {
+        return BR.vm;
+    }
+
+    @Override
+    public void performDependencyInjection(ActivityComponent buildComponent) {
+        buildComponent.inject(this);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+//        SplashScreen.installSplashScreen(this);
+
+        super.onCreate(savedInstanceState);
+
+        showStatusBar();
+
+        viewModel.showNormalMessage("Welcome to Money Lover");
+
+        String accessToken = viewModel.getRepository().getSharedPreferences().getStringVal(Constants.ACCESS_TOKEN);
+
+        if (accessToken == null) {
+            NavigationUtils.navigateToActivityClearStack(MainActivity.this, OnboardingActivity.class);
+        } else if (JwtUtils.isTokenExpired(accessToken)) {
+            viewModel.getRepository().getSharedPreferences().removeKey(Constants.ACCESS_TOKEN);
+            NavigationUtils.navigateToActivityClearStack(MainActivity.this, OnboardingActivity.class);
+        } else {
+            NavigationUtils.navigateToActivityClearStack(MainActivity.this, AppActivity.class);
+        }
+
+    }
+
 }

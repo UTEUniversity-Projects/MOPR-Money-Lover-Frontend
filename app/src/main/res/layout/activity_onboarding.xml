@@ -1,47 +1,101 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/onboarding">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+    <data>
+
+        <variable
+            name="a"
+            type="com.moneylover.ui.main.onboarding.OnboardingActivity" />
+
+        <variable
+            name="vm"
+            type="com.moneylover.ui.main.onboarding.OnboardingViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/onboarding"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/btnNext" />
+        android:paddingBottom="@dimen/_30sdp"
+        android:layout_height="match_parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnPrev"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/sea_green"
-        android:text="@string/prev"
-        android:textColor="@color/white"
-        app:shapeAppearanceOverlay="@style/rounded_full" />
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/indicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/btnNext"
-        android:orientation="horizontal">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgViewHeader"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:src="@drawable/logo_no_text" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/be_vietnam_pro_medium"
+                android:text="@string/app_name"
+                android:textColor="@color/forest_green"
+                android:textSize="@dimen/_18sdp" />
+        </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/sea_green"
-        android:text="@string/next"
-        android:textColor="@color/white"
-        app:shapeAppearanceOverlay="@style/rounded_full" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_above="@id/btns"
+            android:layout_below="@+id/header"
+            android:layout_marginTop="@dimen/_10sdp" />
 
-</RelativeLayout>
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/circle_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_above="@+id/btns"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:ci_drawable="@drawable/dot_selected" />
+
+        <LinearLayout
+            android:id="@+id/btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/_16sdp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:backgroundTint="@color/sea_green"
+                android:fontFamily="@font/be_vietnam_pro_medium"
+                android:onClick="@{() -> a.onLoginClick()}"
+                android:text="@string/login"
+                android:textColor="@color/white"
+                android:textSize="@dimen/button_text_size"
+                app:shapeAppearanceOverlay="@style/rounded_full" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/be_vietnam_pro_medium"
+                android:onClick="@{() -> a.onRegisterClick()}"
+                android:text="@string/register"
+                android:textColor="@color/sea_green"
+                android:textSize="@dimen/button_text_size"
+                app:shapeAppearanceOverlay="@style/rounded_full" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

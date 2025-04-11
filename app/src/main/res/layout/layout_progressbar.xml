@@ -12,9 +12,10 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="4"
+        android:fontFamily="@font/be_vietnam_pro_medium"
         android:lines="2"
         android:gravity="left|center_vertical"
-        android:text="Vui lòng chờ..."
-        android:layout_marginLeft="@dimen/_15sdp"
+        android:text="@string/please_wait"
+        android:layout_marginStart="@dimen/_15sdp"
         android:id="@+id/progressbar_msg"/>
 </LinearLayout>
