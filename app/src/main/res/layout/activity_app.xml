@@ -10,7 +10,6 @@
         <variable
             name="vm"
             type="com.moneylover.ui.main.app.AppViewModel" />
-
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,11 +18,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/app_frame_layout"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/_60sdp" />
+            android:overScrollMode="never" />
+
+        <FrameLayout
+            android:id="@+id/overlay_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"
@@ -35,8 +40,8 @@
             app:contentInsetStartWithNavigation="0dp"
             app:fabAlignmentMode="center"
             app:fabAnchorMode="cradle"
-            app:fabCradleMargin="@dimen/_10sdp"
-            app:fabCradleRoundedCornerRadius="@dimen/_45sdp"
+            app:fabCradleMargin="@dimen/_16ssp"
+            app:fabCradleRoundedCornerRadius="@dimen/_40ssp"
             app:fabCradleVerticalOffset="0dp">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -66,7 +71,8 @@
             app:borderWidth="0dp"
             app:layout_anchor="@id/bottomAppBar"
             app:shapeAppearanceOverlay="@style/rounded_full"
-            app:tint="@android:color/white" />
+            app:tint="@android:color/white"
+            android:layout_gravity="bottom|center" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -28,5 +28,23 @@
     <string name="resetPassword">Đặt lại mật khẩu</string>
     <string name="logout">Đăng xuất</string>
     <string name="balance_tooltip">Được tính dựa trên số dư của các ví nằm trong tổng</string>
+    <string name="my_wallet">Ví của tôi</string>
+    <string name="viewAll">Xem tất cả</string>
+    <string name="cash">Tiền mặt</string>
+    <string name="report_this_month">Báo cáo tháng này</string>
+    <string name="view_report">Xem báo cáo</string>
+    <string name="spending_this_month">Chi tiêu tháng này</string>
+    <string name="week">Tuần</string>
+    <string name="month">Tháng</string>
+    <string name="latest_transaction">Giao dịch gần đây</string>
+    <string name="view_detail">Xem chi tiết</string>
+    <string name="view_report_for_this_stage">Xem báo cáo cho giai đoạn này</string>
+    <string name="time_line">Khoảng thời gian</string>
+    <string name="view_by_group">Xem theo nhóm</string>
+    <string name="view_by_transaction">Xem theo giao dịch</string>
+    <string name="change_balance">Điều chỉnh số dư</string>
+    <string name="edit">Sửa</string>
+    <string name="copy">Sao chép</string>
+    <string name="delete">Xóa</string>
 
 </resources>

@@ -3,6 +3,7 @@ package com.moneylover;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.splashscreen.SplashScreen;
 
 import com.moneylover.constants.Constants;
 import com.moneylover.databinding.ActivityMainBinding;
@@ -32,7 +33,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-//        SplashScreen.installSplashScreen(this);
+        SplashScreen.installSplashScreen(this);
 
         super.onCreate(savedInstanceState);
 
