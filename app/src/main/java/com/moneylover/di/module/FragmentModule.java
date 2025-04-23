@@ -12,6 +12,8 @@ import com.moneylover.di.scope.FragmentScope;
 import com.moneylover.ui.base.fragment.BaseFragment;
 import com.moneylover.ui.main.app.account.AccountViewModel;
 import com.moneylover.ui.main.app.overview.OverviewViewModel;
+import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryListViewModel;
+import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryViewModel;
 import com.moneylover.ui.main.auth.ForgotPasswordOtpVerificationViewModel;
 import com.moneylover.ui.main.auth.ForgotPasswordViewModel;
 import com.moneylover.ui.main.auth.LoginViewModel;
@@ -94,4 +96,21 @@ public class FragmentModule {
         ViewModelProviderFactory<AccountViewModel> factory = new ViewModelProviderFactory<>(AccountViewModel.class, supplier);
         return new ViewModelProvider(fragment, factory).get(AccountViewModel.class);
     }
+
+    @Provides
+    @FragmentScope
+    TransactionHistoryViewModel provideTransactionHistoryViewModel(Repository repository, Context application) {
+        Supplier<TransactionHistoryViewModel> supplier = () -> new TransactionHistoryViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<TransactionHistoryViewModel> factory = new ViewModelProviderFactory<>(TransactionHistoryViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(TransactionHistoryViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    TransactionHistoryListViewModel provideTransactionHistoryListViewModel(Repository repository, Context application) {
+        Supplier<TransactionHistoryListViewModel> supplier = () -> new TransactionHistoryListViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<TransactionHistoryListViewModel> factory = new ViewModelProviderFactory<>(TransactionHistoryListViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(TransactionHistoryListViewModel.class);
+    }
+
 }

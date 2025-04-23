@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center_vertical"
+    android:paddingVertical="@dimen/_10ssp"
+    android:paddingHorizontal="@dimen/_10ssp"
+    android:orientation="horizontal">
+
+    <!-- Icon ví -->
+    <ImageView
+        android:id="@+id/imgWallet"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/bg_circle"
+        android:padding="6dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_wallet_2" />
+
+    <!-- Ngày -->
+    <TextView
+        android:id="@+id/tvTransactionDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="14 tháng 4 2025, Hôm nay"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <!-- Số tiền -->
+    <TextView
+        android:id="@+id/tvTransactionAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="995,522"
+        android:textColor="@color/red"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+</LinearLayout>

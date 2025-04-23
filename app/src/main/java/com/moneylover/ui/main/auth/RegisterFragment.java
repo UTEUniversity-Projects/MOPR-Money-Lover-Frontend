@@ -8,7 +8,7 @@ import com.moneylover.ui.base.fragment.BaseFragment;
 import com.moneylover.utils.FormUtils;
 import com.moneylover.utils.NavigationUtils;
 
-public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, RegisterViewModel> {
+public class    RegisterFragment extends BaseFragment<FragmentRegisterBinding, RegisterViewModel> {
 
     @Override
     public int getBindingVariable() {

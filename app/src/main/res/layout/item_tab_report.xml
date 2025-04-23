@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/_10ssp"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/tvTabTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tổng đã chi"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginBottom="@dimen/_5ssp" />
+
+    <TextView
+        android:id="@+id/tvTabValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0 ₫"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_12ssp" />
+
+</LinearLayout>

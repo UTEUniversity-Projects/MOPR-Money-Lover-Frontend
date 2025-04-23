@@ -3,7 +3,6 @@ package com.moneylover.utils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import androidx.annotation.AnimRes;
 import androidx.annotation.IdRes;
@@ -203,55 +202,55 @@ public class NavigationUtils {
         }
     }
 
-    public static void navigateWithSlide(AppCompatActivity activity, @IdRes int containerId, Class<? extends Fragment> fragmentClass, String tag, boolean leftToRight)
+    // Navigate to a Fragment with a container ID, data (Bundle), and default animation
+    public static void navigateWithSlide(AppCompatActivity activity, @IdRes int containerId,
+                                         Class<? extends Fragment> fragmentClass, String tag, boolean leftToRight)
             throws IllegalAccessException, InstantiationException {
 
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(containerId);
-        FrameLayout container = activity.findViewById(containerId);
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
 
-        Fragment fragment = fragmentClass.newInstance();
+        FragmentTransaction preTransaction = fragmentManager.beginTransaction();
 
-        if (currentFragment == null) {
-            fragmentManager.beginTransaction()
-                    .replace(containerId, fragment, tag)
-                    .commit();
-            return;
+        if (fragment == null) {
+            fragment = fragmentClass.newInstance();
+            preTransaction.add(containerId, fragment, tag).hide(fragment).commitNow();
+        } else {
+            preTransaction.hide(fragment).commitNow();
         }
 
-        View currentView = currentFragment.getView();
-        if (currentView == null) return;
-
-        // Thêm fragment mới nhưng ẩn ngay từ đầu để lấy view
-        fragmentManager.beginTransaction()
-                .add(containerId, fragment, tag)
-                .commitNow(); // commit ngay để lấy view
-
+        View container = activity.findViewById(containerId);
+        View currentView = currentFragment != null ? currentFragment.getView() : null;
         View newView = fragment.getView();
-        if (newView == null) return;
+
+        if (newView == null || container == null) return;
 
         int width = container.getWidth();
         int fromX = leftToRight ? -width : width;
         int toX = 0;
 
-        // Đặt vị trí ban đầu cho fragment mới
         newView.setTranslationX(fromX);
+        fragment.setMenuVisibility(true);
+        fragment.setUserVisibleHint(true);
 
-        // Animate cả hai fragment
-        currentView.animate()
-                .translationX(leftToRight ? width : -width)
-                .setDuration(300)
-                .start();
+        if (currentView != null) {
+            currentView.animate()
+                    .translationX(leftToRight ? width : -width)
+                    .setDuration(300)
+                    .start();
+        }
 
+        Fragment finalFragment = fragment;
         newView.animate()
                 .translationX(toX)
                 .setDuration(300)
                 .withEndAction(() -> {
-                    // Khi hoàn thành animation → Replace và lưu vào BackStack
-                    fragmentManager.beginTransaction()
-                            .replace(containerId, fragment, tag)
-                            .addToBackStack(tag) // Lưu lại để hỗ trợ back
-                            .commit();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    if (currentFragment != null) {
+                        transaction.hide(currentFragment);
+                    }
+                    transaction.show(finalFragment).addToBackStack(tag).commit();
                 })
                 .start();
     }

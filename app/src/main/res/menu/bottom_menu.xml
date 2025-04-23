@@ -6,7 +6,7 @@
         android:title="@string/overview" />
 
     <item
-        android:id="@+id/wallet"
+        android:id="@+id/transaction_history"
         android:icon="@drawable/ic_wallet"
         android:title="@string/wallet" />
 
