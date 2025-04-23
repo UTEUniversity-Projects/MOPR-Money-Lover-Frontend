@@ -22,16 +22,28 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.main.app.transactionHistory.AddNoteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.TransactionHistoryEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.TransactionHistoryDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.WalletActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.onboarding.OnboardingActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.app.AppActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.auth.AuthActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.app.AppActivity"
             android:exported="true"
             android:theme="@style/Theme.MoneyLover">
             <intent-filter>

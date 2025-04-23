@@ -6,17 +6,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.moneylover.data.model.OnboardingItem;
+import com.moneylover.data.model.Onboarding;
 import com.moneylover.databinding.ItemOnboardingBinding;
 
 import java.util.List;
 
 public class OnboardingAdapter extends RecyclerView.Adapter<OnboardingAdapter.OnboardingViewHolder> {
 
-    private final List<OnboardingItem> onboardingItems;
+    private final List<Onboarding> onboardingList;
 
-    public OnboardingAdapter(List<OnboardingItem> onboardingItems) {
-        this.onboardingItems = onboardingItems;
+    public OnboardingAdapter(List<Onboarding> onboardingList) {
+        this.onboardingList = onboardingList;
     }
 
     @NonNull
@@ -29,12 +29,12 @@ public class OnboardingAdapter extends RecyclerView.Adapter<OnboardingAdapter.On
 
     @Override
     public void onBindViewHolder(@NonNull OnboardingViewHolder holder, int position) {
-        holder.bind(onboardingItems.get(position));
+        holder.bind(onboardingList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return onboardingItems.size();
+        return onboardingList.size();
     }
 
     static class OnboardingViewHolder extends RecyclerView.ViewHolder {
@@ -45,7 +45,7 @@ public class OnboardingAdapter extends RecyclerView.Adapter<OnboardingAdapter.On
             this.binding = binding;
         }
 
-        void bind(OnboardingItem item) {
+        void bind(Onboarding item) {
             binding.imageOnboarding.setImageResource(item.getImage());
             binding.tvTitle.setText(item.getTitle());
             binding.txtDesc.setText(item.getDescription());

@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class OnboardingItem {
+public class Onboarding {
     private int image;
     private String title;
     private String description;
