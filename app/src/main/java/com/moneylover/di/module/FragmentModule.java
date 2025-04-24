@@ -14,6 +14,7 @@ import com.moneylover.ui.main.app.account.AccountViewModel;
 import com.moneylover.ui.main.app.overview.OverviewViewModel;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryListViewModel;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryViewModel;
+import com.moneylover.ui.main.app.transactionHistory.ViewReportListViewModel;
 import com.moneylover.ui.main.auth.ForgotPasswordOtpVerificationViewModel;
 import com.moneylover.ui.main.auth.ForgotPasswordViewModel;
 import com.moneylover.ui.main.auth.LoginViewModel;
@@ -111,6 +112,14 @@ public class FragmentModule {
         Supplier<TransactionHistoryListViewModel> supplier = () -> new TransactionHistoryListViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<TransactionHistoryListViewModel> factory = new ViewModelProviderFactory<>(TransactionHistoryListViewModel.class, supplier);
         return new ViewModelProvider(fragment, factory).get(TransactionHistoryListViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    ViewReportListViewModel provideViewReportListViewModel(Repository repository, Context application) {
+        Supplier<ViewReportListViewModel> supplier = () -> new ViewReportListViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<ViewReportListViewModel> factory = new ViewModelProviderFactory<>(ViewReportListViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(ViewReportListViewModel.class);
     }
 
 }

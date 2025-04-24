@@ -142,12 +142,11 @@ public class TransactionHistoryNestedAdapter extends RecyclerView.Adapter<Transa
             OptionAdapter adapter = new OptionAdapter(menuOptions, position -> {
                 MenuOption selected = menuOptions.get(position);
                 Toast.makeText(context, selected.getTitle(), Toast.LENGTH_SHORT).show();
-                popupWindow.dismiss();
+                animatePopupDismiss(popupView);
             });
 
             rvMenu.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
             rvMenu.setAdapter(adapter);
-
 
             animatePopup(popupView);
 

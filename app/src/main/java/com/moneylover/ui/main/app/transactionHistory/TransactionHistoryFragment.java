@@ -37,7 +37,7 @@ import java.util.Locale;
 
 public class TransactionHistoryFragment extends BaseFragment<FragmentTransactionHistoryBinding, TransactionHistoryViewModel> {
 
-    private Wallet selectedWallet = new Wallet(R.drawable.ic_wallet_2, "Tổng cộng", -4156598);
+    private Wallet selectedWallet = new Wallet(R.drawable.bg_green_circle, R.drawable.ic_wallet_2, "Tổng cộng", -4156598);
 
     private final ActivityResultLauncher<Intent> walletLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -45,11 +45,11 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
                     Wallet wallet = (Wallet) result.getData().getSerializableExtra("wallet");
                     if (wallet != null) {
                         selectedWallet = wallet;
-
                         binding.imgWalletIcon.setImageResource(wallet.getIcon());
                         binding.tvWalletName.setText(wallet.getName());
 
                     }
+
                 }
             });
 
@@ -67,7 +67,6 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
     protected void performDataBinding() {
         binding.setF(this);
         binding.setVm(viewModel);
-        setupMenu();
         setupTabLayout();
     }
 
@@ -76,46 +75,44 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
         buildComponent.inject(this);
     }
 
-    public void setupMenu() {
-        binding.imgMore.setOnClickListener(v -> {
-            View popupView = LayoutInflater.from(requireContext()).inflate(R.layout.menu_popup_layout, null);
-            RecyclerView rvMenu = popupView.findViewById(R.id.rcvPopupMenu);
+    public void onMenuClick() {
+        View popupView = LayoutInflater.from(requireContext()).inflate(R.layout.menu_popup_layout, null);
+        RecyclerView rvMenu = popupView.findViewById(R.id.rcvPopupMenu);
 
-            List<MenuOption> menuOptions = Arrays.asList(
-                    new MenuOption(getString(R.string.time_line)),
-                    new MenuOption(getString(R.string.view_by_group)),
-                    new MenuOption(getString(R.string.view_by_transaction)),
-                    new MenuOption(getString(R.string.change_balance))
-            );
+        List<MenuOption> menuOptions = Arrays.asList(
+                new MenuOption(getString(R.string.time_line)),
+                new MenuOption(getString(R.string.view_by_group)),
+                new MenuOption(getString(R.string.view_by_transaction)),
+                new MenuOption(getString(R.string.change_balance))
+        );
 
-            PopupWindow popupWindow = new PopupWindow(
-                    popupView,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    true
-            );
+        PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        );
 
-            popupWindow.setAnimationStyle(R.style.PopupAnimation);
-            popupWindow.setOutsideTouchable(true);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                popupWindow.setElevation(dpToPx(6));
-            }
+        popupWindow.setAnimationStyle(R.style.PopupAnimation);
+        popupWindow.setOutsideTouchable(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            popupWindow.setElevation(dpToPx(6));
+        }
 
-            int[] location = new int[2];
-            binding.imgMore.getLocationOnScreen(location);
-            int y = getStatusBarHeight() + dpToPx(4);
-            popupWindow.showAtLocation(binding.getRoot(), Gravity.TOP | Gravity.END, 16, y);
+        int[] location = new int[2];
+        binding.imgMenu.getLocationOnScreen(location);
+        int y = getStatusBarHeight() + dpToPx(4);
+        popupWindow.showAtLocation(binding.getRoot(), Gravity.TOP | Gravity.END, 16, y);
 
-            OptionAdapter adapter = new OptionAdapter(menuOptions, position -> {
-                MenuOption selected = menuOptions.get(position);
-                handleMenuSelection(selected.getTitle());
-                popupWindow.dismiss();
-            });
-
-            rvMenu.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
-            rvMenu.setAdapter(adapter);
-
+        OptionAdapter adapter = new OptionAdapter(menuOptions, position -> {
+            MenuOption selected = menuOptions.get(position);
+            handleMenuSelection(selected.getTitle());
+            popupWindow.dismiss();
         });
+
+        rvMenu.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+        rvMenu.setAdapter(adapter);
+
     }
 
     private void handleMenuSelection(String title) {
@@ -145,7 +142,7 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
         }
 
         int[] location = new int[2];
-        binding.imgMore.getLocationOnScreen(location);
+        binding.imgMenu.getLocationOnScreen(location);
         int y = getStatusBarHeight() + dpToPx(4);
         popupWindow.showAtLocation(binding.getRoot(), Gravity.TOP | Gravity.END, 16, y);
 

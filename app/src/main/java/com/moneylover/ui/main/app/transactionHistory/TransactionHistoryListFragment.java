@@ -1,5 +1,7 @@
 package com.moneylover.ui.main.app.transactionHistory;
 
+import android.content.Intent;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.moneylover.BR;
@@ -33,6 +35,7 @@ public class TransactionHistoryListFragment extends BaseFragment<FragmentTransac
         binding.setF(this);
         binding.setVm(viewModel);
         setupTransactionHistoryList();
+        onViewReportClick();
     }
 
     @Override
@@ -63,6 +66,11 @@ public class TransactionHistoryListFragment extends BaseFragment<FragmentTransac
             binding.rcvTransactionHistory.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
         }
         binding.rcvTransactionHistory.setAdapter(adapter);
+    }
+
+    public void onViewReportClick() {
+        Intent intent = new Intent(getActivity(), ViewReportActivity.class);
+        startActivity(intent);
     }
 
 }
