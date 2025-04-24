@@ -131,6 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="16dp"
+                    android:onClick="@{() -> f.onViewReportClick()}"
                     android:background="@drawable/bg_green_transparent_rounded"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="8dp"

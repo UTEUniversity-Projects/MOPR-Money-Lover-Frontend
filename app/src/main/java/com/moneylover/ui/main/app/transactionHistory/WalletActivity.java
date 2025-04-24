@@ -2,10 +2,10 @@ package com.moneylover.ui.main.app.transactionHistory;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.moneylover.BR;
 import com.moneylover.R;
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class WalletActivity extends BaseActivity<ActivityWalletBinding, WalletViewModel> {
 
-    private final Wallet totalWallet = new Wallet(R.drawable.ic_wallet_2, "Tổng cộng", -4156598);
+    private final Wallet totalWallet = new Wallet(R.drawable.bg_green_circle, R.drawable.ic_wallet_2, "Tổng cộng", -4156598);
     private WalletAdapter adapter;
 
     @Override
@@ -48,15 +48,15 @@ public class WalletActivity extends BaseActivity<ActivityWalletBinding, WalletVi
         Wallet selectedWallet = (Wallet) getIntent().getSerializableExtra("selected_wallet");
 
         if (selectedWallet != null && !"Tổng cộng".equals(selectedWallet.getName())) {
-            viewBinding.imgGreenCircle.setVisibility(View.INVISIBLE);
+            viewBinding.imgGreenCircle.setImageResource(0);
         } else {
-            viewBinding.imgGreenCircle.setVisibility(View.VISIBLE);
+            viewBinding.imgGreenCircle.setImageResource(R.drawable.bg_green_circle);
         }
         setupWalletList(selectedWallet);
 
         viewBinding.totalBalance.setOnClickListener(v -> {
-            viewBinding.imgGreenCircle.setVisibility(View.VISIBLE);
             adapter.clearSelection();
+            viewBinding.imgGreenCircle.setImageResource(R.drawable.bg_green_circle);
 
             Intent resultIntent = new Intent();
             resultIntent.putExtra("wallet", totalWallet);
@@ -69,7 +69,7 @@ public class WalletActivity extends BaseActivity<ActivityWalletBinding, WalletVi
     public void setupWalletList(Wallet selectedWallet) {
         List<Wallet> walletList = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
-            walletList.add(new Wallet(R.drawable.ic_wallet_2, "Tiền mặt " + i, 100000 + i));
+            walletList.add(new Wallet(0, R.drawable.ic_wallet_2, "Tiền mặt " + i, 100000 + i));
         }
 
         int selectedPosition = -1;
@@ -77,17 +77,25 @@ public class WalletActivity extends BaseActivity<ActivityWalletBinding, WalletVi
             for (int i = 0; i < walletList.size(); i++) {
                 if (walletList.get(i).equals(selectedWallet)) {
                     selectedPosition = i;
+                    walletList.get(i).setSelectedIcon(R.drawable.bg_green_circle);
                     break;
                 }
             }
         }
 
-        adapter = new WalletAdapter(walletList, selectedPosition, new OnItemClickListener() {
+        adapter = new WalletAdapter(walletList, new OnItemClickListener() {
+
             @Override
             public void onItemClick(int position) {
-                viewBinding.imgGreenCircle.setVisibility(View.INVISIBLE); // ẩn chấm xanh tổng cộng
+                for (Wallet w : walletList) {
+                    w.setSelectedIcon(0);
+                }
 
                 Wallet chosen = walletList.get(position);
+                chosen.setSelectedIcon(R.drawable.bg_green_circle);
+
+                viewBinding.imgGreenCircle.setImageResource(0);
+
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("wallet", chosen);
                 setResult(RESULT_OK, resultIntent);
@@ -95,12 +103,32 @@ public class WalletActivity extends BaseActivity<ActivityWalletBinding, WalletVi
             }
 
             @Override
-            public void onItemDelete(int position) {
-            }
+            public void onItemDelete(int position) {}
         });
 
         viewBinding.rcvWalletList.setLayoutManager(new LinearLayoutManager(this));
         viewBinding.rcvWalletList.setAdapter(adapter);
+
+        if (selectedPosition != -1) {
+            int finalSelectedPosition = selectedPosition;
+            viewBinding.rcvWalletList.post(() -> {
+                RecyclerView.ViewHolder holder = viewBinding.rcvWalletList.findViewHolderForAdapterPosition(finalSelectedPosition);
+                if (holder != null) {
+                    int[] location = new int[2];
+                    holder.itemView.getLocationOnScreen(location);
+
+                    int[] listLocation = new int[2];
+                    viewBinding.rcvWalletList.getLocationOnScreen(listLocation);
+
+                    int scrollY = location[1] - listLocation[1];
+
+                    viewBinding.nestedScrollView.smoothScrollBy(0, scrollY);
+                } else {
+                    viewBinding.rcvWalletList.scrollToPosition(finalSelectedPosition);
+                }
+            });
+        }
+
     }
 
     @Override
@@ -108,4 +136,8 @@ public class WalletActivity extends BaseActivity<ActivityWalletBinding, WalletVi
         super.onBackPressed();
     }
 
+    public void onEditClick() {
+        Intent intent = new Intent(this, WalletEditActivity.class);
+        startActivity(intent);
+    }
 }

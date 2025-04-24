@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Wallet implements Serializable {
+    private int selectedIcon;
     private int icon;
     private String name;
     private int balance;

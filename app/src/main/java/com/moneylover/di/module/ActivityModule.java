@@ -15,6 +15,8 @@ import com.moneylover.ui.main.app.AppViewModel;
 import com.moneylover.ui.main.app.transactionHistory.AddNoteViewModel;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryDetailViewModel;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryEditViewModel;
+import com.moneylover.ui.main.app.transactionHistory.ViewReportViewModel;
+import com.moneylover.ui.main.app.transactionHistory.WalletEditViewModel;
 import com.moneylover.ui.main.app.transactionHistory.WalletViewModel;
 import com.moneylover.ui.main.auth.AuthViewModel;
 import com.moneylover.ui.main.onboarding.OnboardingViewModel;
@@ -111,4 +113,21 @@ public class ActivityModule {
         ViewModelProviderFactory<AddNoteViewModel> factory = new ViewModelProviderFactory<>(AddNoteViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(AddNoteViewModel.class);
     }
+
+    @Provides
+    @ActivityScope
+    WalletEditViewModel provideWalletEditViewModel(Repository repository, Context application) {
+        Supplier<WalletEditViewModel> supplier = () -> new WalletEditViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<WalletEditViewModel> factory = new ViewModelProviderFactory<>(WalletEditViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(WalletEditViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    ViewReportViewModel provideViewReportViewModel(Repository repository, Context application) {
+        Supplier<ViewReportViewModel> supplier = () -> new ViewReportViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<ViewReportViewModel> factory = new ViewModelProviderFactory<>(ViewReportViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(ViewReportViewModel.class);
+    }
+
 }

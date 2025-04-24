@@ -34,6 +34,7 @@
     <color name="fire_brick">#B22222</color>
     <color name="crimson">#DC143C</color>
     <color name="dark_red">#8B0000</color>
+    <color name="bean_red">#F35B56</color>
 
     <!-- Hồng -->
     <color name="pink">#FFC0CB</color>
@@ -79,6 +80,7 @@
     <color name="sky_blue">#87CEEB</color>
     <color name="light_sky_blue">#87CEFA</color>
     <color name="powder_blue">#B0E0E6</color>
+    <color name="curious_blue">#329ecc</color>
 
     <!-- Tím -->
     <color name="purple">#800080</color>
