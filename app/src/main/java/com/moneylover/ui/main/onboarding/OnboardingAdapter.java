@@ -46,9 +46,9 @@ public class OnboardingAdapter extends RecyclerView.Adapter<OnboardingAdapter.On
         }
 
         void bind(Onboarding item) {
-            binding.imageOnboarding.setImageResource(item.getImage());
+            binding.ivOnboarding.setImageResource(item.getImage());
             binding.tvTitle.setText(item.getTitle());
-            binding.txtDesc.setText(item.getDescription());
+            binding.tvDesc.setText(item.getDescription());
         }
     }
 }

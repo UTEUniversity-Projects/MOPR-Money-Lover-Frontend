@@ -54,7 +54,8 @@ public class ViewReportListFragment extends BaseFragment<FragmentViewReportListB
         binding.setF(this);
         binding.setVm(viewModel);
         setupBarChart();
-        setupPieChart();
+        setupPieChartExpenditure();
+        setupPieChartIncome();
     }
 
     @Override
@@ -145,21 +146,22 @@ public class ViewReportListFragment extends BaseFragment<FragmentViewReportListB
         animator.start();
     }
 
-    private void setupPieChart() {
+    private void setupPieChartExpenditure() {
         List<Expenditure> expenditures = Arrays.asList(
                 new Expenditure("Ăn uống", 25f, R.drawable.ic_drink),
                 new Expenditure("Di chuyển", 20f, R.drawable.ic_drink),
                 new Expenditure("Mua sắm", 15f, R.drawable.ic_drink),
-                new Expenditure("Hóa đơn", 40f, R.drawable.ic_drink)
+                new Expenditure("Hóa đơn", 30f, R.drawable.ic_drink),
+                new Expenditure("Nhậu", 10f, R.drawable.ic_drink)
         );
 
-        PieChart pieChart = binding.pieChart;
-        ConstraintLayout container = binding.chartContainer;
+        PieChart pieChart = binding.pieChartExpenditure;
+        ConstraintLayout container = binding.chartContainerExpenditure;
 
         container.post(() -> {
             for (int i = container.getChildCount() - 1; i >= 0; i--) {
                 View view = container.getChildAt(i);
-                if (view.getId() != R.id.pieChart) container.removeView(view);
+                if (view.getId() != R.id.pieChartExpenditure) container.removeView(view);
             }
         });
 
@@ -169,7 +171,7 @@ public class ViewReportListFragment extends BaseFragment<FragmentViewReportListB
                 ContextCompat.getColor(getContext(), R.color.red),
                 ContextCompat.getColor(getContext(), R.color.green),
                 ContextCompat.getColor(getContext(), R.color.black),
-                ContextCompat.getColor(getContext(), R.color.yellow)
+                ContextCompat.getColor(getContext(), R.color.purple)
         );
 
         float total = 0;
@@ -302,4 +304,161 @@ public class ViewReportListFragment extends BaseFragment<FragmentViewReportListB
 
     }
 
+    private void setupPieChartIncome() {
+        List<Expenditure> expenditures = Arrays.asList(
+                new Expenditure("Ăn uống", 25f, R.drawable.ic_drink),
+                new Expenditure("Di chuyển", 20f, R.drawable.ic_drink),
+                new Expenditure("Mua sắm", 15f, R.drawable.ic_drink),
+                new Expenditure("Hóa đơn", 30f, R.drawable.ic_drink),
+                new Expenditure("Nhậu", 10f, R.drawable.ic_drink)
+        );
+
+        PieChart pieChart = binding.pieChartIncome;
+        ConstraintLayout container = binding.chartContainerIncome;
+
+        container.post(() -> {
+            for (int i = container.getChildCount() - 1; i >= 0; i--) {
+                View view = container.getChildAt(i);
+                if (view.getId() != R.id.pieChartIncome) container.removeView(view);
+            }
+        });
+
+        List<PieEntry> entries = new ArrayList<>();
+        List<Integer> colors = Arrays.asList(
+                ContextCompat.getColor(getContext(), R.color.deep_sky_blue),
+                ContextCompat.getColor(getContext(), R.color.red),
+                ContextCompat.getColor(getContext(), R.color.green),
+                ContextCompat.getColor(getContext(), R.color.black),
+                ContextCompat.getColor(getContext(), R.color.purple)
+        );
+
+        float total = 0;
+        for (Expenditure e : expenditures) {
+            entries.add(new PieEntry(e.value, e.name));
+            total += e.value;
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "");
+        dataSet.setColors(colors);
+        dataSet.setDrawValues(false);
+
+        pieChart.setData(new PieData(dataSet));
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleRadius(65f);
+        pieChart.setTransparentCircleRadius(70f);
+        pieChart.setDrawEntryLabels(false);
+        pieChart.setTouchEnabled(false);
+        pieChart.getLegend().setEnabled(false);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.invalidate();
+
+        float finalTotal = total;
+        pieChart.postDelayed(() -> {
+            float startAngle = 0f;
+            for (int i = 0; i < expenditures.size(); i++) {
+                Expenditure item = expenditures.get(i);
+                float angle = (item.value / finalTotal) * 360f;
+                float centerAngle = startAngle + angle / 2f;
+                startAngle += angle;
+
+                double radians = Math.toRadians(centerAngle - 90);
+
+                float centerX = pieChart.getX() + pieChart.getWidth() / 2f;
+                float centerY = pieChart.getY() + pieChart.getHeight() / 2f;
+
+                float iconRadius = 300f;
+                float labelRadius = 400f;
+                int iconSize = 80;
+
+                // Icon position
+                float iconX = (float) (centerX + iconRadius * Math.cos(radians));
+                float iconY = (float) (centerY + iconRadius * Math.sin(radians));
+
+                ImageView icon = new ImageView(getContext());
+                icon.setImageResource(item.iconRes);
+                FrameLayout.LayoutParams iconParams = new FrameLayout.LayoutParams(iconSize, iconSize);
+                icon.setLayoutParams(iconParams);
+                icon.setX(iconX - iconSize / 2f);
+                icon.setY(iconY - iconSize / 2f);
+                container.addView(icon);
+
+                // Label position
+                float labelX = (float) (centerX + labelRadius * Math.cos(radians));
+                float labelY = (float) (centerY + labelRadius * Math.sin(radians));
+
+                TextView label = new TextView(getContext());
+                label.setText(String.format(Locale.getDefault(), "%.0f%%", (item.value / finalTotal) * 100f));
+                label.setTextColor(Color.BLACK);
+                label.setTextSize(12f);
+                container.addView(label);
+                label.post(() -> {
+                    label.setX(labelX - label.getWidth() / 2f);
+                    label.setY(labelY - label.getHeight() / 2f);
+                });
+
+                float iconCenterX = iconX;
+                float iconCenterY = iconY;
+                float distance = 40f; // khoảng cách từ icon về phía pieChart
+                float dotX = (float) (iconCenterX - distance * Math.cos(radians));
+                float dotY = (float) (iconCenterY - distance * Math.sin(radians));
+
+                View greenCircle = new View(getContext());
+                FrameLayout.LayoutParams circleParams = new FrameLayout.LayoutParams(20, 20); // size chấm
+                greenCircle.setLayoutParams(circleParams);
+
+//                GradientDrawable circle = new GradientDrawable();
+//                circle.setShape(GradientDrawable.OVAL);
+//                circle.setColor(colors.get(i));
+//                circle.setSize(20, 20);
+//                greenCircle.setBackground(circle);
+
+                greenCircle.setX(dotX - 10); // center lại
+                greenCircle.setY(dotY - 10);
+                container.addView(greenCircle);
+
+//                --------------------------------------------
+                float _centerX = pieChart.getX() + pieChart.getWidth() / 2f;
+                float _centerY = pieChart.getY() + pieChart.getHeight() / 2f;
+
+                float radius = pieChart.getWidth() / 2f * (pieChart.getTransparentCircleRadius() / 80f);
+
+                float x = (float) (_centerX + radius * Math.cos(radians));
+                float y = (float) (_centerY + radius * Math.sin(radians));
+
+                View dot = new View(getContext());
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(20, 20);
+                dot.setLayoutParams(params);
+//                dot.setBackground(ContextCompat.getDrawable(getContext(), colors.get(i)));
+
+//                GradientDrawable dotCircle = new GradientDrawable();
+//                dotCircle.setShape(GradientDrawable.OVAL);
+//                dotCircle.setColor(colors.get(i));
+//                dotCircle.setSize(20, 20);
+//                dot.setBackground(dotCircle);
+
+                dot.setX(x - 10);
+                dot.setY(y - 10);
+                container.addView(dot);
+
+//    ------------------------------------------------------
+                int finalI = i;
+                greenCircle.post(() -> {
+                    dot.post(() -> {
+                        float startX = greenCircle.getX() + greenCircle.getWidth() / 2f;
+                        float startY = greenCircle.getY() + greenCircle.getHeight() / 2f;
+                        float endX = dot.getX() + dot.getWidth() / 2f;
+                        float endY = dot.getY() + dot.getHeight() / 2f;
+                        int color = colors.get(finalI);
+                        LineView lineView = new LineView(getContext(), startX, startY, endX, endY, color);
+                        container.addView(lineView, new FrameLayout.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT
+                        ));
+                    });
+                });
+
+            }
+        }, 300);
+
+    }
 }

@@ -15,6 +15,7 @@ import com.moneylover.R;
 import com.moneylover.databinding.ActivityViewReportBinding;
 import com.moneylover.di.component.ActivityComponent;
 import com.moneylover.ui.base.activity.BaseActivity;
+import com.moneylover.ui.custom.timerangebottomsheet.TimeRangeBottomSheet;
 import com.moneylover.ui.main.app.transactionHistory.adapter.ViewReportAdapter;
 
 import java.util.ArrayList;
@@ -121,6 +122,15 @@ public class ViewReportActivity extends BaseActivity<ActivityViewReportBinding, 
         months.add("THÁNG TRƯỚC");
 
         return months;
+    }
+
+    int selectedIndex = 2;
+
+    public void onCalendarClick() {
+        new TimeRangeBottomSheet(selectedIndex, (position, label) -> {
+            viewModel.showNormalMessage(label + " " + position);
+            selectedIndex = position;
+        }).show(getSupportFragmentManager(), "TimeRange");
     }
 
 }

@@ -16,4 +16,5 @@ import lombok.ToString;
 public class RequestRegisterRequest {
     private String email;
     private String password;
+    private String recaptchaResponse;
 }

@@ -83,7 +83,7 @@ public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, Over
     }
 
     public void onInfoClick() {
-        ViewGroup rootView = (ViewGroup) binding.getRoot().findViewById(R.id.root_content);
+        ViewGroup rootView = (ViewGroup) binding.getRoot().findViewById(R.id.rootContent);
 
         ToolTip.Builder builder = new ToolTip.Builder(
                 requireContext(),
