@@ -15,7 +15,7 @@
 
         <!-- Icon chính -->
         <ImageView
-            android:id="@+id/imgCategoryIcon"
+            android:id="@+id/ivCategoryIcon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/ic_drink"
@@ -25,7 +25,7 @@
 
         <!-- Sub icon nhỏ ở góc -->
         <ImageView
-            android:id="@+id/imgSubIcon"
+            android:id="@+id/ivSubIcon"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_gravity="bottom|end"

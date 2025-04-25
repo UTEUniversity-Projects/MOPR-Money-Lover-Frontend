@@ -49,7 +49,7 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/imgSearch"
+                    android:id="@+id/ivSearch"
                     android:layout_width="@dimen/_20ssp"
                     android:layout_height="@dimen/_20ssp"
                     android:src="@drawable/ic_search" />

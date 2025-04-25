@@ -35,7 +35,7 @@ public class TransactionHistoryListFragment extends BaseFragment<FragmentTransac
         binding.setF(this);
         binding.setVm(viewModel);
         setupTransactionHistoryList();
-        onViewReportClick();
+        onViewReportClick(); // Bỏ dòng này
     }
 
     @Override

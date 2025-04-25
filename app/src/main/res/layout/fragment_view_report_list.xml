@@ -50,7 +50,7 @@
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
-                        android:id="@+id/tvIncome"
+                        android:id="@+id/firstBalance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="end"
@@ -76,7 +76,7 @@
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
-                        android:id="@+id/tvExpense"
+                        android:id="@+id/tvLastBalance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="end"
@@ -146,6 +146,7 @@
                     android:layout_height="250dp" />
             </LinearLayout>
 
+<!--            Expenditure-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -186,7 +187,7 @@
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/tvAmount"
+                        android:id="@+id/tvExpenditure"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -195,12 +196,12 @@
                         android:textSize="16sp" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/chartContainer"
+                        android:id="@+id/chartContainerExpenditure"
                         android:layout_width="match_parent"
                         android:layout_height="350dp">
 
                         <com.github.mikephil.charting.charts.PieChart
-                            android:id="@+id/pieChart"
+                            android:id="@+id/pieChartExpenditure"
                             android:layout_width="150dp"
                             android:layout_height="150dp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -211,6 +212,102 @@
 
 
                 </LinearLayout>
+            </LinearLayout>
+
+<!--            Income -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_10ssp"
+                android:paddingVertical="@dimen/_10ssp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <!-- Title row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Khoản thu"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Xem chi tiết"
+                            android:textColor="@color/green"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvIncome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="200,000"
+                        android:textColor="@color/dodger_blue"
+                        android:textSize="16sp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/chartContainerIncome"
+                        android:layout_width="match_parent"
+                        android:layout_height="350dp">
+
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/pieChartIncome"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/groupReportView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_card"
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:id="@+id/ivGroupIcon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_group_box"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:id="@+id/tvGroupText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xem báo cáo theo nhóm"
+                    android:textColor="@color/lime_green"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>

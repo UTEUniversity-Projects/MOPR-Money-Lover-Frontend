@@ -48,15 +48,15 @@ public class WalletActivity extends BaseActivity<ActivityWalletBinding, WalletVi
         Wallet selectedWallet = (Wallet) getIntent().getSerializableExtra("selected_wallet");
 
         if (selectedWallet != null && !"Tổng cộng".equals(selectedWallet.getName())) {
-            viewBinding.imgGreenCircle.setImageResource(0);
+            viewBinding.ivGreenCircle.setImageResource(0);
         } else {
-            viewBinding.imgGreenCircle.setImageResource(R.drawable.bg_green_circle);
+            viewBinding.ivGreenCircle.setImageResource(R.drawable.bg_green_circle);
         }
         setupWalletList(selectedWallet);
 
         viewBinding.totalBalance.setOnClickListener(v -> {
             adapter.clearSelection();
-            viewBinding.imgGreenCircle.setImageResource(R.drawable.bg_green_circle);
+            viewBinding.ivGreenCircle.setImageResource(R.drawable.bg_green_circle);
 
             Intent resultIntent = new Intent();
             resultIntent.putExtra("wallet", totalWallet);
@@ -94,7 +94,7 @@ public class WalletActivity extends BaseActivity<ActivityWalletBinding, WalletVi
                 Wallet chosen = walletList.get(position);
                 chosen.setSelectedIcon(R.drawable.bg_green_circle);
 
-                viewBinding.imgGreenCircle.setImageResource(0);
+                viewBinding.ivGreenCircle.setImageResource(0);
 
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("wallet", chosen);

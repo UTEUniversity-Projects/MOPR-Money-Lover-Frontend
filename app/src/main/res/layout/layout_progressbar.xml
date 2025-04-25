@@ -17,5 +17,5 @@
         android:gravity="left|center_vertical"
         android:text="@string/please_wait"
         android:layout_marginStart="@dimen/_15sdp"
-        android:id="@+id/progressbar_msg"/>
+        android:id="@+id/progressbarMsg"/>
 </LinearLayout>

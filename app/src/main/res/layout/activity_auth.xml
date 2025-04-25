@@ -31,7 +31,7 @@
             android:onClick="@{() -> a.onBack()}"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgProfile"
+            android:id="@+id/ivProfile"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_90sdp"
             android:layout_gravity="center"

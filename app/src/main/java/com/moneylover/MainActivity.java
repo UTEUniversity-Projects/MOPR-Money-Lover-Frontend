@@ -42,14 +42,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         viewModel.showNormalMessage("Welcome to Money Lover");
 
         String accessToken = viewModel.getRepository().getSharedPreferences().getStringVal(Constants.ACCESS_TOKEN);
-
         if (accessToken == null) {
-            NavigationUtils.navigateToActivityClearStack(MainActivity.this, OnboardingActivity.class);
+            NavigationUtils.navigateToActivityClearStack(MainActivity.this, OnboardingActivity.class, R.anim.slide_up_animation, R.anim.slide_down_animation);
         } else if (JwtUtils.isTokenExpired(accessToken)) {
             viewModel.getRepository().getSharedPreferences().removeKey(Constants.ACCESS_TOKEN);
-            NavigationUtils.navigateToActivityClearStack(MainActivity.this, OnboardingActivity.class);
+            NavigationUtils.navigateToActivityClearStack(MainActivity.this, OnboardingActivity.class, R.anim.slide_up_animation, R.anim.slide_down_animation);
         } else {
-            NavigationUtils.navigateToActivityClearStack(MainActivity.this, AppActivity.class);
+            NavigationUtils.navigateToActivityClearStack(MainActivity.this, AppActivity.class, R.anim.slide_up_animation, R.anim.slide_down_animation);
         }
 
     }

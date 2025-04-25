@@ -10,14 +10,14 @@
     android:paddingStart="@dimen/_2ssp">
 
     <ImageView
-        android:id="@+id/imgYellowStar"
+        android:id="@+id/ivYellowStar"
         android:layout_width="@dimen/_8ssp"
         android:layout_height="9dp"
         android:layout_marginEnd="@dimen/_2ssp"
         android:src="@drawable/ic_yellow_star" />
 
     <ImageView
-        android:id="@+id/imgIcon"
+        android:id="@+id/ivIcon"
         android:layout_width="@dimen/_25ssp"
         android:layout_height="@dimen/_25ssp"
         android:src="@drawable/ic_wallet_2" />
@@ -32,7 +32,7 @@
         android:textSize="@dimen/_12ssp" />
 
     <ImageView
-        android:id="@+id/imgOption"
+        android:id="@+id/ivOption"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="end|center"

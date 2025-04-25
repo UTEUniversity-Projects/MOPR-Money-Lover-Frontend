@@ -2,12 +2,19 @@ package com.moneylover.ui.main.auth;
 
 import com.moneylover.BR;
 import com.moneylover.R;
+import com.moneylover.constants.HttpStatusCode;
+import com.moneylover.data.model.api.ResponseWrapper;
+import com.moneylover.data.model.api.request.LoginRequest;
+import com.moneylover.data.model.api.response.LoginResponse;
 import com.moneylover.databinding.FragmentLoginBinding;
 import com.moneylover.di.component.FragmentComponent;
 import com.moneylover.ui.base.fragment.BaseFragment;
+import com.moneylover.ui.main.MainCallback;
 import com.moneylover.ui.main.app.AppActivity;
+import com.moneylover.utils.DeviceUtils;
 import com.moneylover.utils.FormUtils;
 import com.moneylover.utils.NavigationUtils;
+import com.moneylover.utils.NetworkUtils;
 
 public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewModel> {
 
@@ -44,55 +51,53 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
     }
 
     public void onLoginClick() {
-//        if (!validateEmail() || !validatePassword()) {
-//            viewModel.showWarningMessage("Email hoặc mật khẩu không hợp hệ !");
-//            return;
-//        }
-//
-//        LoginRequest request = LoginRequest.builder().email(binding.edtEmail.getText().toString().trim()).password(binding.edtPassword.getText().toString().trim()).build();
-//        viewModel.doLogin(new MainCallback<ResponseWrapper<LoginResponse>>() {
-//            @Override
-//            public void doError(Throwable error) {
-//                Timber.tag("LoginViewModel").e(error);
-//                viewModel.hideLoading();
-//                if (!DeviceUtils.isNetworkAvailable(requireContext())) {
-//                    viewModel.showErrorMessage("Vui lòng kiểm tra kết nối mạng !");
-//                    return;
-//                }
-//
-//                if (error instanceof SocketTimeoutException) {
-//                    viewModel.showErrorMessage("Có lỗi kết nối đến server !");
-//                    return;
-//                }
-//
-//                if (error.getMessage() != null && error.getMessage().contains(HttpStatusCode.UNAUTHORIZED.getCode())) {
-//                    viewModel.showErrorMessage("Email hoặc mật khẩu không đúng !");
-//                    return;
-//                }
-//
-//                viewModel.showErrorMessage("Đăng nhập thất bại !");
-//            }
-//
-//            @Override
-//            public void doSuccess() {
-//            }
-//
-//            @Override
-//            public void doSuccess(ResponseWrapper<LoginResponse> response) {
-//                viewModel.hideLoading();
-//                hideKeyboard();
-//                Timber.tag("LoginViewModel").d("Response: %s", response.toString());
-//                viewModel.showSuccessMessage("Đăng nhập thành công !");
-//                viewModel.setAccessToken(response.getData().getAccessToken());
-//                NavigationUtils.navigateToActivityClearStack((AuthActivity) getActivity(), AppActivity.class, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-//            }
-//
-//            @Override
-//            public void doFail() {
-//            }
-//
-//        }, request);
-        NavigationUtils.navigateToActivityClearStack((AuthActivity) getActivity(), AppActivity.class);
+        if (!validateEmail() || !validatePassword()) {
+            viewModel.showWarningMessage("Email hoặc mật khẩu không hợp hệ !");
+            return;
+        }
+
+        LoginRequest request = LoginRequest.builder().email(binding.edtEmail.getText().toString().trim()).password(binding.edtPassword.getText().toString().trim()).build();
+        viewModel.doLogin(new MainCallback<ResponseWrapper<LoginResponse>>() {
+            @Override
+            public void doError(Throwable error) {
+                viewModel.hideLoading();
+                if (!DeviceUtils.isNetworkAvailable(requireContext())) {
+                    viewModel.showErrorMessage("Vui lòng kiểm tra kết nối mạng !");
+                    return;
+                }
+
+                if (NetworkUtils.checkNetworkError(error)) {
+                    viewModel.showErrorMessage("Có lỗi kết nối đến server !");
+                    return;
+                }
+
+                if (error.getMessage() != null && error.getMessage().contains(HttpStatusCode.UNAUTHORIZED.getCode())) {
+                    viewModel.showErrorMessage("Email hoặc mật khẩu không đúng !");
+                    return;
+                }
+
+                viewModel.showErrorMessage("Đăng nhập thất bại !");
+
+            }
+
+            @Override
+            public void doSuccess() {
+            }
+
+            @Override
+            public void doSuccess(ResponseWrapper<LoginResponse> response) {
+                viewModel.hideLoading();
+                hideKeyboard();
+                viewModel.showSuccessMessage("Đăng nhập thành công !");
+                viewModel.setAccessToken(response.getData().getAccessToken());
+                NavigationUtils.navigateToActivityClearStack((AuthActivity) getActivity(), AppActivity.class, R.anim.slide_up_animation, R.anim.slide_down_animation);
+            }
+
+            @Override
+            public void doFail() {
+            }
+
+        }, request);
     }
 
     public void onEmailTextChanged(CharSequence s, int start, int before, int count) {
