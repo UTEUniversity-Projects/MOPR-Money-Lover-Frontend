@@ -31,7 +31,7 @@
 
         <!-- Giá trị hiển thị số liệu -->
         <TextView
-            android:id="@+id/tv_total_value"
+            android:id="@+id/tvTotalValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="50,000 ₫"

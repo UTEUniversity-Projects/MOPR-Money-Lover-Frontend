@@ -65,10 +65,11 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/imgCalendar"
+                android:id="@+id/ivCalendar"
                 android:layout_width="@dimen/_20ssp"
                 android:layout_height="@dimen/_20ssp"
                 android:layout_marginEnd="4dp"
+                android:onClick="@{() -> a.onCalendarClick()}"
                 android:src="@drawable/ic_calendar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +95,7 @@
 
                 <!-- Icon trái -->
                 <ImageView
-                    android:id="@+id/imgWalletIcon"
+                    android:id="@+id/ivWalletIcon"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:contentDescription="@null"
@@ -114,7 +115,7 @@
 
                 <!-- Mũi tên xuống -->
                 <ImageView
-                    android:id="@+id/imgArrow"
+                    android:id="@+id/ivArrow"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:contentDescription="@null"

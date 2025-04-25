@@ -45,7 +45,7 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
                     Wallet wallet = (Wallet) result.getData().getSerializableExtra("wallet");
                     if (wallet != null) {
                         selectedWallet = wallet;
-                        binding.imgWalletIcon.setImageResource(wallet.getIcon());
+                        binding.ivWalletIcon.setImageResource(wallet.getIcon());
                         binding.tvWalletName.setText(wallet.getName());
 
                     }
@@ -100,7 +100,7 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
         }
 
         int[] location = new int[2];
-        binding.imgMenu.getLocationOnScreen(location);
+        binding.ivMenu.getLocationOnScreen(location);
         int y = getStatusBarHeight() + dpToPx(4);
         popupWindow.showAtLocation(binding.getRoot(), Gravity.TOP | Gravity.END, 16, y);
 
@@ -142,7 +142,7 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
         }
 
         int[] location = new int[2];
-        binding.imgMenu.getLocationOnScreen(location);
+        binding.ivMenu.getLocationOnScreen(location);
         int y = getStatusBarHeight() + dpToPx(4);
         popupWindow.showAtLocation(binding.getRoot(), Gravity.TOP | Gravity.END, 16, y);
 

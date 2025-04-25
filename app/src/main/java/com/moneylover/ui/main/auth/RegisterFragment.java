@@ -2,11 +2,26 @@ package com.moneylover.ui.main.auth;
 
 import com.moneylover.BR;
 import com.moneylover.R;
+import com.moneylover.constants.ErrorCode;
+import com.moneylover.data.model.api.ResponseWrapper;
+import com.moneylover.data.model.api.request.RequestRegisterRequest;
+import com.moneylover.data.model.api.response.RequestRegisterResponse;
 import com.moneylover.databinding.FragmentRegisterBinding;
 import com.moneylover.di.component.FragmentComponent;
 import com.moneylover.ui.base.fragment.BaseFragment;
+import com.moneylover.ui.main.MainCallback;
+import com.moneylover.utils.DeviceUtils;
 import com.moneylover.utils.FormUtils;
 import com.moneylover.utils.NavigationUtils;
+import com.moneylover.utils.NetworkUtils;
+
+import org.json.JSONObject;
+
+import java.util.Objects;
+
+import okhttp3.ResponseBody;
+import retrofit2.HttpException;
+import timber.log.Timber;
 
 public class    RegisterFragment extends BaseFragment<FragmentRegisterBinding, RegisterViewModel> {
 
@@ -70,81 +85,82 @@ public class    RegisterFragment extends BaseFragment<FragmentRegisterBinding, R
         viewModel.initializeRecaptchaClient();
         viewModel.executeRecaptchaTask();
 
-//        if (!validateEmail() || !validatePassword() || !validateConfirmPassword()) {
-//            viewModel.showWarningMessage("Thông tin không hợp lệ !");
-//            return;
-//        }
-//
-//        String email = Objects.requireNonNull(binding.edtEmail.getText()).toString().trim();
-//        String password = Objects.requireNonNull(binding.edtPassword.getText()).toString().trim();
-//
-//        RequestRegisterRequest request = RequestRegisterRequest.builder().email(email).password(password).build();
-//
-//        viewModel.doRequestRegister(new MainCallback<ResponseWrapper<RequestRegisterResponse>>() {
-//            @Override
-//            public void doError(Throwable error) {
-//                Timber.tag("RegisterFragment").e("Response: %s", error.getMessage());
-//                viewModel.hideLoading();
-//                if (!DeviceUtils.isNetworkAvailable(requireContext())) {
-//                    viewModel.showErrorMessage("Vui lòng kiểm tra kết nối mạng !");
-//                    return;
-//                }
-//
-//                if (NetworkUtils.checkNetworkError(error)) {
-//                    viewModel.showErrorMessage("Có lỗi kết nối đến server !");
-//                    return;
-//                }
-//
-//                if (error instanceof HttpException) {
-//                    HttpException httpException = (HttpException) error;
-//                    ResponseBody errorBody = httpException.response().errorBody();
-//
-//                    if (errorBody != null) {
-//                        try {
-//                            String errorJson = errorBody.string();
-//                            Timber.d("Error body: %s", errorJson);
-//
-//                            JSONObject json = new JSONObject(errorJson);
-//                            String errorCode = json.optString("code");
-//
-//                            Timber.d("Mã lỗi: %s", errorCode);
-//
-//                            if (ErrorCode.ACCOUNT_EMAIL_EXISTED.getCode().equals(errorCode)) {
-//                                viewModel.showErrorMessage("Email đã tồn tại !");
-//                                binding.edtEmail.requestFocus();
-//                                binding.textInputEmail.setError("Email đã tồn tại !");
-//                                binding.textInputEmail.setErrorEnabled(true);
-//                            }
-//
-//                        } catch (Exception e) {
-//                            Timber.e(e, "Lỗi khi parse errorBody");
-//                        }
-//                    }
-//                    return;
-//                }
-//
-//                viewModel.showErrorMessage("Đăng ký thất bại !");
-//            }
-//
-//            @Override
-//            public void doSuccess() {
-//            }
-//
-//            @Override
-//            public void doSuccess(ResponseWrapper<RequestRegisterResponse> response) {
-//                viewModel.hideLoading();
-//                Timber.tag("RegisterFragment").d("Response: %s", response.toString());
-//                viewModel.showSuccessMessage("Mã OTP đã được gửi đến email !");
-//                viewModel.setRegisterToken(response.getData().getToken());
-//                NavigationUtils.navigateToFragmentClearBackStack((AuthActivity) getActivity(), R.id.fragmentContainer, RegisterOtpVerificationFragment.class);
-//            }
-//
-//            @Override
-//            public void doFail() {
-//                Timber.tag("RegisterFragment").d("Response: %s", "doFail");
-//            }
-//
-//        }, request);
+        if (!validateEmail() || !validatePassword() || !validateConfirmPassword()) {
+            viewModel.showWarningMessage("Thông tin không hợp lệ !");
+            return;
+        }
+
+        String email = Objects.requireNonNull(binding.edtEmail.getText()).toString().trim();
+        String password = Objects.requireNonNull(binding.edtPassword.getText()).toString().trim();
+        String token = viewModel.getRecaptchaToken().getValue();
+
+        RequestRegisterRequest request = RequestRegisterRequest.builder().email(email).password(password).recaptchaResponse(token).build();
+
+        viewModel.doRequestRegister(new MainCallback<ResponseWrapper<RequestRegisterResponse>>() {
+            @Override
+            public void doError(Throwable error) {
+                Timber.tag("RegisterFragment").e("Error: %s", error.toString());
+                viewModel.hideLoading();
+                if (!DeviceUtils.isNetworkAvailable(requireContext())) {
+                    viewModel.showErrorMessage("Vui lòng kiểm tra kết nối mạng !");
+                    return;
+                }
+
+                if (NetworkUtils.checkNetworkError(error)) {
+                    viewModel.showErrorMessage("Có lỗi kết nối đến server !");
+                    return;
+                }
+
+                if (error instanceof HttpException) {
+                    HttpException httpException = (HttpException) error;
+                    ResponseBody errorBody = httpException.response().errorBody();
+
+                    if (errorBody != null) {
+                        try {
+                            String errorJson = errorBody.string();
+                            Timber.d("Error body: %s", errorJson);
+
+                            JSONObject json = new JSONObject(errorJson);
+                            String errorCode = json.optString("code");
+
+                            Timber.d("Mã lỗi: %s", errorCode);
+
+                            if (ErrorCode.ACCOUNT_EMAIL_EXISTED.getCode().equals(errorCode)) {
+                                viewModel.showErrorMessage("Email đã tồn tại !");
+                                binding.edtEmail.requestFocus();
+                                binding.textInputEmail.setError("Email đã tồn tại !");
+                                binding.textInputEmail.setErrorEnabled(true);
+                            }
+
+                        } catch (Exception e) {
+                            Timber.e(e, "Lỗi khi parse errorBody");
+                        }
+                    }
+                    return;
+                }
+
+                viewModel.showErrorMessage("Đăng ký thất bại !");
+            }
+
+            @Override
+            public void doSuccess() {
+            }
+
+            @Override
+            public void doSuccess(ResponseWrapper<RequestRegisterResponse> response) {
+                viewModel.hideLoading();
+                Timber.tag("RegisterFragment").d("Response: %s", response.toString());
+                viewModel.showSuccessMessage("Mã OTP đã được gửi đến email !");
+                viewModel.setRegisterToken(response.getData().getToken());
+                NavigationUtils.navigateToFragmentClearBackStack((AuthActivity) getActivity(), R.id.fragmentContainer, RegisterOtpVerificationFragment.class);
+            }
+
+            @Override
+            public void doFail() {
+                Timber.tag("RegisterFragment").d("Response: %s", "doFail");
+            }
+
+        }, request);
 
     }
 

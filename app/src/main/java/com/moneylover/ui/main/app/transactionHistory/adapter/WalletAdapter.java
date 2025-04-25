@@ -72,14 +72,14 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
         }
 
         public void bind(Wallet item) {
-            binding.imgIcon.setImageResource(item.getIcon());
+            binding.ivIcon.setImageResource(item.getIcon());
             binding.tvName.setText(item.getName());
             binding.tvBalance.setText(String.valueOf(item.getBalance()));
 
             if (item.getSelectedIcon() != 0) {
-                binding.imgGreenCircle.setImageResource(item.getSelectedIcon());
+                binding.ivGreenCircle.setImageResource(item.getSelectedIcon());
             } else {
-                binding.imgGreenCircle.setImageResource(0);
+                binding.ivGreenCircle.setImageResource(0);
             }
 
             binding.getRoot().setOnClickListener(v -> {
@@ -92,7 +92,7 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
                 }
             });
 
-            binding.imgOption.setOnClickListener(v -> {
+            binding.ivOption.setOnClickListener(v -> {
                 Context context = v.getContext();
                 View popupView = LayoutInflater.from(context).inflate(R.layout.menu_popup_layout, null);
                 RecyclerView recyclerView = popupView.findViewById(R.id.rcvPopupMenu);
@@ -121,7 +121,7 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
 
                 popupWindow.setElevation(8f);
                 popupWindow.setOutsideTouchable(true);
-                popupWindow.showAsDropDown(binding.imgOption, -16, 0);
+                popupWindow.showAsDropDown(binding.ivOption, -16, 0);
             });
         }
 

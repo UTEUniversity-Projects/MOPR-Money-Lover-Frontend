@@ -89,13 +89,13 @@
                         android:paddingStart="@dimen/_2ssp">
 
                         <ImageView
-                            android:id="@+id/imgGreenCircle"
+                            android:id="@+id/ivGreenCircle"
                             android:layout_width="@dimen/_8ssp"
                             android:layout_height="@dimen/_8ssp"
                             android:layout_marginEnd="@dimen/_2ssp" />
 
                         <ImageView
-                            android:id="@+id/imgIcon"
+                            android:id="@+id/ivIcon"
                             android:layout_width="@dimen/_25ssp"
                             android:layout_height="@dimen/_25ssp"
                             android:src="@drawable/ic_wallet_2" />

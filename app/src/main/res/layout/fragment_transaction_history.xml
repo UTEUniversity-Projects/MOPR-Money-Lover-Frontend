@@ -67,12 +67,12 @@
                 android:padding="@dimen/_4ssp"
                 android:src="@drawable/ic_search"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imgMenu"
+                app:layout_constraintEnd_toStartOf="@+id/ivMenu"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.483" />
 
             <ImageView
-                android:id="@+id/imgMenu"
+                android:id="@+id/ivMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
@@ -104,7 +104,7 @@
 
                 <!-- Icon trái -->
                 <ImageView
-                    android:id="@+id/imgWalletIcon"
+                    android:id="@+id/ivWalletIcon"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:contentDescription="@null"
@@ -124,7 +124,7 @@
 
                 <!-- Mũi tên xuống -->
                 <ImageView
-                    android:id="@+id/imgArrow"
+                    android:id="@+id/ivArrow"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:contentDescription="@null"

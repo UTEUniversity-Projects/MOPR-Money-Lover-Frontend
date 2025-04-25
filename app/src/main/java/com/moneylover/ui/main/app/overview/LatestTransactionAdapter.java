@@ -61,8 +61,8 @@ public class LatestTransactionAdapter extends RecyclerView.Adapter<LatestTransac
             binding.tvCategoryName.setText(transaction.getCategory());
             binding.tvDate.setText(transaction.getDate());
             binding.tvAmount.setText(transaction.getFormattedAmount());
-            binding.imgCategoryIcon.setImageResource(transaction.getCategoryIconResId());
-            binding.imgSubIcon.setImageResource(transaction.getSubIconResId());
+            binding.ivCategoryIcon.setImageResource(transaction.getCategoryIconResId());
+            binding.ivSubIcon.setImageResource(transaction.getSubIconResId());
         }
     }
 }

@@ -67,7 +67,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         performDataBinding();
-        updateCurrentAcitivity();
+        updateCurrentActivity();
 
         viewModel.setToken(token);
         viewModel.setDeviceId(deviceId);
@@ -115,7 +115,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
     protected void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(globalApplicationReceiver, filterGlobalApplication);
-        updateCurrentAcitivity();
+        updateCurrentActivity();
         viewModel.hideLoading();
     }
 
@@ -177,7 +177,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
 
     public void changeProgressBarMsg(String msg) {
         if (progressDialog != null) {
-            ((TextView) progressDialog.findViewById(R.id.progressbar_msg)).setText(msg);
+            ((TextView) progressDialog.findViewById(R.id.progressbarMsg)).setText(msg);
         }
     }
 
@@ -194,7 +194,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
 
     public abstract void performDependencyInjection(ActivityComponent buildComponent);
 
-    private void updateCurrentAcitivity() {
+    private void updateCurrentActivity() {
         MVVMApplication mvvmApplication = (MVVMApplication) application;
         mvvmApplication.setCurrentActivity(this);
     }

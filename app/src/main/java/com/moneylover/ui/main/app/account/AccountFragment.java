@@ -36,6 +36,6 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding, Accoun
     public void onLogoutClick() {
         viewModel.removeAccessToken();
         viewModel.showSuccessMessage("Đăng xuất thành công !");
-        NavigationUtils.navigateToActivityClearStack((AppActivity) getActivity(), OnboardingActivity.class, android.R.anim.slide_out_right, android.R.anim.slide_in_left);
+        NavigationUtils.navigateToActivityClearStack((AppActivity) getActivity(), OnboardingActivity.class, R.anim.slide_up_animation, R.anim.slide_down_animation);
     }
 }

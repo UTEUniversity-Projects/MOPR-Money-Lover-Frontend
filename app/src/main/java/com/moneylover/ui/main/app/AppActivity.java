@@ -3,6 +3,7 @@ package com.moneylover.ui.main.app;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.moneylover.BR;
@@ -37,6 +38,8 @@ public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        SplashScreen.installSplashScreen(this);
+        setTheme(R.style.Theme_MoneyLover_Splash);
         super.onCreate(savedInstanceState);
 
         viewBinding.bottomNavigationView.setBackground(null);
