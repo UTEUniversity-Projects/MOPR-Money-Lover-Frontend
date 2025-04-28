@@ -88,10 +88,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutNetIncome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10ssp"
                 android:background="@drawable/bg_card"
+                android:clickable="true"
+                android:focusable="true"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_10ssp"
                 android:paddingVertical="@dimen/_10ssp">
@@ -146,12 +149,15 @@
                     android:layout_height="250dp" />
             </LinearLayout>
 
-<!--            Expenditure-->
+            <!--            Expenditure-->
             <LinearLayout
+                android:id="@+id/layoutExpenditure"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10ssp"
                 android:background="@drawable/bg_card"
+                android:clickable="true"
+                android:focusable="true"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_10ssp"
                 android:paddingVertical="@dimen/_10ssp">
@@ -181,9 +187,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/be_vietnam_pro_medium"
                             android:text="Xem chi tiết"
-                            android:textColor="@color/green"
-                            android:textSize="14sp" />
+                            android:textColor="@color/lime_green"
+                            android:textSize="@dimen/_12ssp" />
                     </LinearLayout>
 
                     <TextView
@@ -210,16 +217,18 @@
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
                 </LinearLayout>
             </LinearLayout>
 
-<!--            Income -->
+            <!--            Income -->
             <LinearLayout
+                android:id="@+id/layoutIncome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10ssp"
                 android:background="@drawable/bg_card"
+                android:clickable="true"
+                android:focusable="true"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_10ssp"
                 android:paddingVertical="@dimen/_10ssp">
@@ -249,9 +258,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/be_vietnam_pro_medium"
                             android:text="Xem chi tiết"
-                            android:textColor="@color/green"
-                            android:textSize="14sp" />
+                            android:textColor="@color/lime_green"
+                            android:textSize="@dimen/_12ssp" />
                     </LinearLayout>
 
                     <TextView
@@ -286,28 +296,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:orientation="vertical"
-                android:gravity="center"
                 android:background="@drawable/bg_card"
-                android:paddingVertical="12dp"
-                android:paddingHorizontal="16dp">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="12dp">
 
                 <ImageView
                     android:id="@+id/ivGroupIcon"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:src="@drawable/ic_group_box"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_group_box" />
 
                 <TextView
                     android:id="@+id/tvGroupText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:text="Xem báo cáo theo nhóm"
                     android:textColor="@color/lime_green"
                     android:textSize="14sp"
-                    android:layout_marginTop="4dp"
                     android:textStyle="bold" />
+            </LinearLayout>
+
+            <!--            others -->
+            <LinearLayout
+                android:id="@+id/containerRoot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F6F6F8"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_expandable_row" />
+
+                <include layout="@layout/item_expandable_row" />
+
+                <include layout="@layout/item_expandable_row" />
+
             </LinearLayout>
 
         </LinearLayout>

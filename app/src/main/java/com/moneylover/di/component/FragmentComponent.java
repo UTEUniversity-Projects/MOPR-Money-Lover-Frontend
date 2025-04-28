@@ -4,8 +4,12 @@ import com.moneylover.di.module.FragmentModule;
 import com.moneylover.di.scope.FragmentScope;
 import com.moneylover.ui.main.app.account.AccountFragment;
 import com.moneylover.ui.main.app.overview.OverviewFragment;
+import com.moneylover.ui.main.app.transactionHistory.ExpenditureDetailFragment;
+import com.moneylover.ui.main.app.transactionHistory.IncomeDetailFragment;
+import com.moneylover.ui.main.app.transactionHistory.NetIncomeDetailFragment;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryFragment;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryListFragment;
+import com.moneylover.ui.main.app.transactionHistory.ViewReportByGroupListFragment;
 import com.moneylover.ui.main.app.transactionHistory.ViewReportListFragment;
 import com.moneylover.ui.main.auth.ForgotPasswordFragment;
 import com.moneylover.ui.main.auth.ForgotPasswordOtpVerificationFragment;
@@ -37,5 +41,13 @@ public interface FragmentComponent {
     void inject(TransactionHistoryListFragment fragment);
 
     void inject(ViewReportListFragment fragment);
+
+    void inject(NetIncomeDetailFragment fragment);
+
+    void inject(ExpenditureDetailFragment fragment);
+
+    void inject(IncomeDetailFragment fragment);
+
+    void inject(ViewReportByGroupListFragment fragment);
 
 }

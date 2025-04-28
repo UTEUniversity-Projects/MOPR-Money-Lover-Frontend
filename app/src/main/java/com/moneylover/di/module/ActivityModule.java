@@ -13,8 +13,13 @@ import com.moneylover.di.scope.ActivityScope;
 import com.moneylover.ui.base.activity.BaseActivity;
 import com.moneylover.ui.main.app.AppViewModel;
 import com.moneylover.ui.main.app.transactionHistory.AddNoteViewModel;
+import com.moneylover.ui.main.app.transactionHistory.ExpenditureTransactionViewModel;
+import com.moneylover.ui.main.app.transactionHistory.ExpenditureViewModel;
+import com.moneylover.ui.main.app.transactionHistory.IncomeViewModel;
+import com.moneylover.ui.main.app.transactionHistory.NetIncomeViewModel;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryDetailViewModel;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryEditViewModel;
+import com.moneylover.ui.main.app.transactionHistory.ViewReportByGroupViewModel;
 import com.moneylover.ui.main.app.transactionHistory.ViewReportViewModel;
 import com.moneylover.ui.main.app.transactionHistory.WalletEditViewModel;
 import com.moneylover.ui.main.app.transactionHistory.WalletViewModel;
@@ -128,6 +133,38 @@ public class ActivityModule {
         Supplier<ViewReportViewModel> supplier = () -> new ViewReportViewModel(repository, (MVVMApplication)application);
         ViewModelProviderFactory<ViewReportViewModel> factory = new ViewModelProviderFactory<>(ViewReportViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(ViewReportViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    NetIncomeViewModel provideNetIncomeViewModel(Repository repository, Context application) {
+        Supplier<NetIncomeViewModel> supplier = () -> new NetIncomeViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<NetIncomeViewModel> factory = new ViewModelProviderFactory<>(NetIncomeViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(NetIncomeViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    ExpenditureViewModel provideExpenditureViewModel(Repository repository, Context application) {
+        Supplier<ExpenditureViewModel> supplier = () -> new ExpenditureViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<ExpenditureViewModel> factory = new ViewModelProviderFactory<>(ExpenditureViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(ExpenditureViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    IncomeViewModel provideIncomeViewModel(Repository repository, Context application) {
+        Supplier<IncomeViewModel> supplier = () -> new IncomeViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<IncomeViewModel> factory = new ViewModelProviderFactory<>(IncomeViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(IncomeViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    ViewReportByGroupViewModel provideViewReportByGroupViewModel(Repository repository, Context application) {
+        Supplier<ViewReportByGroupViewModel> supplier = () -> new ViewReportByGroupViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<ViewReportByGroupViewModel> factory = new ViewModelProviderFactory<>(ViewReportByGroupViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(ViewReportByGroupViewModel.class);
     }
 
 }

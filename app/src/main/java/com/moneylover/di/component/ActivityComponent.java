@@ -5,9 +5,14 @@ import com.moneylover.di.module.ActivityModule;
 import com.moneylover.di.scope.ActivityScope;
 import com.moneylover.ui.main.app.AppActivity;
 import com.moneylover.ui.main.app.transactionHistory.AddNoteActivity;
+import com.moneylover.ui.main.app.transactionHistory.ExpenditureActivity;
+import com.moneylover.ui.main.app.transactionHistory.ExpenditureTransactionActivity;
+import com.moneylover.ui.main.app.transactionHistory.IncomeActivity;
+import com.moneylover.ui.main.app.transactionHistory.NetIncomeActivity;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryDetailActivity;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryEditActivity;
 import com.moneylover.ui.main.app.transactionHistory.ViewReportActivity;
+import com.moneylover.ui.main.app.transactionHistory.ViewReportByGroupActivity;
 import com.moneylover.ui.main.app.transactionHistory.WalletActivity;
 import com.moneylover.ui.main.app.transactionHistory.WalletEditActivity;
 import com.moneylover.ui.main.auth.AuthActivity;
@@ -37,5 +42,14 @@ public interface ActivityComponent {
     void inject(WalletEditActivity activity);
 
     void inject(ViewReportActivity activity);
+
+    void inject(NetIncomeActivity activity);
+
+    void inject(ExpenditureActivity activity);
+
+    void inject(IncomeActivity activity);
+
+    void inject(ViewReportByGroupActivity activity);
+
 }
 

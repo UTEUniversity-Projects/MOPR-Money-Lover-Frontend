@@ -68,7 +68,6 @@ public class TransactionHistoryNestedAdapter extends RecyclerView.Adapter<Transa
         public NestedViewHolder(ItemTransactionHistoryDateBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
         }
 
         void bind(TransactionHistoryWallet wallet, Context context, OnItemClickListener listener) {

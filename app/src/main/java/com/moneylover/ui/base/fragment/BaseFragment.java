@@ -99,7 +99,6 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends BaseFrag
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     public void hideKeyboard() {

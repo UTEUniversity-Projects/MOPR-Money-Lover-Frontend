@@ -1,23 +1,18 @@
 package com.moneylover.ui.main.app.transactionHistory;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.moneylover.BR;
 import com.moneylover.R;
-import com.moneylover.data.model.Wallet;
-import com.moneylover.databinding.ActivityViewReportBinding;
+import com.moneylover.BR;
+import com.moneylover.databinding.ActivityNetIncomeBinding;
 import com.moneylover.di.component.ActivityComponent;
 import com.moneylover.ui.base.activity.BaseActivity;
 import com.moneylover.ui.custom.timerangebottomsheet.TimeRangeBottomSheet;
@@ -28,25 +23,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class ViewReportActivity extends BaseActivity<ActivityViewReportBinding, ViewReportViewModel> {
+public class NetIncomeActivity extends BaseActivity<ActivityNetIncomeBinding, NetIncomeViewModel> {
 
-    private Wallet selectedWallet = new Wallet(R.drawable.bg_green_circle, R.drawable.ic_wallet_2, "Tổng cộng", -4156598);
-
-    private final ActivityResultLauncher<Intent> walletLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    Wallet wallet = (Wallet) result.getData().getSerializableExtra("wallet");
-                    if (wallet != null) {
-                        selectedWallet = wallet;
-                        viewBinding.ivWalletIcon.setImageResource(wallet.getIcon());
-                        viewBinding.tvWalletName.setText(wallet.getName());
-                    }
-                }
-            });
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_view_report;
+        return R.layout.activity_net_income;
     }
 
     @Override
@@ -74,7 +56,11 @@ public class ViewReportActivity extends BaseActivity<ActivityViewReportBinding, 
 
         List<Class<? extends Fragment>> fragmentClasses = new ArrayList<>();
         for (int i = 0; i < months.size(); i++) {
-            fragmentClasses.add(ViewReportListFragment.class);
+            if (i % 3 == 0) {
+                fragmentClasses.add(NoDataFragment.class);
+            } else {
+                fragmentClasses.add(NetIncomeDetailFragment.class);
+            }
         }
 
         ViewReportAdapter adapter = new ViewReportAdapter(this, fragmentClasses);
@@ -150,11 +136,5 @@ public class ViewReportActivity extends BaseActivity<ActivityViewReportBinding, 
             viewModel.showNormalMessage(label + " " + position);
             selectedIndex = position;
         }).show(getSupportFragmentManager(), "TimeRange");
-    }
-
-    public void onWalletClick() {
-        Intent intent = new Intent(this, WalletActivity.class);
-        intent.putExtra("selected_wallet", selectedWallet);
-        walletLauncher.launch(intent);
     }
 }
