@@ -5,13 +5,13 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Expenditure {
+public class Income {
     public String name;
     public float value;
     public int iconRes;
     public String date;
 
-    public Expenditure(String name, float value, int iconRes) {
+    public Income(String name, float value, int iconRes) {
         this.name = name;
         this.value = value;
         this.iconRes = iconRes;

@@ -3,13 +3,11 @@ package com.moneylover.ui.main.app.transactionHistory.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.moneylover.R;
+import com.moneylover.databinding.ItemTimeRangeBinding;
 
 import java.util.List;
 
@@ -36,8 +34,9 @@ public class TimeRangeAdapter extends RecyclerView.Adapter<TimeRangeAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_time_range, parent, false);
-        return new ViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ItemTimeRangeBinding binding = ItemTimeRangeBinding.inflate(inflater, parent, false);
+        return new ViewHolder(binding);
     }
 
     @Override
@@ -55,7 +54,6 @@ public class TimeRangeAdapter extends RecyclerView.Adapter<TimeRangeAdapter.View
         selectedIndex = newIndex;
         Timber.tag("TimeRangeAdapter").d("Selected index changed from " + oldIndex + " to " + newIndex);
 
-        // Chỉ gọi notify nếu thực sự thay đổi
         if (oldIndex != newIndex) {
             notifyItemChanged(oldIndex);
             notifyItemChanged(newIndex);
@@ -63,27 +61,22 @@ public class TimeRangeAdapter extends RecyclerView.Adapter<TimeRangeAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView icon, check;
-        TextView label;
+        private final ItemTimeRangeBinding binding;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            icon = itemView.findViewById(R.id.ivIcon);
-            label = itemView.findViewById(R.id.tvLabel);
-            check = itemView.findViewById(R.id.ivCheck);
+        public ViewHolder(@NonNull ItemTimeRangeBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
         public void bind(int position) {
-            label.setText(labels.get(position));
-            icon.setImageResource(icons.get(position));
-            check.setVisibility(position == selectedIndex ? View.VISIBLE : View.INVISIBLE);
+            binding.tvLabel.setText(labels.get(position));
+            binding.ivIcon.setImageResource(icons.get(position));
+            binding.ivCheck.setVisibility(position == selectedIndex ? View.VISIBLE : View.INVISIBLE);
 
             itemView.setOnClickListener(v -> {
-                // Cập nhật selected index
                 if (position != selectedIndex) {
                     setSelectedIndex(position);
                 }
-
                 if (listener != null) {
                     listener.onClick(position, labels.get(position));
                 }
@@ -91,4 +84,3 @@ public class TimeRangeAdapter extends RecyclerView.Adapter<TimeRangeAdapter.View
         }
     }
 }
-

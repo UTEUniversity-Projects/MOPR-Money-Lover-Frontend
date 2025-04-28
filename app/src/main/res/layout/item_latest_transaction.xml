@@ -13,17 +13,14 @@
         android:layout_height="40dp"
         android:layout_marginEnd="12dp">
 
-        <!-- Icon chính -->
         <ImageView
             android:id="@+id/ivCategoryIcon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/ic_drink"
             android:scaleType="centerCrop"
-            android:background="@drawable/bg_circle"
             android:padding="6dp" />
 
-        <!-- Sub icon nhỏ ở góc -->
         <ImageView
             android:id="@+id/ivSubIcon"
             android:layout_width="16dp"
@@ -52,13 +49,6 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="20 tháng 2 2025"
-            android:textColor="@color/gray"
-            android:textSize="13sp" />
     </LinearLayout>
 
     <!-- SỐ TIỀN -->
@@ -66,7 +56,7 @@
         android:id="@+id/tvAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="50,000"
+        android:text="-5,000,000"
         android:textColor="@color/red"
         android:textStyle="bold"
         android:textSize="15sp" />
