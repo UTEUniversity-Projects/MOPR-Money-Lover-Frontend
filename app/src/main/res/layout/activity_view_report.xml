@@ -6,11 +6,11 @@
 
         <variable
             name="a"
-            type="com.moneylover.ui.main.app.transactionHistory.ViewReportActivity" />
+            type="com.moneylover.ui.main.app.transactionHistory.viewReport.ViewReportActivity" />
 
         <variable
             name="vm"
-            type="com.moneylover.ui.main.app.transactionHistory.ViewReportViewModel" />
+            type="com.moneylover.ui.main.app.transactionHistory.viewReport.ViewReportViewModel" />
     </data>
 
     <LinearLayout
@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:background="@color/silver"
         android:orientation="vertical"
-        tools:context=".ui.main.app.transactionHistory.ViewReportActivity">
+        tools:context=".ui.main.app.transactionHistory.viewReport.ViewReportActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -118,7 +118,6 @@
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <!-- Mũi tên xuống -->
                 <ImageView
                     android:id="@+id/ivArrow"
                     android:layout_width="16dp"

@@ -6,11 +6,11 @@
 
         <variable
             name="a"
-            type="com.moneylover.ui.main.app.transactionHistory.ExpenditureActivity" />
+            type="com.moneylover.ui.main.app.transactionHistory.viewReport.expenditure.ExpenditureActivity" />
 
         <variable
             name="vm"
-            type="com.moneylover.ui.main.app.transactionHistory.ExpenditureViewModel" />
+            type="com.moneylover.ui.main.app.transactionHistory.viewReport.expenditure.ExpenditureViewModel" />
     </data>
 
     <LinearLayout
@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:background="@color/silver"
         android:orientation="vertical"
-        tools:context=".ui.main.app.transactionHistory.ExpenditureActivity">
+        tools:context=".ui.main.app.transactionHistory.viewReport.expenditure.ExpenditureActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -102,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@color/light_grey" />
+                android:background="@color/lavender_gray" />
         </LinearLayout>
 
     </LinearLayout>

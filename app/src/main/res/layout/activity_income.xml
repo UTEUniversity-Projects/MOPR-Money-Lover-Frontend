@@ -6,11 +6,11 @@
 
         <variable
             name="a"
-            type="com.moneylover.ui.main.app.transactionHistory.IncomeActivity" />
+            type="com.moneylover.ui.main.app.transactionHistory.viewReport.income.IncomeActivity" />
 
         <variable
             name="vm"
-            type="com.moneylover.ui.main.app.transactionHistory.IncomeViewModel" />
+            type="com.moneylover.ui.main.app.transactionHistory.viewReport.income.IncomeViewModel" />
 
     </data>
 
@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:background="@color/silver"
         android:orientation="vertical"
-        tools:context=".ui.main.app.transactionHistory.ExpenditureActivity">
+        tools:context=".ui.main.app.transactionHistory.viewReport.expenditure.ExpenditureActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -96,14 +96,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/light_grey" />
+                android:background="@color/lavender_gray" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@color/light_grey" />
+                android:background="@color/lavender_gray" />
         </LinearLayout>
 
     </LinearLayout>

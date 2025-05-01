@@ -4,13 +4,16 @@ import com.moneylover.di.module.FragmentModule;
 import com.moneylover.di.scope.FragmentScope;
 import com.moneylover.ui.main.app.account.AccountFragment;
 import com.moneylover.ui.main.app.overview.OverviewFragment;
-import com.moneylover.ui.main.app.transactionHistory.ExpenditureDetailFragment;
-import com.moneylover.ui.main.app.transactionHistory.IncomeDetailFragment;
-import com.moneylover.ui.main.app.transactionHistory.NetIncomeDetailFragment;
+import com.moneylover.ui.main.app.transactionHistory.viewReport.expenditure.ExpenditureTransactionByGroupListFragment;
+import com.moneylover.ui.main.app.transactionHistory.viewReport.expenditure.ExpenditureDetailFragment;
+import com.moneylover.ui.main.app.transactionHistory.viewReport.group.ViewReportByGroupListFragment;
+import com.moneylover.ui.main.app.transactionHistory.viewReport.group.ViewReportByGroupTypeOptionListFragment;
+import com.moneylover.ui.main.app.transactionHistory.viewReport.income.IncomeDetailFragment;
+import com.moneylover.ui.main.app.transactionHistory.viewReport.income.IncomeTransactionByGroupListFragment;
+import com.moneylover.ui.main.app.transactionHistory.viewReport.netIncome.NetIncomeDetailFragment;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryFragment;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryListFragment;
-import com.moneylover.ui.main.app.transactionHistory.ViewReportByGroupListFragment;
-import com.moneylover.ui.main.app.transactionHistory.ViewReportListFragment;
+import com.moneylover.ui.main.app.transactionHistory.viewReport.ViewReportListFragment;
 import com.moneylover.ui.main.auth.ForgotPasswordFragment;
 import com.moneylover.ui.main.auth.ForgotPasswordOtpVerificationFragment;
 import com.moneylover.ui.main.auth.LoginFragment;
@@ -47,6 +50,12 @@ public interface FragmentComponent {
     void inject(ExpenditureDetailFragment fragment);
 
     void inject(IncomeDetailFragment fragment);
+
+    void inject(ViewReportByGroupTypeOptionListFragment fragment);
+
+    void inject(ExpenditureTransactionByGroupListFragment fragment);
+
+    void inject(IncomeTransactionByGroupListFragment fragment);
 
     void inject(ViewReportByGroupListFragment fragment);
 

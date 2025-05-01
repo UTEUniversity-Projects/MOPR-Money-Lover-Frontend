@@ -6,11 +6,11 @@
 
         <variable
             name="a"
-            type="com.moneylover.ui.main.app.transactionHistory.NetIncomeActivity" />
+            type="com.moneylover.ui.main.app.transactionHistory.viewReport.netIncome.NetIncomeActivity" />
 
         <variable
             name="vm"
-            type="com.moneylover.ui.main.app.transactionHistory.NetIncomeViewModel" />
+            type="com.moneylover.ui.main.app.transactionHistory.viewReport.netIncome.NetIncomeViewModel" />
     </data>
 
     <LinearLayout
@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:background="@color/silver"
         android:orientation="vertical"
-        tools:context=".ui.main.app.transactionHistory.NetIncomeActivity">
+        tools:context=".ui.main.app.transactionHistory.viewReport.netIncome.NetIncomeActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
