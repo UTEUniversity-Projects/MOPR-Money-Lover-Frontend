@@ -22,22 +22,40 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.main.app.transactionHistory.ExpenditureTransactionActivity"
+            android:name=".ui.main.app.transactionHistory.viewReport.group.ViewReportByGroupTransactionActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.app.transactionHistory.ViewReportByGroupActivity"
+            android:name=".ui.main.app.transactionHistory.viewReport.group.ViewReportByGroupActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.app.transactionHistory.IncomeActivity"
+            android:name=".ui.main.app.transactionHistory.viewReport.income.IncomeTransactionByGroupActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.app.transactionHistory.ExpenditureActivity"
+            android:name=".ui.main.app.transactionHistory.viewReport.income.IncomeTransactionActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.app.transactionHistory.NetIncomeActivity"
+            android:name=".ui.main.app.transactionHistory.viewReport.netIncome.NetIncomeTransactionActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.app.transactionHistory.ViewReportActivity"
+            android:name=".ui.main.app.transactionHistory.viewReport.expenditure.ExpenditureTransactionByGroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.expenditure.ExpenditureTransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.group.ViewReportByGroupTypeOptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.income.IncomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.expenditure.ExpenditureActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.netIncome.NetIncomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.ViewReportActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.app.transactionHistory.WalletEditActivity"

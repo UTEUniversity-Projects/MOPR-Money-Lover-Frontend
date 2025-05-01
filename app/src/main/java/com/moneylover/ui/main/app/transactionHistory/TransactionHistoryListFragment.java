@@ -13,6 +13,7 @@ import com.moneylover.di.component.FragmentComponent;
 import com.moneylover.ui.base.adapter.OnItemClickListener;
 import com.moneylover.ui.base.fragment.BaseFragment;
 import com.moneylover.ui.main.app.transactionHistory.adapter.TransactionHistoryListAdapter;
+import com.moneylover.ui.main.app.transactionHistory.viewReport.ViewReportActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,6 @@ public class TransactionHistoryListFragment extends BaseFragment<FragmentTransac
         binding.setF(this);
         binding.setVm(viewModel);
         setupTransactionHistoryList();
-        onViewReportClick(); // Bỏ dòng này
     }
 
     @Override

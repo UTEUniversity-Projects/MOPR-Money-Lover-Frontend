@@ -7,7 +7,6 @@
     android:padding="@dimen/_12ssp"
     android:layout_marginBottom="8dp">
 
-    <!-- KHỐI ICON -->
     <FrameLayout
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -33,7 +32,6 @@
             android:layout_margin="2dp"/>
     </FrameLayout>
 
-    <!-- NỘI DUNG -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_weight="1"
@@ -49,14 +47,20 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20 tháng 2 2025"
+            android:textColor="@color/gray"
+            android:textSize="13sp" />
     </LinearLayout>
 
-    <!-- SỐ TIỀN -->
     <TextView
         android:id="@+id/tvAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-5,000,000"
+        android:text="50,000"
         android:textColor="@color/red"
         android:textStyle="bold"
         android:textSize="15sp" />
