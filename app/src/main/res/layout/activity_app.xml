@@ -2,11 +2,9 @@
 <layout>
 
     <data>
-
         <variable
             name="a"
             type="com.moneylover.ui.main.app.AppActivity" />
-
         <variable
             name="vm"
             type="com.moneylover.ui.main.app.AppViewModel" />

@@ -3,7 +3,6 @@ package com.moneylover.ui.main.auth;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.recaptcha.Recaptcha;
@@ -26,12 +25,15 @@ import javax.inject.Inject;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import lombok.Getter;
 import timber.log.Timber;
 
+@Getter
 public class RegisterViewModel extends BaseFragmentViewModel {
 
     @Nullable
     private RecaptchaTasksClient recaptchaTasksClient = null;
+    private final MutableLiveData<String> recaptchaToken = new MutableLiveData<>();
 
     @Inject
     public RegisterViewModel(Repository repository, MVVMApplication application) {
@@ -47,15 +49,9 @@ public class RegisterViewModel extends BaseFragmentViewModel {
         });
     }
 
-    private final MutableLiveData<String> recaptchaToken = new MutableLiveData<>();
-
-    public LiveData<String> getRecaptchaToken() {
-        return recaptchaToken;
-    }
-
     public void executeRecaptchaTask() {
         if (recaptchaTasksClient != null) {
-            recaptchaTasksClient.executeTask(RecaptchaAction.LOGIN)
+            recaptchaTasksClient.executeTask(RecaptchaAction.SIGNUP)
                     .addOnSuccessListener(task -> {
                         String token = task.toString();
                             recaptchaToken.postValue(token);
@@ -68,7 +64,6 @@ public class RegisterViewModel extends BaseFragmentViewModel {
                     });
         }
     }
-
 
     public void writeToInternalStorage(Context context, String filename, String data) {
         try (FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE)) {

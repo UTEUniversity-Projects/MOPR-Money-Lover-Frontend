@@ -56,7 +56,6 @@ public class FormUtils {
 
     public static boolean validateConfirmPassword(TextInputEditText editTextPassword, TextInputEditText editTextConfirmPassword, TextInputLayout textInputLayout, String errorEmpty, String errorMismatch) {
 
-
         String password = Objects.requireNonNull(editTextPassword.getText()).toString().trim();
         String confirmPassword = Objects.requireNonNull(editTextConfirmPassword.getText()).toString().trim();
 

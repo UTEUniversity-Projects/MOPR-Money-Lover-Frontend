@@ -39,7 +39,7 @@ public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         SplashScreen.installSplashScreen(this);
-        setTheme(R.style.Theme_MoneyLover_Splash);
+        setTheme(R.style.Theme_MoneyLover);
         super.onCreate(savedInstanceState);
 
         viewBinding.bottomNavigationView.setBackground(null);
@@ -48,7 +48,8 @@ public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> 
 
         AppPagerAdapter adapter = new AppPagerAdapter(this);
         viewBinding.viewPager.setAdapter(adapter);
-        viewBinding.viewPager.setOffscreenPageLimit(3);
+        viewBinding.viewPager.setOffscreenPageLimit(1);
+
 
         viewBinding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -77,7 +78,7 @@ public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> 
         });
 
         currentPage = 0;
-        viewBinding.bottomNavigationView.setSelectedItemId(R.id.transaction_history);
+        viewBinding.bottomNavigationView.setSelectedItemId(R.id.home);
         viewBinding.viewPager.setCurrentItem(currentPage, false);
     }
 
