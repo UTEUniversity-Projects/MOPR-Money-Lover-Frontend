@@ -1,6 +1,9 @@
 package com.moneylover.ui.main.auth;
 
+import android.content.Intent;
+
 import com.moneylover.BR;
+import com.moneylover.ui.MainActivity;
 import com.moneylover.R;
 import com.moneylover.constants.HttpStatusCode;
 import com.moneylover.data.model.api.ResponseWrapper;
@@ -10,7 +13,6 @@ import com.moneylover.databinding.FragmentLoginBinding;
 import com.moneylover.di.component.FragmentComponent;
 import com.moneylover.ui.base.fragment.BaseFragment;
 import com.moneylover.ui.main.MainCallback;
-import com.moneylover.ui.main.app.AppActivity;
 import com.moneylover.utils.DeviceUtils;
 import com.moneylover.utils.FormUtils;
 import com.moneylover.utils.NavigationUtils;
@@ -90,7 +92,9 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
                 hideKeyboard();
                 viewModel.showSuccessMessage("Đăng nhập thành công !");
                 viewModel.setAccessToken(response.getData().getAccessToken());
-                NavigationUtils.navigateToActivityClearStack((AuthActivity) getActivity(), AppActivity.class, R.anim.slide_up_animation, R.anim.slide_down_animation);
+                Intent intent = new Intent(requireContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
 
             @Override

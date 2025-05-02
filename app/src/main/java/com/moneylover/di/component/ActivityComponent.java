@@ -1,6 +1,6 @@
 package com.moneylover.di.component;
 
-import com.moneylover.MainActivity;
+import com.moneylover.ui.MainActivity;
 import com.moneylover.di.module.ActivityModule;
 import com.moneylover.di.scope.ActivityScope;
 import com.moneylover.ui.main.app.AppActivity;

@@ -82,9 +82,6 @@ public class    RegisterFragment extends BaseFragment<FragmentRegisterBinding, R
     }
 
     public void onRegisterClick() {
-        viewModel.initializeRecaptchaClient();
-        viewModel.executeRecaptchaTask();
-
         if (!validateEmail() || !validatePassword() || !validateConfirmPassword()) {
             viewModel.showWarningMessage("Thông tin không hợp lệ !");
             return;
@@ -92,75 +89,84 @@ public class    RegisterFragment extends BaseFragment<FragmentRegisterBinding, R
 
         String email = Objects.requireNonNull(binding.edtEmail.getText()).toString().trim();
         String password = Objects.requireNonNull(binding.edtPassword.getText()).toString().trim();
-        String token = viewModel.getRecaptchaToken().getValue();
 
-        RequestRegisterRequest request = RequestRegisterRequest.builder().email(email).password(password).recaptchaResponse(token).build();
+        viewModel.showLoading();
+        viewModel.initializeRecaptchaClient();
 
-        viewModel.doRequestRegister(new MainCallback<ResponseWrapper<RequestRegisterResponse>>() {
-            @Override
-            public void doError(Throwable error) {
-                Timber.tag("RegisterFragment").e("Error: %s", error.toString());
-                viewModel.hideLoading();
-                if (!DeviceUtils.isNetworkAvailable(requireContext())) {
-                    viewModel.showErrorMessage("Vui lòng kiểm tra kết nối mạng !");
-                    return;
-                }
+        viewModel.getRecaptchaToken().observe(getViewLifecycleOwner(), token -> {
+            if (token == null || token.isEmpty()) {
+                return;
+            }
 
-                if (NetworkUtils.checkNetworkError(error)) {
-                    viewModel.showErrorMessage("Có lỗi kết nối đến server !");
-                    return;
-                }
+            RequestRegisterRequest request = RequestRegisterRequest.builder().email(email).password(password).recaptchaResponse(token).build();
 
-                if (error instanceof HttpException) {
-                    HttpException httpException = (HttpException) error;
-                    ResponseBody errorBody = httpException.response().errorBody();
-
-                    if (errorBody != null) {
-                        try {
-                            String errorJson = errorBody.string();
-                            Timber.d("Error body: %s", errorJson);
-
-                            JSONObject json = new JSONObject(errorJson);
-                            String errorCode = json.optString("code");
-
-                            Timber.d("Mã lỗi: %s", errorCode);
-
-                            if (ErrorCode.ACCOUNT_EMAIL_EXISTED.getCode().equals(errorCode)) {
-                                viewModel.showErrorMessage("Email đã tồn tại !");
-                                binding.edtEmail.requestFocus();
-                                binding.textInputEmail.setError("Email đã tồn tại !");
-                                binding.textInputEmail.setErrorEnabled(true);
-                            }
-
-                        } catch (Exception e) {
-                            Timber.e(e, "Lỗi khi parse errorBody");
-                        }
+            viewModel.doRequestRegister(new MainCallback<ResponseWrapper<RequestRegisterResponse>>() {
+                @Override
+                public void doError(Throwable error) {
+                    Timber.tag("RegisterFragment").e("Error: %s", error.toString());
+                    viewModel.hideLoading();
+                    if (!DeviceUtils.isNetworkAvailable(requireContext())) {
+                        viewModel.showErrorMessage("Vui lòng kiểm tra kết nối mạng !");
+                        return;
                     }
-                    return;
+
+                    if (NetworkUtils.checkNetworkError(error)) {
+                        viewModel.showErrorMessage("Có lỗi kết nối đến server !");
+                        return;
+                    }
+
+                    if (error instanceof HttpException) {
+                        HttpException httpException = (HttpException) error;
+                        ResponseBody errorBody = httpException.response().errorBody();
+
+                        if (errorBody != null) {
+                            try {
+                                String errorJson = errorBody.string();
+                                Timber.d("Error body: %s", errorJson);
+
+                                JSONObject json = new JSONObject(errorJson);
+                                String errorCode = json.optString("code");
+
+                                Timber.d("Mã lỗi: %s", errorCode);
+
+                                if (ErrorCode.ACCOUNT_EMAIL_EXISTED.getCode().equals(errorCode)) {
+                                    viewModel.showErrorMessage("Email đã tồn tại !");
+                                    binding.edtEmail.requestFocus();
+                                    binding.textInputEmail.setError("Email đã tồn tại !");
+                                    binding.textInputEmail.setErrorEnabled(true);
+                                }
+
+                            } catch (Exception e) {
+                                Timber.e(e, "Lỗi khi parse errorBody");
+                            }
+                        }
+                        return;
+                    }
+
+                    viewModel.showErrorMessage("Đăng ký thất bại !");
                 }
 
-                viewModel.showErrorMessage("Đăng ký thất bại !");
-            }
+                @Override
+                public void doSuccess() {
+                }
 
-            @Override
-            public void doSuccess() {
-            }
+                @Override
+                public void doSuccess(ResponseWrapper<RequestRegisterResponse> response) {
+                    viewModel.hideLoading();
+                    Timber.tag("RegisterFragment").d("Response: %s", response.toString());
+                    viewModel.showSuccessMessage("Mã OTP đã được gửi đến email !");
+                    viewModel.setRegisterToken(response.getData().getToken());
+                    NavigationUtils.navigateToFragmentClearBackStack((AuthActivity) getActivity(), R.id.fragmentContainer, RegisterOtpVerificationFragment.class);
+                }
 
-            @Override
-            public void doSuccess(ResponseWrapper<RequestRegisterResponse> response) {
-                viewModel.hideLoading();
-                Timber.tag("RegisterFragment").d("Response: %s", response.toString());
-                viewModel.showSuccessMessage("Mã OTP đã được gửi đến email !");
-                viewModel.setRegisterToken(response.getData().getToken());
-                NavigationUtils.navigateToFragmentClearBackStack((AuthActivity) getActivity(), R.id.fragmentContainer, RegisterOtpVerificationFragment.class);
-            }
+                @Override
+                public void doFail() {
+                    Timber.tag("RegisterFragment").d("Response: %s", "doFail");
+                }
 
-            @Override
-            public void doFail() {
-                Timber.tag("RegisterFragment").d("Response: %s", "doFail");
-            }
+            }, request);
 
-        }, request);
+        });
 
     }
 

@@ -6,7 +6,7 @@ import androidx.core.util.Supplier;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.moneylover.MVVMApplication;
-import com.moneylover.MainViewModel;
+import com.moneylover.ui.MainViewModel;
 import com.moneylover.ViewModelProviderFactory;
 import com.moneylover.data.Repository;
 import com.moneylover.di.scope.ActivityScope;

@@ -1,10 +1,11 @@
-package com.moneylover;
+package com.moneylover.ui;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.core.splashscreen.SplashScreen;
 
+import com.moneylover.BR;
+import com.moneylover.R;
 import com.moneylover.constants.Constants;
 import com.moneylover.databinding.ActivityMainBinding;
 import com.moneylover.di.component.ActivityComponent;
@@ -33,13 +34,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        SplashScreen.installSplashScreen(this);
-
         super.onCreate(savedInstanceState);
-
         showStatusBar();
-
-        viewModel.showNormalMessage("Welcome to Money Lover");
 
         String accessToken = viewModel.getRepository().getSharedPreferences().getStringVal(Constants.ACCESS_TOKEN);
         if (accessToken == null) {
