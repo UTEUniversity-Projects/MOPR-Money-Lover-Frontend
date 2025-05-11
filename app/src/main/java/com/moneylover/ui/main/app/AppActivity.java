@@ -14,6 +14,8 @@ import com.moneylover.ui.base.activity.BaseActivity;
 
 import java.util.Stack;
 
+import timber.log.Timber;
+
 public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> {
 
     private Stack<Integer> fragmentStack = new Stack<>();

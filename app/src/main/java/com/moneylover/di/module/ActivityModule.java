@@ -6,12 +6,15 @@ import androidx.core.util.Supplier;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.moneylover.MVVMApplication;
-import com.moneylover.ui.MainViewModel;
 import com.moneylover.ViewModelProviderFactory;
 import com.moneylover.data.Repository;
 import com.moneylover.di.scope.ActivityScope;
+import com.moneylover.ui.MainViewModel;
 import com.moneylover.ui.base.activity.BaseActivity;
 import com.moneylover.ui.main.app.AppViewModel;
+import com.moneylover.ui.main.app.CreateFirstWalletViewModel;
+import com.moneylover.ui.main.app.CurrencyViewModel;
+import com.moneylover.ui.main.app.WalletIconOptionViewModel;
 import com.moneylover.ui.main.app.transactionHistory.AddNoteViewModel;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryDetailViewModel;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryEditViewModel;
@@ -99,6 +102,30 @@ public class ActivityModule {
         Supplier<WalletViewModel> supplier = () -> new WalletViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<WalletViewModel> factory = new ViewModelProviderFactory<>(WalletViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(WalletViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    CreateFirstWalletViewModel provideCreateFirstWalletViewModel(Repository repository, Context application) {
+        Supplier<CreateFirstWalletViewModel> supplier = () -> new CreateFirstWalletViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<CreateFirstWalletViewModel> factory = new ViewModelProviderFactory<>(CreateFirstWalletViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(CreateFirstWalletViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    CurrencyViewModel provideCurrencyViewModel(Repository repository, Context application) {
+        Supplier<CurrencyViewModel> supplier = () -> new CurrencyViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<CurrencyViewModel> factory = new ViewModelProviderFactory<>(CurrencyViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(CurrencyViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    WalletIconOptionViewModel provideWalletIconOptionViewModel(Repository repository, Context application) {
+        Supplier<WalletIconOptionViewModel> supplier = () -> new WalletIconOptionViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<WalletIconOptionViewModel> factory = new ViewModelProviderFactory<>(WalletIconOptionViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(WalletIconOptionViewModel.class);
     }
 
     @Provides

@@ -1,9 +1,12 @@
 package com.moneylover.di.component;
 
-import com.moneylover.ui.MainActivity;
 import com.moneylover.di.module.ActivityModule;
 import com.moneylover.di.scope.ActivityScope;
+import com.moneylover.ui.MainActivity;
 import com.moneylover.ui.main.app.AppActivity;
+import com.moneylover.ui.main.app.CreateFirstWalletActivity;
+import com.moneylover.ui.main.app.CurrencyActivity;
+import com.moneylover.ui.main.app.WalletIconOptionActivity;
 import com.moneylover.ui.main.app.transactionHistory.AddNoteActivity;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryDetailActivity;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryEditActivity;
@@ -38,6 +41,12 @@ public interface ActivityComponent {
     void inject(AppActivity activity);
 
     void inject(WalletActivity activity);
+
+    void inject(CreateFirstWalletActivity activity);
+
+    void inject(CurrencyActivity activity);
+
+    void inject(WalletIconOptionActivity activity);
 
     void inject(TransactionHistoryDetailActivity activity);
 

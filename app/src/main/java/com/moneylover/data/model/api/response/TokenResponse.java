@@ -1,18 +1,13 @@
 package com.moneylover.data.model.api.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@Builder
-@ToString
-public class RequestForgotPasswordResponse {
+public class TokenResponse {
     private String token;
+    private Integer kind;
 }

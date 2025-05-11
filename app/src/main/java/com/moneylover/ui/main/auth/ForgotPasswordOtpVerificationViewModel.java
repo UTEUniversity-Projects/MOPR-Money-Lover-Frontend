@@ -4,8 +4,7 @@ import com.moneylover.MVVMApplication;
 import com.moneylover.constants.Constants;
 import com.moneylover.data.Repository;
 import com.moneylover.data.model.api.ResponseWrapper;
-import com.moneylover.data.model.api.request.ForgotPasswordOtpVerificationRequest;
-import com.moneylover.data.model.api.response.ForgotPasswordOtpVerificationResponse;
+import com.moneylover.data.model.api.request.ResetPasswordRequest;
 import com.moneylover.ui.base.fragment.BaseFragmentViewModel;
 import com.moneylover.ui.main.MainCallback;
 
@@ -17,7 +16,7 @@ public class ForgotPasswordOtpVerificationViewModel extends BaseFragmentViewMode
         super(repository, application);
     }
 
-    public void doForgotPasswordOtpVerification(MainCallback<ResponseWrapper<ForgotPasswordOtpVerificationResponse>> callback, ForgotPasswordOtpVerificationRequest request) {
+    public void doForgotPasswordOtpVerification(MainCallback<ResponseWrapper<String>> callback, ResetPasswordRequest request) {
         showLoading();
         compositeDisposable.add(repository.getApiService().resetPassword(request).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
