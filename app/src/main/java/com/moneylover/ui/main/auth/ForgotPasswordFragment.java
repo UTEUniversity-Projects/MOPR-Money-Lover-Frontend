@@ -4,8 +4,8 @@ import com.moneylover.BR;
 import com.moneylover.R;
 import com.moneylover.constants.HttpStatusCode;
 import com.moneylover.data.model.api.ResponseWrapper;
-import com.moneylover.data.model.api.request.RequestForgotPasswordRequest;
-import com.moneylover.data.model.api.response.RequestForgotPasswordResponse;
+import com.moneylover.data.model.api.request.RequestResetPasswordRequest;
+import com.moneylover.data.model.api.response.TokenResponse;
 import com.moneylover.databinding.FragmentForgotPasswordBinding;
 import com.moneylover.di.component.FragmentComponent;
 import com.moneylover.ui.base.fragment.BaseFragment;
@@ -54,9 +54,9 @@ public class ForgotPasswordFragment extends BaseFragment<FragmentForgotPasswordB
             return;
         };
 
-        RequestForgotPasswordRequest request = RequestForgotPasswordRequest.builder().email(binding.edtEmail.getText().toString().trim()).build();
+        RequestResetPasswordRequest request = RequestResetPasswordRequest.builder().email(binding.edtEmail.getText().toString().trim()).build();
 
-        viewModel.doRequestForgotPassword(new MainCallback<ResponseWrapper<RequestForgotPasswordResponse>>() {
+        viewModel.doRequestForgotPassword(new MainCallback<ResponseWrapper<TokenResponse>>() {
             @Override
             public void doError(Throwable error) {
                 viewModel.hideLoading();
@@ -84,7 +84,7 @@ public class ForgotPasswordFragment extends BaseFragment<FragmentForgotPasswordB
             }
 
             @Override
-            public void doSuccess(ResponseWrapper<RequestForgotPasswordResponse> response) {
+            public void doSuccess(ResponseWrapper<TokenResponse> response) {
                 viewModel.hideLoading();
                 viewModel.setForgotPasswordToken(response.getData().getToken());
                 viewModel.showSuccessMessage("Mã OTP đã được gửi đến email !");

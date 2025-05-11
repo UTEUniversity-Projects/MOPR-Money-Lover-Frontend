@@ -4,8 +4,8 @@ import com.moneylover.MVVMApplication;
 import com.moneylover.constants.Constants;
 import com.moneylover.data.Repository;
 import com.moneylover.data.model.api.ResponseWrapper;
-import com.moneylover.data.model.api.request.RequestForgotPasswordRequest;
-import com.moneylover.data.model.api.response.RequestForgotPasswordResponse;
+import com.moneylover.data.model.api.request.RequestResetPasswordRequest;
+import com.moneylover.data.model.api.response.TokenResponse;
 import com.moneylover.ui.base.fragment.BaseFragmentViewModel;
 import com.moneylover.ui.main.MainCallback;
 
@@ -18,7 +18,7 @@ public class ForgotPasswordViewModel extends BaseFragmentViewModel {
         super(repository, application);
     }
 
-    public void doRequestForgotPassword(MainCallback<ResponseWrapper<RequestForgotPasswordResponse>> callback, RequestForgotPasswordRequest request) {
+    public void doRequestForgotPassword(MainCallback<ResponseWrapper<TokenResponse>> callback, RequestResetPasswordRequest request) {
         showLoading();
         compositeDisposable.add(repository.getApiService().requestForgotPassword(request)
                 .subscribeOn(Schedulers.io())

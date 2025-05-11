@@ -1,7 +1,6 @@
 package com.moneylover.ui.main.auth;
 
 import com.moneylover.MVVMApplication;
-import com.moneylover.constants.Constants;
 import com.moneylover.data.Repository;
 import com.moneylover.data.model.api.ResponseWrapper;
 import com.moneylover.data.model.api.request.LoginRequest;
@@ -37,7 +36,7 @@ public class LoginViewModel extends BaseFragmentViewModel {
 
 
     public void setAccessToken(String token) {
-        repository.getSharedPreferences().setString(Constants.ACCESS_TOKEN, token);
+        repository.getSharedPreferences().setToken(token);
     }
 
 }

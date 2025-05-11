@@ -12,8 +12,7 @@ import com.moneylover.BR;
 import com.moneylover.R;
 import com.moneylover.constants.HttpStatusCode;
 import com.moneylover.data.model.api.ResponseWrapper;
-import com.moneylover.data.model.api.request.ForgotPasswordOtpVerificationRequest;
-import com.moneylover.data.model.api.response.ForgotPasswordOtpVerificationResponse;
+import com.moneylover.data.model.api.request.ResetPasswordRequest;
 import com.moneylover.databinding.FragmentForgotPasswordOtpVerificationBinding;
 import com.moneylover.di.component.FragmentComponent;
 import com.moneylover.ui.base.fragment.BaseFragment;
@@ -147,9 +146,9 @@ public class ForgotPasswordOtpVerificationFragment extends BaseFragment<Fragment
             return;
         }
 
-        ForgotPasswordOtpVerificationRequest request = ForgotPasswordOtpVerificationRequest.builder().otp(sb.toString()).newPassword(binding.edtPassword.getText().toString().trim()).token(forgotPasswordToken).build();
+        ResetPasswordRequest request = ResetPasswordRequest.builder().otp(sb.toString()).newPassword(binding.edtPassword.getText().toString().trim()).token(forgotPasswordToken).build();
 
-        viewModel.doForgotPasswordOtpVerification(new MainCallback< ResponseWrapper< ForgotPasswordOtpVerificationResponse > > () {
+        viewModel.doForgotPasswordOtpVerification(new MainCallback<ResponseWrapper<String>>() {
 
             @Override
             public void doError(Throwable error) {
@@ -178,11 +177,11 @@ public class ForgotPasswordOtpVerificationFragment extends BaseFragment<Fragment
             }
 
             @Override
-            public void doSuccess(ResponseWrapper<ForgotPasswordOtpVerificationResponse> response) {
+            public void doSuccess(ResponseWrapper<String> response) {
                 viewModel.hideLoading();
                 viewModel.removeForgotPasswordToken();
                 viewModel.showSuccessMessage("Đặt lại mật khẩu thành công !");
-                NavigationUtils.navigateToFragmentClearBackStack((AuthActivity)getActivity(), R.id.fragmentContainer, LoginFragment.class);
+                NavigationUtils.navigateToFragmentClearBackStack((AuthActivity) getActivity(), R.id.fragmentContainer, LoginFragment.class);
             }
 
             @Override

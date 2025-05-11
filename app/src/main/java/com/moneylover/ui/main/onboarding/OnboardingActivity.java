@@ -64,13 +64,13 @@ public class OnboardingActivity extends BaseActivity<ActivityOnboardingBinding, 
     public void onLoginClick() {
         Bundle bundle = new Bundle();
         bundle.putString("type", Constants.LOGIN_TYPE);
-        NavigationUtils.navigateToActivity(this, AuthActivity.class, bundle);
+        NavigationUtils.navigateToActivityDefault(this, AuthActivity.class, bundle);
     }
 
     public void onRegisterClick() {
         Bundle bundle = new Bundle();
         bundle.putString("type", Constants.REGISTER_TYPE);
-        NavigationUtils.navigateToActivity(this, AuthActivity.class, bundle);
+        NavigationUtils.navigateToActivityDefault(this, AuthActivity.class, bundle);
     }
 
     @Override

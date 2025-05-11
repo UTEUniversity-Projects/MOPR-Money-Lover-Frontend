@@ -21,7 +21,15 @@
         android:theme="@style/Theme.MoneyLover"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.main.app.WalletIconOptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.CurrencyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.CreateFirstWalletActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.main.app.transactionHistory.viewReport.group.ViewReportByGroupTransactionActivity"
             android:exported="false" />
@@ -82,9 +90,6 @@
         <activity
             android:name=".ui.main.auth.AuthActivity"
             android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".ui.MainActivity"-->
-<!--            android:exported="false" />-->
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
