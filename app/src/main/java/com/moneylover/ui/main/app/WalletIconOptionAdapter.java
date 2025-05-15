@@ -33,8 +33,15 @@ public class WalletIconOptionAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
-        return (position == walletIconOptions.size() && isLoadingAdded) ? TYPE_LOADING : TYPE_ICON;
+        if (isLoadingAdded && position == walletIconOptions.size()) {
+            return TYPE_LOADING;
+        } else if (position < walletIconOptions.size()) {
+            return TYPE_ICON;
+        } else {
+            throw new IllegalStateException("Invalid position " + position);
+        }
     }
+
 
     @Override
     public int getItemCount() {
@@ -45,7 +52,6 @@ public class WalletIconOptionAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_LOADING) {
-            // Inflate item_loading_footer.xml
             ItemLoadingFooterBinding binding = ItemLoadingFooterBinding.inflate(LayoutInflater.from(context), parent, false);
             return new LoadingViewHolder(binding);
         } else {

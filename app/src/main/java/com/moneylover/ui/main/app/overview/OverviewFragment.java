@@ -1,6 +1,7 @@
 package com.moneylover.ui.main.app.overview;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,9 +15,11 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -34,12 +37,17 @@ import com.google.android.material.tabs.TabLayout;
 import com.moneylover.BR;
 import com.moneylover.R;
 import com.moneylover.data.model.LatestTransaction;
+import com.moneylover.data.model.api.response.WalletResponse;
 import com.moneylover.databinding.FragmentOverviewBinding;
 import com.moneylover.di.component.FragmentComponent;
 import com.moneylover.ui.base.adapter.OnItemClickListener;
 import com.moneylover.ui.base.fragment.BaseFragment;
 import com.moneylover.ui.custom.tooltips.ToolTip;
 import com.moneylover.ui.custom.tooltips.ToolTipsManager;
+import com.moneylover.ui.main.MainCallback;
+import com.moneylover.ui.main.app.overview.mywallet.MyWalletActivity;
+import com.moneylover.utils.NavigationUtils;
+import com.moneylover.utils.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -68,11 +76,15 @@ public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, Over
         mToolTipsManager = new ToolTipsManager();
 
         new Handler(Looper.getMainLooper()).post(() -> {
-            setupMonthlyReportTabs();
-            setupBalance();
-            setupLineChart();
-            setupMonthlySpendingTabs();
-            setupLatestTransaction();
+//            setupMonthlyReportTabs();
+//            setupBalance();
+//            setupLineChart();
+//            setupMonthlySpendingTabs();
+//            setupLatestTransaction();
+            setupTotalBalance();
+            setupWallet();
+            setupInfoClick();
+            setupViewAllWallet();
         });
     }
 
@@ -82,32 +94,36 @@ public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, Over
         buildComponent.inject(this);
     }
 
-    public void onInfoClick() {
-        ViewGroup rootView = (ViewGroup) binding.getRoot().findViewById(R.id.rootContent);
+    public void setupInfoClick() {
+       binding.ivInfo.setOnClickListener(v -> {
+           ViewGroup rootView = (ViewGroup) binding.getRoot().findViewById(R.id.rootContent);
 
-        ToolTip.Builder builder = new ToolTip.Builder(
-                requireContext(),
-                binding.ivInfo,
-                rootView,
-                ContextCompat.getString(requireContext(), R.string.balance_tooltip),
-                ToolTip.POSITION_BELOW
-        );
+           ToolTip.Builder builder = new ToolTip.Builder(
+                   requireContext(),
+                   binding.ivInfo,
+                   rootView,
+                   ContextCompat.getString(requireContext(), R.string.balance_tooltip),
+                   ToolTip.POSITION_BELOW
+           );
 
-        builder.setAlign(ToolTip.ALIGN_CENTER);
-        builder.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black));
-        builder.setTextAppearance(R.style.TooltipTextAppearance);
-        builder.withArrow(true);
-        builder.setMaxWidth(500);
+           builder.setAlign(ToolTip.ALIGN_CENTER);
+           builder.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black));
+           builder.setTextAppearance(R.style.TooltipTextAppearance);
+           builder.withArrow(true);
+           builder.setMaxWidth(500);
 
-        mToolTipsManager.show(builder.build());
+           mToolTipsManager.show(builder.build());
 
-        new Handler(Looper.getMainLooper()).postDelayed(() ->
-                mToolTipsManager.findAndDismiss(binding.ivInfo), 2000
-        );
+           new Handler(Looper.getMainLooper()).postDelayed(() ->
+                   mToolTipsManager.findAndDismiss(binding.ivInfo), 2000
+           );
+       });
     }
 
-    public void onViewAllClick() {
-        viewModel.showNormalMessage("View all clicked");
+    public void setupViewAllWallet() {
+        binding.tvViewAll.setOnClickListener(v -> {
+            NavigationUtils.navigateToActivityDefault((AppCompatActivity) getActivity(), MyWalletActivity.class, null);
+        });
     }
 
     private void setupMonthlyReportTabs() {
@@ -497,10 +513,10 @@ public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, Over
     private boolean isBalanceVisible = true;
     private String originalBalance = "-50,000 ₫";
 
-    public void setupBalance() {
-        binding.tvBalance.post(() -> {
-            int width = binding.tvBalance.getWidth();
-            binding.tvBalance.setMinWidth(width);
+    public void setupTotalBalance() {
+        binding.tvTotalBalance.post(() -> {
+            int width = binding.tvTotalBalance.getWidth();
+            binding.tvTotalBalance.setMinWidth(width);
         });
     }
 
@@ -508,7 +524,7 @@ public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, Over
         isBalanceVisible = !isBalanceVisible;
 
         if (isBalanceVisible) {
-            binding.tvBalance.setText(originalBalance);
+            binding.tvTotalBalance.setText(originalBalance);
             binding.ivEye.setImageResource(R.drawable.ic_eye);
         } else {
             int length = originalBalance.replaceAll("\\s+", "").length();
@@ -523,9 +539,50 @@ public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, Over
                 spannable.setSpan(new ScaleXSpan(1.3f), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
 
-            binding.tvBalance.setText(spannable);
+            binding.tvTotalBalance.setText(spannable);
             binding.ivEye.setImageResource(R.drawable.ic_eye_diagonal);
         }
     }
 
+    public void setupWallet() {
+        viewModel.doGetFirstWallet(new MainCallback<List<WalletResponse>>() {
+            @Override
+            public void doError(Throwable error) {
+
+            }
+
+            @Override
+            public void doSuccess() {
+
+            }
+
+            @Override
+            public void doFail() {
+
+            }
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void doSuccess(List<WalletResponse> walletResponses) {
+                if(walletResponses == null || walletResponses.isEmpty()) {
+                    binding.llWallet.setVisibility(View.GONE);
+                    return;
+                }
+                binding.llWallet.setVisibility(View.VISIBLE);
+                WalletResponse walletResponse = walletResponses.get(0);
+
+                Glide.with(requireContext())
+                        .load(walletResponse.getIcon().getFileUrl())
+                        .into(binding.ivWalletIcon);
+                binding.tvWalletName.setText(walletResponse.getName());
+                binding.tvWalletBalance.setText(NumberUtils.formatNumberWithComma(walletResponse.getBalance()) + " " + walletResponse.getCurrency().getCode());
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupWallet();
+    }
 }

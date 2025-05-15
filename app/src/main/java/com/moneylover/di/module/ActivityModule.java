@@ -11,10 +11,21 @@ import com.moneylover.data.Repository;
 import com.moneylover.di.scope.ActivityScope;
 import com.moneylover.ui.MainViewModel;
 import com.moneylover.ui.base.activity.BaseActivity;
+import com.moneylover.ui.main.app.AddEventViewModel;
+import com.moneylover.ui.main.app.AddTransactionNoteViewModel;
+import com.moneylover.ui.main.app.AddTransactionViewModel;
 import com.moneylover.ui.main.app.AppViewModel;
+import com.moneylover.ui.main.app.CategoryViewModel;
 import com.moneylover.ui.main.app.CreateFirstWalletViewModel;
 import com.moneylover.ui.main.app.CurrencyViewModel;
+import com.moneylover.ui.main.app.EventViewModel;
+import com.moneylover.ui.main.app.TagViewModel;
 import com.moneylover.ui.main.app.WalletIconOptionViewModel;
+import com.moneylover.ui.main.app.WalletOptionViewModel;
+import com.moneylover.ui.main.app.overview.mywallet.AddWalletViewModel;
+import com.moneylover.ui.main.app.overview.mywallet.MyWalletEditListViewModel;
+import com.moneylover.ui.main.app.overview.mywallet.MyWalletEditViewModel;
+import com.moneylover.ui.main.app.overview.mywallet.MyWalletViewModel;
 import com.moneylover.ui.main.app.transactionHistory.AddNoteViewModel;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryDetailViewModel;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryEditViewModel;
@@ -254,6 +265,94 @@ public class ActivityModule {
         Supplier<ViewReportByGroupTransactionViewModel> supplier = () -> new ViewReportByGroupTransactionViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<ViewReportByGroupTransactionViewModel> factory = new ViewModelProviderFactory<>(ViewReportByGroupTransactionViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(ViewReportByGroupTransactionViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    MyWalletViewModel provideMyWalletViewModel(Repository repository, Context application) {
+        Supplier<MyWalletViewModel> supplier = () -> new MyWalletViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<MyWalletViewModel> factory = new ViewModelProviderFactory<>(MyWalletViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(MyWalletViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    MyWalletEditListViewModel provideMyWalletEditListViewModel(Repository repository, Context application) {
+        Supplier<MyWalletEditListViewModel> supplier = () -> new MyWalletEditListViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<MyWalletEditListViewModel> factory = new ViewModelProviderFactory<>(MyWalletEditListViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(MyWalletEditListViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    AddWalletViewModel provideAddWalletViewModel(Repository repository, Context application) {
+        Supplier<AddWalletViewModel> supplier = () -> new AddWalletViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<AddWalletViewModel> factory = new ViewModelProviderFactory<>(AddWalletViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(AddWalletViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    MyWalletEditViewModel provideMyWalletEditViewModel(Repository repository, Context application) {
+        Supplier<MyWalletEditViewModel> supplier = () -> new MyWalletEditViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<MyWalletEditViewModel> factory = new ViewModelProviderFactory<>(MyWalletEditViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(MyWalletEditViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    AddTransactionViewModel provideAddTransactionViewModel(Repository repository, Context application) {
+        Supplier<AddTransactionViewModel> supplier = () -> new AddTransactionViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<AddTransactionViewModel> factory = new ViewModelProviderFactory<>(AddTransactionViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(AddTransactionViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    WalletOptionViewModel provideWalletOptionViewModel(Repository repository, Context application) {
+        Supplier<WalletOptionViewModel> supplier = () -> new WalletOptionViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<WalletOptionViewModel> factory = new ViewModelProviderFactory<>(WalletOptionViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(WalletOptionViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    CategoryViewModel provideCategoryViewModel(Repository repository, Context application) {
+        Supplier<CategoryViewModel> supplier = () -> new CategoryViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<CategoryViewModel> factory = new ViewModelProviderFactory<>(CategoryViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(CategoryViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    TagViewModel provideTagViewModel(Repository repository, Context application) {
+        Supplier<TagViewModel> supplier = () -> new TagViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<TagViewModel> factory = new ViewModelProviderFactory<>(TagViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(TagViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    AddTransactionNoteViewModel provideAddTransactionNoteViewModel(Repository repository, Context application) {
+        Supplier<AddTransactionNoteViewModel> supplier = () -> new AddTransactionNoteViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<AddTransactionNoteViewModel> factory = new ViewModelProviderFactory<>(AddTransactionNoteViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(AddTransactionNoteViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    EventViewModel provideEventViewModel(Repository repository, Context application) {
+        Supplier<EventViewModel> supplier = () -> new EventViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<EventViewModel> factory = new ViewModelProviderFactory<>(EventViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(EventViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    AddEventViewModel provideAddEventViewModel(Repository repository, Context application) {
+        Supplier<AddEventViewModel> supplier = () -> new AddEventViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<AddEventViewModel> factory = new ViewModelProviderFactory<>(AddEventViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(AddEventViewModel.class);
     }
 
 }

@@ -1,11 +1,11 @@
 package com.moneylover.data.model.api.response;
 
-import java.time.Instant;
+import java.io.Serializable;
 
 import lombok.Data;
 
 @Data
-public class EventResponse {
+public class EventResponse implements Serializable {
     private Long id;
 
     private Long walletId;
@@ -14,9 +14,9 @@ public class EventResponse {
 
     private String description;
 
-    private Instant startDate;
+    private String startDate;
 
-    private Instant endDate;
+    private String endDate;
 
     private Boolean isCompleted;
 

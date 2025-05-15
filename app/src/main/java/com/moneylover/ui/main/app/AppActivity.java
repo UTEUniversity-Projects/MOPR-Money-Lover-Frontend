@@ -1,5 +1,6 @@
 package com.moneylover.ui.main.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -13,8 +14,6 @@ import com.moneylover.di.component.ActivityComponent;
 import com.moneylover.ui.base.activity.BaseActivity;
 
 import java.util.Stack;
-
-import timber.log.Timber;
 
 public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> {
 
@@ -82,6 +81,12 @@ public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> 
         currentPage = 0;
         viewBinding.bottomNavigationView.setSelectedItemId(R.id.home);
         viewBinding.viewPager.setCurrentItem(currentPage, false);
+
+        viewBinding.fabAddTransaction.setOnClickListener(v -> {
+            Intent intent = new Intent(this, AddTransactionActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_up, R.anim.no_anim);
+        });
     }
 
     @Override

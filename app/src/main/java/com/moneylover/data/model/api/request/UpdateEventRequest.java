@@ -1,5 +1,7 @@
 package com.moneylover.data.model.api.request;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.Instant;
 
 import lombok.Builder;

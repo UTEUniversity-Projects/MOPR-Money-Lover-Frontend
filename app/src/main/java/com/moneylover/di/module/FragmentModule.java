@@ -10,7 +10,11 @@ import com.moneylover.ViewModelProviderFactory;
 import com.moneylover.data.Repository;
 import com.moneylover.di.scope.FragmentScope;
 import com.moneylover.ui.base.fragment.BaseFragment;
+import com.moneylover.ui.main.app.CategoryListViewModel;
+import com.moneylover.ui.main.app.EventListViewModel;
 import com.moneylover.ui.main.app.account.AccountViewModel;
+import com.moneylover.ui.main.app.budget.BudgetListViewModel;
+import com.moneylover.ui.main.app.budget.BudgetViewModel;
 import com.moneylover.ui.main.app.overview.OverviewViewModel;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryListViewModel;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryViewModel;
@@ -184,6 +188,38 @@ public class FragmentModule {
         Supplier<ViewReportByGroupListViewModel> supplier = () -> new ViewReportByGroupListViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<ViewReportByGroupListViewModel> factory = new ViewModelProviderFactory<>(ViewReportByGroupListViewModel.class, supplier);
         return new ViewModelProvider(fragment, factory).get(ViewReportByGroupListViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    CategoryListViewModel provideCategoryListViewModel(Repository repository, Context application) {
+        Supplier<CategoryListViewModel> supplier = () -> new CategoryListViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<CategoryListViewModel> factory = new ViewModelProviderFactory<>(CategoryListViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(CategoryListViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    BudgetViewModel provideBudgetViewModel(Repository repository, Context application) {
+        Supplier<BudgetViewModel> supplier = () -> new BudgetViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<BudgetViewModel> factory = new ViewModelProviderFactory<>(BudgetViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(BudgetViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    BudgetListViewModel provideBudgetListViewModel(Repository repository, Context application) {
+        Supplier<BudgetListViewModel> supplier = () -> new BudgetListViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<BudgetListViewModel> factory = new ViewModelProviderFactory<>(BudgetListViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(BudgetListViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    EventListViewModel provideEventListViewModel(Repository repository, Context application) {
+        Supplier<EventListViewModel> supplier = () -> new EventListViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<EventListViewModel> factory = new ViewModelProviderFactory<>(EventListViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(EventListViewModel.class);
     }
 
 }

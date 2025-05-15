@@ -3,10 +3,21 @@ package com.moneylover.di.component;
 import com.moneylover.di.module.ActivityModule;
 import com.moneylover.di.scope.ActivityScope;
 import com.moneylover.ui.MainActivity;
+import com.moneylover.ui.main.app.AddEventActivity;
+import com.moneylover.ui.main.app.AddTransactionActivity;
+import com.moneylover.ui.main.app.AddTransactionNoteActivity;
 import com.moneylover.ui.main.app.AppActivity;
+import com.moneylover.ui.main.app.CategoryActivity;
 import com.moneylover.ui.main.app.CreateFirstWalletActivity;
 import com.moneylover.ui.main.app.CurrencyActivity;
+import com.moneylover.ui.main.app.EventActivity;
+import com.moneylover.ui.main.app.TagActivity;
 import com.moneylover.ui.main.app.WalletIconOptionActivity;
+import com.moneylover.ui.main.app.WalletOptionActivity;
+import com.moneylover.ui.main.app.overview.mywallet.AddWalletActivity;
+import com.moneylover.ui.main.app.overview.mywallet.MyWalletActivity;
+import com.moneylover.ui.main.app.overview.mywallet.MyWalletEditActivity;
+import com.moneylover.ui.main.app.overview.mywallet.MyWalletEditListActivity;
 import com.moneylover.ui.main.app.transactionHistory.AddNoteActivity;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryDetailActivity;
 import com.moneylover.ui.main.app.transactionHistory.TransactionHistoryEditActivity;
@@ -79,6 +90,28 @@ public interface ActivityComponent {
     void inject(ViewReportByGroupActivity activity);
 
     void inject(ViewReportByGroupTransactionActivity activity);
+
+    void inject(MyWalletActivity activity);
+
+    void inject(MyWalletEditListActivity activity);
+
+    void inject(AddWalletActivity activity);
+
+    void inject(MyWalletEditActivity activity);
+
+    void inject(AddTransactionActivity activity);
+
+    void inject(WalletOptionActivity activity);
+
+    void inject(CategoryActivity activity);
+
+    void inject(TagActivity activity);
+
+    void inject(AddTransactionNoteActivity activity);
+
+    void inject(EventActivity activity);
+
+    void inject(AddEventActivity activity);
 
 }
 

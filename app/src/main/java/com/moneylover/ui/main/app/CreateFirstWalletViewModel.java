@@ -10,6 +10,7 @@ import com.moneylover.ui.base.activity.BaseViewModel;
 import com.moneylover.ui.main.MainCallback;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -40,7 +41,13 @@ public class CreateFirstWalletViewModel extends BaseViewModel {
 
     public void doGetWalletIconOption(MainCallback<List<FileResponse>> callback) {
         showLoading();
-        compositeDisposable.add(repository.getApiService().getFileList("category_icons", 0, 1000, "wallet")
+        Map<String, Object> params = Map.of(
+                "scope", "category_icons",
+                "page", 0,
+                "size", 1000,
+                "fileName", "wallet"
+        );
+        compositeDisposable.add(repository.getApiService().getFileList(params)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {

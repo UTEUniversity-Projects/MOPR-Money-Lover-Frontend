@@ -54,9 +54,9 @@ public class RegisterViewModel extends BaseFragmentViewModel {
             recaptchaTasksClient.executeTask(RecaptchaAction.SIGNUP)
                     .addOnSuccessListener(task -> {
                         String token = task.toString();
-                            recaptchaToken.postValue(token);
+                        recaptchaToken.postValue(token);
 
-//                        writeToInternalStorage(application, "recaptcha_token.txt", token);
+                        writeToInternalStorage(application, "recaptcha_token.txt", token);
                     })
                     .addOnFailureListener(e -> {
                         Timber.tag("Recaptcha").e("Recaptcha failed: %s", e.getMessage());

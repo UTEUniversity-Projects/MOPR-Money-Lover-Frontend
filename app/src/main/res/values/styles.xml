@@ -74,4 +74,10 @@
         <item name="android:windowBackground">@drawable/bg_splashscreen</item>
     </style>
 
+    <style name="Theme.AddTransaction.TransparentSlideUp" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
 </resources>

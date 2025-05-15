@@ -45,7 +45,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tvBalance"
+                            android:id="@+id/tvTotalBalance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/be_vietnam_pro_medium"
@@ -114,7 +114,6 @@
                                 android:layout_width="@dimen/_14ssp"
                                 android:layout_height="@dimen/_14ssp"
                                 android:layout_marginStart="@dimen/_6ssp"
-                                android:onClick="@{()->f.onInfoClick()}"
                                 android:src="@drawable/ic_info" />
                         </FrameLayout>
                     </LinearLayout>
@@ -151,7 +150,6 @@
                             android:id="@+id/tvViewAll"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:onClick="@{() -> f.onViewAllClick()}"
                             android:text="@string/viewAll"
                             android:textColor="#4CAF50"
                             android:textSize="@dimen/_12ssp"
@@ -166,6 +164,7 @@
 
                     <!-- Wallet item -->
                     <LinearLayout
+                        android:id="@+id/llWallet"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -173,25 +172,23 @@
                         android:paddingVertical="@dimen/_8ssp">
 
                         <ImageView
+                            android:id="@+id/ivWalletIcon"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginEnd="12dp"
-                            android:src="@drawable/ic_wallet_2" />
+                            android:layout_marginEnd="12dp" />
 
                         <TextView
                             android:id="@+id/tvWalletName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/cash"
-                            android:textColor="#000000"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_12ssp" />
 
                         <TextView
-                            android:id="@+id/tvWalletAmount"
+                            android:id="@+id/tvWalletBalance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="-50,000 đ"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12ssp"
                             android:textStyle="bold" />

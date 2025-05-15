@@ -1,5 +1,6 @@
 package com.moneylover.ui.custom.menu;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moneylover.R;
+import com.moneylover.constants.Constants;
 import com.moneylover.data.model.MenuOption;
 
 import java.util.List;
 
 public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.OptionViewHolder> {
 
+    private final Context context;
     private final List<MenuOption> options;
     private final OnOptionClickListener listener;
 
@@ -23,9 +26,11 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.OptionView
         void onOptionSelected(int position);
     }
 
-    public OptionAdapter(List<MenuOption> options, OnOptionClickListener listener) {
+    public OptionAdapter(Context context, List<MenuOption> options, OnOptionClickListener listener) {
+        this.context = context;
         this.options = options;
         this.listener = listener;
+
     }
 
     @NonNull
@@ -37,16 +42,16 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.OptionView
 
     @Override
     public void onBindViewHolder(@NonNull OptionViewHolder holder, int position) {
-        MenuOption item = options.get(position);
+        MenuOption menuOption = options.get(position);
 
-        holder.optionText.setText(item.getTitle());
+        holder.optionText.setText(menuOption.getTitle());
 
-        if (item.isSelected()) {
+        if (menuOption.isSelected() && menuOption.getType() == Constants.MENU_OPTION_TYPE_DATE_TIME) {
             holder.icon.setVisibility(View.VISIBLE);
             holder.icon.setImageResource(R.drawable.ic_check);
-        } else if (item.getIcon() != 0) {
+        } else if (menuOption.getIcon() != 0 && menuOption.getType() == Constants.MENU_OPTION_TYPE_DEFAULT) {
             holder.icon.setVisibility(View.VISIBLE);
-            holder.icon.setImageResource(item.getIcon());
+            holder.icon.setImageResource(menuOption.getIcon());
         } else {
             holder.icon.setVisibility(View.GONE);
         }

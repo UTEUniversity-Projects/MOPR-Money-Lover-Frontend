@@ -1,18 +1,19 @@
 package com.moneylover.data.model.api.response;
 
-import java.time.Instant;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 import lombok.Data;
 
 @Data
-public class WalletResponse {
+public class WalletResponse implements Serializable {
     private Long id;
 
     private String name;
 
-    private CurrencyResponse currency;
+    private BigDecimal balance;
 
-    private Double balance;
+    private CurrencyResponse currency;
 
     private Boolean isPrimary = false;
 
