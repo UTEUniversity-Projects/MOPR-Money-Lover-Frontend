@@ -14,6 +14,7 @@ import com.moneylover.ui.main.app.EventActivity;
 import com.moneylover.ui.main.app.TagActivity;
 import com.moneylover.ui.main.app.WalletIconOptionActivity;
 import com.moneylover.ui.main.app.WalletOptionActivity;
+import com.moneylover.ui.main.app.budget.AddBudgetActivity;
 import com.moneylover.ui.main.app.overview.mywallet.AddWalletActivity;
 import com.moneylover.ui.main.app.overview.mywallet.MyWalletActivity;
 import com.moneylover.ui.main.app.overview.mywallet.MyWalletEditActivity;
@@ -112,6 +113,8 @@ public interface ActivityComponent {
     void inject(EventActivity activity);
 
     void inject(AddEventActivity activity);
+
+    void inject(AddBudgetActivity activity);
 
 }
 

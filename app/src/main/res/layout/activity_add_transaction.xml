@@ -83,6 +83,7 @@
                             android:paddingVertical="@dimen/_12ssp">
 
                             <ImageView
+                                android:id="@+id/ivWalletIcon"
                                 android:layout_width="@dimen/_30ssp"
                                 android:layout_height="@dimen/_26ssp"
                                 android:contentDescription="wallet"
@@ -164,8 +165,8 @@
                                 android:layout_width="@dimen/_25ssp"
                                 android:layout_height="@dimen/_25ssp"
                                 android:layout_marginStart="@dimen/_2ssp"
-                                android:contentDescription="category"
-                                android:src="@drawable/ic_drink" />
+                                android:src="@drawable/bg_circle"
+                                android:contentDescription="category" />
 
                             <TextView
                                 android:id="@+id/tvCategoryName"
@@ -291,6 +292,7 @@
                                 android:src="@drawable/ic_case" />
 
                             <TextView
+                                android:id="@+id/tvEventName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_20ssp"
@@ -314,6 +316,7 @@
                                 android:src="@drawable/ic_clock" />
 
                             <TextView
+                                android:id="@+id/tvReminderDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_20ssp"
@@ -424,6 +427,7 @@
                 android:paddingHorizontal="@dimen/_50ssp">
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"

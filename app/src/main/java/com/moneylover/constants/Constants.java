@@ -13,4 +13,16 @@ public class Constants {
     public static final String FORGOT_PASSWORD_TOKEN = "FORGOT_PASSWORD_TOKEN";
     public static final Integer MENU_OPTION_TYPE_DEFAULT = 0;
     public static final Integer MENU_OPTION_TYPE_DATE_TIME = 1;
+
+    public static final Integer PERIOD_TYPE_WEEK = 1;
+    public static final Integer PERIOD_TYPE_MONTH = 2;
+    public static final Integer PERIOD_TYPE_QUARTER = 3;
+    public static final Integer PERIOD_TYPE_YEAR = 4;
+    public static final Integer PERIOD_TYPE_CUSTOM = 5;
+
+    public static final String PERIOD_NAME_WEEK = "Tuần này";
+    public static final String PERIOD_NAME_MONTH = "Tháng này";
+    public static final String PERIOD_NAME_QUARTER = "Quý này";
+    public static final String PERIOD_NAME_YEAR = "Năm này";
+    public static final String PERIOD_NAME_CUSTOM = "Đợt này";
 }

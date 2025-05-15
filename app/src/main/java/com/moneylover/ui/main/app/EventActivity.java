@@ -1,5 +1,6 @@
 package com.moneylover.ui.main.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -103,7 +104,11 @@ public class EventActivity extends BaseActivity<ActivityEventBinding, EventViewM
                 adapter = new EventAdapter(EventActivity.this, eventResponses, new OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
-
+                        Intent resultIntent = new Intent();
+                        selectedEvent = eventResponses.get(position);
+                        resultIntent.putExtra("selected_event", selectedEvent);
+                        setResult(RESULT_OK, resultIntent);
+                        finish();
                     }
 
                     @Override

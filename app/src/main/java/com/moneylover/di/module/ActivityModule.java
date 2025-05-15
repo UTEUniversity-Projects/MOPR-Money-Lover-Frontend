@@ -22,6 +22,7 @@ import com.moneylover.ui.main.app.EventViewModel;
 import com.moneylover.ui.main.app.TagViewModel;
 import com.moneylover.ui.main.app.WalletIconOptionViewModel;
 import com.moneylover.ui.main.app.WalletOptionViewModel;
+import com.moneylover.ui.main.app.budget.AddBudgetViewModel;
 import com.moneylover.ui.main.app.overview.mywallet.AddWalletViewModel;
 import com.moneylover.ui.main.app.overview.mywallet.MyWalletEditListViewModel;
 import com.moneylover.ui.main.app.overview.mywallet.MyWalletEditViewModel;
@@ -353,6 +354,14 @@ public class ActivityModule {
         Supplier<AddEventViewModel> supplier = () -> new AddEventViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<AddEventViewModel> factory = new ViewModelProviderFactory<>(AddEventViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(AddEventViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    AddBudgetViewModel provideAddBudgetViewModel(Repository repository, Context application) {
+        Supplier<AddBudgetViewModel> supplier = () -> new AddBudgetViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<AddBudgetViewModel> factory = new ViewModelProviderFactory<>(AddBudgetViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(AddBudgetViewModel.class);
     }
 
 }

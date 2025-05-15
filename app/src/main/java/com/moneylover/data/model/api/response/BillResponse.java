@@ -1,6 +1,5 @@
 package com.moneylover.data.model.api.response;
 
-import java.time.Instant;
 import java.util.List;
 
 import lombok.Data;
@@ -11,7 +10,7 @@ public class BillResponse {
 
     private Double amount;
 
-    private Instant date;
+    private String date;
 
     private String note;
 

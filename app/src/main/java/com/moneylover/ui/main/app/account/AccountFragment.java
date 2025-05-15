@@ -28,6 +28,8 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding, Accoun
     protected void performDataBinding() {
         binding.setF(this);
         binding.setVm(viewModel);
+
+        setupLogout();
     }
 
     @Override
@@ -35,24 +37,26 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding, Accoun
         buildComponent.inject(this);
     }
 
-    public void onLogoutClick() {
-        viewModel.doLogOut(new MainCallback<ResponseWrapper<Void>>() {
-            @Override
-            public void doError(Throwable error) {
-                viewModel.showErrorMessage("Đăng xuất thất bại");
-            }
+    private void setupLogout() {
+        binding.btnLogout.setOnClickListener(v -> {
+            viewModel.doLogOut(new MainCallback<ResponseWrapper<Void>>() {
+                @Override
+                public void doError(Throwable error) {
+                    viewModel.showErrorMessage("Đăng xuất thất bại");
+                }
 
-            @Override
-            public void doSuccess() {
-                viewModel.showSuccessMessage("Đăng xuất thành công");
-                viewModel.removeAccessToken();
-                NavigationUtils.navigateToActivityClearStack((AppActivity) getActivity(), MainActivity.class, R.anim.slide_up_animation, R.anim.slide_down_animation);
-            }
+                @Override
+                public void doSuccess() {
+                    viewModel.showSuccessMessage("Đăng xuất thành công");
+                    viewModel.removeAccessToken();
+                    NavigationUtils.navigateToActivityClearStack((AppActivity) getActivity(), MainActivity.class, R.anim.slide_up_animation, R.anim.slide_down_animation);
+                }
 
-            @Override
-            public void doFail() {
-                viewModel.showErrorMessage("Đăng xuất thất bại");
-            }
+                @Override
+                public void doFail() {
+                    viewModel.showErrorMessage("Đăng xuất thất bại");
+                }
+            });
         });
     }
 }

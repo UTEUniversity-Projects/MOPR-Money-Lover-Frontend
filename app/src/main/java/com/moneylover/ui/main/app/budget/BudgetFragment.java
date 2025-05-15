@@ -1,19 +1,27 @@
 package com.moneylover.ui.main.app.budget;
 
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.moneylover.BR;
 import com.moneylover.R;
+import com.moneylover.data.model.api.response.BudgetResponse;
 import com.moneylover.databinding.FragmentBudgetBinding;
 import com.moneylover.di.component.FragmentComponent;
 import com.moneylover.ui.base.fragment.BaseFragment;
+import com.moneylover.ui.main.MainCallback;
 import com.moneylover.ui.main.app.transactionHistory.viewReport.adapter.ViewPager2Adapter;
 
 import java.util.Arrays;
@@ -21,6 +29,7 @@ import java.util.List;
 
 public class BudgetFragment extends BaseFragment<FragmentBudgetBinding, BudgetViewModel> {
 
+    private ActivityResultLauncher<Intent> addBudgetLauncher;
 
     @Override
     public int getBindingVariable() {
@@ -36,13 +45,68 @@ public class BudgetFragment extends BaseFragment<FragmentBudgetBinding, BudgetVi
     protected void performDataBinding() {
         binding.setF(this);
         binding.setVm(viewModel);
-        setupTabLayout();
 
+        addBudgetLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            String note = data.getStringExtra("note");
+                            // Handle the note here
+                        }
+                    }
+                }
+        );
+
+        binding.btnCreateBudget.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), AddBudgetActivity.class);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(
+                    getActivity(),
+                    R.anim.slide_in_up,
+                    R.anim.no_anim
+            );
+            addBudgetLauncher.launch(intent, options);
+        });
+
+        setupBudget();
     }
 
     @Override
     protected void performDependencyInjection(FragmentComponent buildComponent) {
         buildComponent.inject(this);
+    }
+
+    public void setupBudget() {
+        viewModel.doGetBudgetList(new MainCallback<List<BudgetResponse>>() {
+            @Override
+            public void doError(Throwable error) {
+
+            }
+
+            @Override
+            public void doSuccess() {
+
+            }
+
+            @Override
+            public void doSuccess(List<BudgetResponse> budgetResponses) {
+                if (budgetResponses == null || budgetResponses.isEmpty()) {
+                    binding.llEmptyBudget.setVisibility(View.VISIBLE);
+                    binding.llBudget.setVisibility(View.GONE);
+                } else {
+                    binding.llEmptyBudget.setVisibility(View.GONE);
+                    binding.llBudget.setVisibility(View.VISIBLE);
+
+//                    setupTabLayout();
+                }
+            }
+
+            @Override
+            public void doFail() {
+
+            }
+        });
     }
 
     private void setupTabLayout() {
