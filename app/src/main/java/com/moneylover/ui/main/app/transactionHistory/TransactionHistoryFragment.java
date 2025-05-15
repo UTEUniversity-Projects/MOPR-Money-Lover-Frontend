@@ -21,6 +21,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.moneylover.BR;
 import com.moneylover.R;
+import com.moneylover.constants.Constants;
 import com.moneylover.data.model.MenuOption;
 import com.moneylover.data.model.Wallet;
 import com.moneylover.databinding.FragmentTransactionHistoryBinding;
@@ -80,7 +81,7 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
         RecyclerView rvMenu = popupView.findViewById(R.id.rcvPopupMenu);
 
         List<MenuOption> menuOptions = Arrays.asList(
-                new MenuOption(getString(R.string.time_line)),
+                new MenuOption("Khoảng thời gian"),
                 new MenuOption(getString(R.string.view_by_group)),
                 new MenuOption(getString(R.string.view_by_transaction)),
                 new MenuOption(getString(R.string.change_balance))
@@ -104,7 +105,7 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
         int y = getStatusBarHeight() + dpToPx(4);
         popupWindow.showAtLocation(binding.getRoot(), Gravity.TOP | Gravity.END, 16, y);
 
-        OptionAdapter adapter = new OptionAdapter(menuOptions, position -> {
+        OptionAdapter adapter = new OptionAdapter(getContext(), menuOptions, position -> {
             MenuOption selected = menuOptions.get(position);
             handleMenuSelection(selected.getTitle());
             popupWindow.dismiss();
@@ -120,11 +121,11 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
         RecyclerView rvMenu = popupView.findViewById(R.id.rcvPopupMenu);
 
         List<MenuOption> menuOptions = Arrays.asList(
-                new MenuOption(R.drawable.ic_check, "Ngày"),
-                new MenuOption("Tuần"),
-                new MenuOption("Tháng"),
-                new MenuOption("Quý"),
-                new MenuOption("Năm")
+                new MenuOption(R.drawable.ic_check, "Ngày", Constants.MENU_OPTION_TYPE_DATE_TIME),
+                new MenuOption("Tuần", Constants.MENU_OPTION_TYPE_DATE_TIME),
+                new MenuOption("Tháng", Constants.MENU_OPTION_TYPE_DATE_TIME),
+                new MenuOption("Quý", Constants.MENU_OPTION_TYPE_DATE_TIME),
+                new MenuOption("Năm", Constants.MENU_OPTION_TYPE_DATE_TIME)
         );
 
         PopupWindow popupWindow = new PopupWindow(
@@ -146,7 +147,7 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
         int y = getStatusBarHeight() + dpToPx(4);
         popupWindow.showAtLocation(binding.getRoot(), Gravity.TOP | Gravity.END, 16, y);
 
-        OptionAdapter adapter = new OptionAdapter(menuOptions, position -> {
+        OptionAdapter adapter = new OptionAdapter(getContext(), menuOptions, position -> {
             MenuOption selected = menuOptions.get(position);
             handleMenuSelection(selected.getTitle());
             popupWindow.dismiss();

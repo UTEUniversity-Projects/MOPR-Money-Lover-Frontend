@@ -27,9 +27,13 @@ import com.moneylover.data.model.api.request.UpdateEventRequest;
 import com.moneylover.data.model.api.request.UpdatePasswordRequest;
 import com.moneylover.data.model.api.request.UpdateTagRequest;
 import com.moneylover.data.model.api.request.UpdateUserRequest;
+import com.moneylover.data.model.api.request.UpdateWalletRequest;
+import com.moneylover.data.model.api.response.BillDetailStatisticsResponse;
 import com.moneylover.data.model.api.response.BillResponse;
+import com.moneylover.data.model.api.response.BillStatisticsResponse;
 import com.moneylover.data.model.api.response.BudgetResponse;
 import com.moneylover.data.model.api.response.CategoryResponse;
+import com.moneylover.data.model.api.response.CategoryStatisticsResponse;
 import com.moneylover.data.model.api.response.CurrencyResponse;
 import com.moneylover.data.model.api.response.EventResponse;
 import com.moneylover.data.model.api.response.FileResponse;
@@ -42,6 +46,8 @@ import com.moneylover.data.model.api.response.TokenResponse;
 import com.moneylover.data.model.api.response.UserResponse;
 import com.moneylover.data.model.api.response.WalletResponse;
 
+import java.util.Map;
+
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -51,6 +57,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 public interface ApiService {
     @POST("api/login")
@@ -77,16 +84,16 @@ public interface ApiService {
     @POST("api/v1/wallet/client/create")
     Observable<ResponseWrapper<WalletResponse>> createWallet(@Body CreateWalletRequest request);
 
-    @POST("api/v1/wallet/client/update")
-    Observable<ResponseWrapper<WalletResponse>> updateWallet(@Body CreateWalletRequest request);
+    @PUT("api/v1/wallet/client/update")
+    Observable<ResponseWrapper<WalletResponse>> updateWallet(@Body UpdateWalletRequest request);
 
     @GET("api/v1/wallet/client/list")
-    Observable<ResponseContentWrapper<WalletResponse>> getWalletList(@Query("page") int page, @Query("size") int size, @Query("name") String name, @Query("currencyId") Long currencyId);
+    Observable<ResponseContentWrapper<WalletResponse>> getWalletList(@QueryMap Map<String, Object> queryMap);
 
     @GET("api/v1/wallet/client/get")
     Observable<ResponseWrapper<WalletResponse>> getWalletById(@Path("id") Long id);
 
-    @DELETE("api/v1/wallet/client/delete")
+    @DELETE("api/v1/wallet/client/delete/{id}")
     Observable<ResponseWrapper<WalletResponse>> deleteWallet(@Path("id") Long id);
 
     //    -------------------------USER API----------------------------
@@ -110,7 +117,7 @@ public interface ApiService {
 
     //    --------------------------TAG API---------------------------
     @GET("api/v1/tag/client/list")
-    Observable<ResponseContentWrapper<TagResponse>> getTagList(@Query("page") int page, @Query("size") int size, @Query("name") String name, @Query("type") Integer type);
+    Observable<ResponseContentWrapper<TagResponse>> getTagList(@QueryMap Map<String, Object> queryMap);
 
     @GET("api/v1/tag/client/get")
     Observable<ResponseWrapper<TagResponse>> getTagById(@Path("id") Long id);
@@ -121,12 +128,12 @@ public interface ApiService {
     @PUT("api/v1/tag/client/update")
     Observable<ResponseWrapper<TagResponse>> updateTag(@Body UpdateTagRequest request);
 
-    @DELETE("api/v1/tag/client/delete")
+    @DELETE("api/v1/tag/client/delete/{id}")
     Observable<ResponseWrapper<TagResponse>> deleteTag(@Path("id") Long id);
 
     //    -----------------------------REMINDER API-------------------------------
     @GET("api/v1/reminder/client/list")
-    Observable<ResponseContentWrapper<ReminderResponse>> getReminderList(@Query("page") int page, @Query("size") int size, @Query("name") String name, @Query("currencyId") Long currencyId);
+    Observable<ResponseContentWrapper<ReminderResponse>> getReminderList(@QueryMap Map<String, Object> queryMap);
 
     @GET("api/v1/reminder/client/get")
     Observable<ResponseWrapper<ReminderResponse>> getReminderById(@Path("id") Long id);
@@ -139,7 +146,7 @@ public interface ApiService {
 
     //  ---------------------------------EVENT API----------------------------------
     @GET("api/v1/event/client/list")
-    Observable<ResponseContentWrapper<EventResponse>> getEventList(@Query("page") int page, @Query("size") int size, @Query("name") String name, @Query("currencyId") Long currencyId);
+    Observable<ResponseContentWrapper<EventResponse>> getEventList(@QueryMap Map<String, Object> queryMap);
 
     @GET("api/v1/event/client/get")
     Observable<ResponseWrapper<EventResponse>> getEventById(@Path("id") Long id);
@@ -165,7 +172,7 @@ public interface ApiService {
 
 //    -----------------------------CATEGORY API---------------------------------
     @GET("api/v1/category/client/list")
-    Observable<ResponseContentWrapper<CategoryResponse>> getCategoryList(@Query("page") int page, @Query("size") int size, @Query("name") String name, @Query("type") Integer type);
+    Observable<ResponseContentWrapper<CategoryResponse>> getCategoryList(@QueryMap Map<String, Object> queryMap);
 
     @GET("api/v1/category/client/get")
     Observable<ResponseWrapper<CategoryResponse>> getCategoryById(@Path("id") Long id);
@@ -184,7 +191,7 @@ public interface ApiService {
 
 //    ------------------------------BUDGET API---------------------------------
     @GET("api/v1/budget/client/list")
-    Observable<ResponseContentWrapper<BudgetResponse>> getBudgetList(@Query("page") int page, @Query("size") int size, @Query("name") String name, @Query("type") Integer type);
+    Observable<ResponseContentWrapper<BudgetResponse>> getBudgetList(@QueryMap Map<String, Object> queryMap);
 
     @GET("api/v1/budget/client/get")
     Observable<ResponseWrapper<BudgetResponse>> getBudgetById(@Path("id") Long id);
@@ -200,10 +207,13 @@ public interface ApiService {
 
 //    ----------------------------BILL API-----------------------------
     @GET("api/v1/bill/client/list")
-    Observable<ResponseContentWrapper<BillResponse>> getBillList(@Query("page") int page, @Query("size") int size, @Query("name") String name, @Query("type") Integer type);
+    Observable<ResponseContentWrapper<BillResponse>> getBillList(@QueryMap Map<String, Object> queryMap);
 
     @GET("api/v1/bill/client/get")
     Observable<ResponseWrapper<BillResponse>> getBillById(@Path("id") Long id);
+
+    @GET("api/v1/bill/client/statistics")
+    Observable<ResponseWrapper<BillStatisticsResponse>> getBillStatistics(@QueryMap Map<String, Object> queryMap);
 
     @POST("api/v1/bill/client/create")
     Observable<ResponseWrapper<BillResponse>> createBill(@Body CreateBillRequest request);
@@ -214,11 +224,22 @@ public interface ApiService {
     @DELETE("api/v1/bill/client/delete")
     Observable<ResponseWrapper<BillResponse>> deleteBill(@Path("id") Long id);
 
+
 //    ---------------------------FILE API----------------------------------
     @POST("api/v1/file/client/upload")
-    Observable<ResponseWrapper<FileResponse>> uploadFile(@Query("scope") String scope, @Query("fileName") String fileName);
+    Observable<ResponseWrapper<FileResponse>> uploadFile(@QueryMap Map<String, Object> queryMap);
 
     @GET("api/v1/file/client/list")
-    Observable<ResponseContentWrapper<FileResponse>> getFileList(@Query("scope") String scope, @Query("page") int page, @Query("size") int size, @Query("fileName") String fileName);
+    Observable<ResponseContentWrapper<FileResponse>> getFileList(@QueryMap Map<String, Object> queryMap);
 
+//    ----------------------------STATISTICS API-----------------------------
+    @GET("api/v1/statistics/bill-detail")
+    Observable<ResponseContentWrapper<BillDetailStatisticsResponse>> getDetailBillStatistics(@QueryMap Map<String, Object> queryMap);
+
+    @GET("api/v1/statistics/category-detail")
+    Observable<ResponseContentWrapper<CategoryStatisticsResponse>> getCategoryStatistics(@QueryMap Map<String, Object> queryMap);
+
+//    --------------------------LOGOUT API----------------------------------
+    @DELETE("api/logout")
+    Observable<ResponseWrapper<Void>> logout();
 }

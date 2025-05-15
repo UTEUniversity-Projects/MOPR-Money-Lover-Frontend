@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moneylover.R;
+import com.moneylover.constants.Constants;
 import com.moneylover.data.model.MenuOption;
 import com.moneylover.data.model.Wallet;
 import com.moneylover.databinding.ItemWalletBinding;
@@ -98,12 +99,12 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
                 RecyclerView recyclerView = popupView.findViewById(R.id.rcvPopupMenu);
 
                 List<MenuOption> options = Arrays.asList(
-                        new MenuOption(R.drawable.ic_two_ways, "Chuyển tiền đến ví khác"),
-                        new MenuOption(R.drawable.ic_edit, "Sửa"),
-                        new MenuOption(R.drawable.ic_delete, "Xóa")
+                        new MenuOption(R.drawable.ic_two_ways, "Chuyển tiền đến ví khác", Constants.MENU_OPTION_TYPE_DEFAULT),
+                        new MenuOption(R.drawable.ic_edit, "Sửa", Constants.MENU_OPTION_TYPE_DEFAULT),
+                        new MenuOption(R.drawable.ic_delete, "Xóa", Constants.MENU_OPTION_TYPE_DEFAULT)
                 );
 
-                OptionAdapter optionAdapter = new OptionAdapter(options, pos -> {
+                OptionAdapter optionAdapter = new OptionAdapter(context, options, pos -> {
                     MenuOption selected = options.get(pos);
                     Toast.makeText(context, "Selected: " + selected.getTitle(), Toast.LENGTH_SHORT).show();
                     animatePopupDismiss(popupView);

@@ -9,13 +9,14 @@ import com.moneylover.ui.base.activity.BaseViewModel;
 import com.moneylover.ui.main.MainCallback;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class WalletIconOptionViewModel extends BaseViewModel {
     private int currentPage = 0;
-    private final int pageSize = 50;
+    private final int pageSize = 100;
     private boolean isLastPage = false;
     private boolean isLoadingMore = false;
 
@@ -23,14 +24,18 @@ public class WalletIconOptionViewModel extends BaseViewModel {
         super(repository, application);
     }
 
-    public void loadMoreWalletIcons(MainCallback<List<FileResponse>> callback, @Nullable Runnable onStart) {
+    public void doGetWalletList(MainCallback<List<FileResponse>> callback, @Nullable Runnable onStart) {
         if (isLoadingMore || isLastPage) return;
         isLoadingMore = true;
 
         if (onStart != null) onStart.run();
-
+        Map<String, Object> params = Map.of(
+                "scope", "category_icons",
+                "page", currentPage,
+                "size", pageSize
+        );
         compositeDisposable.add(repository.getApiService()
-                .getFileList("category_icons", currentPage, pageSize, null)
+                .getFileList(params)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -51,10 +56,18 @@ public class WalletIconOptionViewModel extends BaseViewModel {
                 }));
     }
 
-
     public void resetPaging() {
         currentPage = 0;
         isLastPage = false;
     }
+
+    public boolean isLoading() {
+        return isLoadingMore;
+    }
+
+    public boolean isLastPage() {
+        return isLastPage;
+    }
+
 }
 

@@ -1,5 +1,10 @@
 package com.moneylover.data.model.api.request;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,9 +13,15 @@ import lombok.Data;
 public class UpdateBudgetRequest {
     private Long id;
 
-    private Long periodId;
-
     private Long categoryId;
 
-    private Double amount;
+    private Long walletId;
+
+    private Integer periodType;
+
+    private Instant startDate;
+
+    private Instant endDate;
+
+    private BigDecimal amount;
 }

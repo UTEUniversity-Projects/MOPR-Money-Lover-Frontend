@@ -19,8 +19,6 @@ import com.moneylover.utils.NavigationUtils;
 
 import java.util.List;
 
-import timber.log.Timber;
-
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> {
 
     @Override
@@ -53,7 +51,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
             viewModel.doGetWalletList(new MainCallback<List<WalletResponse>>() {
                 @Override
                 public void doError(Throwable error) {
-                    Timber.tag("MainActivity").d("doError: %s", error);
                 }
 
                 @Override
@@ -63,7 +60,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
                 @Override
                 public void doSuccess(List<WalletResponse> walletResponses) {
-                    Timber.tag("MainActivity").d("doSuccess: %s", walletResponses);
                     if (walletResponses.isEmpty()) {
                         NavigationUtils.navigateToActivityDefaultClearStack(MainActivity.this, CreateFirstWalletActivity.class, null);
                     } else {

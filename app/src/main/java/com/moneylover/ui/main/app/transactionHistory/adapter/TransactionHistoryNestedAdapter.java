@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moneylover.R;
+import com.moneylover.constants.Constants;
 import com.moneylover.data.model.MenuOption;
 import com.moneylover.data.model.TransactionHistoryWallet;
 import com.moneylover.databinding.ItemTransactionHistoryDateBinding;
@@ -106,9 +107,9 @@ public class TransactionHistoryNestedAdapter extends RecyclerView.Adapter<Transa
             RecyclerView rvMenu = popupView.findViewById(R.id.rcvPopupMenu);
 
             List<MenuOption> menuOptions = Arrays.asList(
-                    new MenuOption(R.drawable.ic_edit, context.getString(R.string.edit)),
-                    new MenuOption(R.drawable.ic_copy, context.getString(R.string.copy)),
-                    new MenuOption(R.drawable.ic_delete, context.getString(R.string.delete))
+                    new MenuOption(R.drawable.ic_edit, "Sửa", Constants.MENU_OPTION_TYPE_DEFAULT),
+                    new MenuOption(R.drawable.ic_copy, context.getString(R.string.copy), Constants.MENU_OPTION_TYPE_DEFAULT),
+                    new MenuOption(R.drawable.ic_delete, context.getString(R.string.delete), Constants.MENU_OPTION_TYPE_DEFAULT)
             );
 
             popupWindow = new PopupWindow(
@@ -138,7 +139,7 @@ public class TransactionHistoryNestedAdapter extends RecyclerView.Adapter<Transa
                     anchorY
             );
 
-            OptionAdapter adapter = new OptionAdapter(menuOptions, position -> {
+            OptionAdapter adapter = new OptionAdapter(context, menuOptions, position -> {
                 MenuOption selected = menuOptions.get(position);
                 Toast.makeText(context, selected.getTitle(), Toast.LENGTH_SHORT).show();
                 animatePopupDismiss(popupView);

@@ -19,6 +19,8 @@ public class UpdateBillRequest {
 
     private Boolean isIncludedReport;
 
+    private Long walletId;
+
     private Long categoryId;
 
     private List<Long> tagIds;

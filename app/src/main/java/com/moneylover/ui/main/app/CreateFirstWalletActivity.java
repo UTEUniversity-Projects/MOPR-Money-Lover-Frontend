@@ -7,10 +7,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.core.splashscreen.SplashScreen;
-import androidx.databinding.library.baseAdapters.BR;
 
 import com.bumptech.glide.Glide;
+import com.moneylover.BR;
 import com.moneylover.R;
+import com.moneylover.constants.ErrorCode;
 import com.moneylover.data.model.api.ResponseWrapper;
 import com.moneylover.data.model.api.request.CreateWalletRequest;
 import com.moneylover.data.model.api.response.CurrencyResponse;
@@ -20,10 +21,12 @@ import com.moneylover.di.component.ActivityComponent;
 import com.moneylover.ui.MainActivity;
 import com.moneylover.ui.base.activity.BaseActivity;
 import com.moneylover.ui.main.MainCallback;
+import com.moneylover.ui.main.onboarding.OnboardingActivity;
 import com.moneylover.utils.NavigationUtils;
 
 import java.util.List;
 
+import retrofit2.HttpException;
 import timber.log.Timber;
 
 public class CreateFirstWalletActivity extends BaseActivity<ActivityCreateFirstWalletBinding, CreateFirstWalletViewModel> {
@@ -108,7 +111,6 @@ public class CreateFirstWalletActivity extends BaseActivity<ActivityCreateFirstW
         viewModel.doGetCurrencyByCode(new MainCallback<List<CurrencyResponse>>() {
             @Override
             public void doError(Throwable error) {
-                Timber.e(error, "Error fetching currency");
             }
 
             @Override
@@ -153,17 +155,38 @@ public class CreateFirstWalletActivity extends BaseActivity<ActivityCreateFirstW
     public void setupCreateWallet() {
 
         viewBinding.btnCreateFirstWallet.setOnClickListener(v -> {
+
+            if (viewBinding.edtWalletName.getText().toString().isEmpty()) {
+                viewModel.showErrorMessage("Vui lòng nhập tên ví");
+                return;
+            }
+
             CreateWalletRequest request = CreateWalletRequest.builder()
                     .name(viewBinding.edtWalletName.getText().toString())
                     .currencyId(selectedCurrency.getId())
                     .iconId(selectedFile != null ? selectedFile.getId() : null)
                     .build();
-            Timber.tag("CreateFirstWalletActivity").d("Request: %s", request);
 
             viewModel.doCreateWallet(new MainCallback<ResponseWrapper<?>>() {
                 @Override
                 public void doError(Throwable error) {
+                    if (error instanceof HttpException) {
+                        HttpException httpException = (HttpException) error;
+                        int code = httpException.code();
+                        String message = httpException.message();
 
+                        try {
+                            String errorBody = httpException.response().errorBody().string();
+                            if (errorBody.contains(ErrorCode.USER_NOT_FOUND.getMessage())) {
+                                viewModel.getRepository().getSharedPreferences().setToken(null);
+                                NavigationUtils.navigateToActivityClearStack(CreateFirstWalletActivity.this, OnboardingActivity.class, null);
+                            }
+                        } catch (Exception e) {
+                            Timber.tag("CreateFirstWalletActivity").e("Failed to parse error body: %s", e.getMessage());
+                        }
+                    } else {
+                        Timber.tag("CreateFirstWalletActivity").e("Non-HTTP error: %s", error.getMessage());
+                    }
                 }
 
                 @Override

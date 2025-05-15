@@ -22,6 +22,39 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.main.app.AddEventActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.EventActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.AddTransactionNoteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.TagActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.CategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.WalletOptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.AddTransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.overview.mywallet.MyWalletEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.overview.mywallet.AddWalletActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.overview.mywallet.MyWalletEditListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.overview.mywallet.MyWalletActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.app.WalletIconOptionActivity"
             android:exported="false" />
         <activity

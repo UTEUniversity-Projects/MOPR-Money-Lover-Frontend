@@ -1,16 +1,24 @@
 package com.moneylover.data.model.api.response;
 
+import java.math.BigDecimal;
+
 import lombok.Data;
 
 @Data
 public class BudgetResponse {
     private Long id;
 
-    private PeriodResponse period;
+    private CategoryStatisticsResponse categoryStatistics;
 
-    private CategoryResponse category;
+    private WalletResponse wallet;
 
-    private Double amount;
+    private Integer periodType;
 
-    private Double balance;
+    private String startDate;
+
+    private String endDate;
+
+    private BigDecimal amount;
+
+    private BigDecimal spentAmount;
 }

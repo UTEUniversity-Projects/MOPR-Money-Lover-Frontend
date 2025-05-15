@@ -79,12 +79,12 @@ public class WalletIconOptionActivity extends BaseActivity<ActivityWalletIconOpt
         viewBinding.rcvWalletIcon.addItemDecoration(new GridSpacingItemDecoration(5, spacing, true));
         viewBinding.rcvWalletIcon.setAdapter(adapter);
 
-        // Lần gọi đầu tiên
-        viewModel.loadMoreWalletIcons(new MainCallback<>() {
+        viewModel.doGetWalletList(new MainCallback<>() {
             @Override
             public void doSuccess(List<FileResponse> newItems) {
+                int insertStart = allIcons.size();
                 allIcons.addAll(newItems);
-                adapter.notifyItemRangeInserted(allIcons.size() - newItems.size(), newItems.size());
+                adapter.notifyItemRangeInserted(insertStart, newItems.size());
             }
 
             @Override
@@ -100,7 +100,6 @@ public class WalletIconOptionActivity extends BaseActivity<ActivityWalletIconOpt
             }
         }, null);
 
-        // Scroll để load thêm
         viewBinding.rcvWalletIcon.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -109,30 +108,34 @@ public class WalletIconOptionActivity extends BaseActivity<ActivityWalletIconOpt
                 int totalItemCount = layoutManager.getItemCount();
                 int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
 
-                if ((visibleItemCount + firstVisibleItem) >= totalItemCount - 2 && firstVisibleItem >= 0) {
-                    // Gọi loadMore nếu chưa loading
-                    viewModel.loadMoreWalletIcons(new MainCallback<>() {
+                if (!viewModel.isLoading() && !viewModel.isLastPage() &&
+                        (visibleItemCount + firstVisibleItem) >= totalItemCount - 2 && firstVisibleItem >= 0) {
+
+                    adapter.addLoadingFooter();
+
+                    viewModel.doGetWalletList(new MainCallback<>() {
                         @Override
                         public void doSuccess(List<FileResponse> newItems) {
-                            viewBinding.rcvWalletIcon.post(adapter::removeLoadingFooter);
+                            adapter.removeLoadingFooter();
+                            int insertStart = allIcons.size();
                             allIcons.addAll(newItems);
-                            adapter.notifyItemRangeInserted(allIcons.size() - newItems.size(), newItems.size());
+                            adapter.notifyItemRangeInserted(insertStart, newItems.size());
                         }
 
                         @Override
                         public void doError(Throwable error) {
-                            viewBinding.rcvWalletIcon.post(adapter::removeLoadingFooter);
+                            adapter.removeLoadingFooter();
                         }
 
                         @Override
                         public void doFail() {
-                            viewBinding.rcvWalletIcon.post(adapter::removeLoadingFooter);
+                            adapter.removeLoadingFooter();
                         }
 
                         @Override
                         public void doSuccess() {
                         }
-                    }, () -> viewBinding.rcvWalletIcon.post(adapter::addLoadingFooter));
+                    }, null);
                 }
             }
         });

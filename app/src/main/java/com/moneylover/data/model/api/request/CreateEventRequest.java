@@ -1,7 +1,5 @@
 package com.moneylover.data.model.api.request;
 
-import java.time.Instant;
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,9 +12,9 @@ public class CreateEventRequest {
 
     private String description;
 
-    private Instant startDate;
+    private String startDate;
 
-    private Instant endDate;
+    private String endDate;
 
     private Long iconId;
 }

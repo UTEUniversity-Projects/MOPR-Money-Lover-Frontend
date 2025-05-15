@@ -103,7 +103,6 @@ public class    RegisterFragment extends BaseFragment<FragmentRegisterBinding, R
             viewModel.doRequestRegister(new MainCallback<ResponseWrapper<RequestRegisterResponse>>() {
                 @Override
                 public void doError(Throwable error) {
-                    Timber.tag("RegisterFragment").e("Error: %s", error.toString());
                     viewModel.hideLoading();
                     if (!DeviceUtils.isNetworkAvailable(requireContext())) {
                         viewModel.showErrorMessage("Vui lòng kiểm tra kết nối mạng !");
@@ -122,12 +121,12 @@ public class    RegisterFragment extends BaseFragment<FragmentRegisterBinding, R
                         if (errorBody != null) {
                             try {
                                 String errorJson = errorBody.string();
-                                Timber.d("Error body: %s", errorJson);
+                                Timber.tag("RegisterFragment").d("Error body: %s", errorJson);
 
                                 JSONObject json = new JSONObject(errorJson);
                                 String errorCode = json.optString("code");
 
-                                Timber.d("Mã lỗi: %s", errorCode);
+                                Timber.tag("RegisterFragment").d("Error code: %s", errorCode);
 
                                 if (ErrorCode.ACCOUNT_EMAIL_EXISTED.getCode().equals(errorCode)) {
                                     viewModel.showErrorMessage("Email đã tồn tại !");
@@ -137,7 +136,7 @@ public class    RegisterFragment extends BaseFragment<FragmentRegisterBinding, R
                                 }
 
                             } catch (Exception e) {
-                                Timber.e(e, "Lỗi khi parse errorBody");
+                                Timber.tag("RegisterFragment").e("Lỗi khi parse errorBody");
                             }
                         }
                         return;
@@ -153,7 +152,6 @@ public class    RegisterFragment extends BaseFragment<FragmentRegisterBinding, R
                 @Override
                 public void doSuccess(ResponseWrapper<RequestRegisterResponse> response) {
                     viewModel.hideLoading();
-                    Timber.tag("RegisterFragment").d("Response: %s", response.toString());
                     viewModel.showSuccessMessage("Mã OTP đã được gửi đến email !");
                     viewModel.setRegisterToken(response.getData().getToken());
                     NavigationUtils.navigateToFragmentClearBackStack((AuthActivity) getActivity(), R.id.fragmentContainer, RegisterOtpVerificationFragment.class);

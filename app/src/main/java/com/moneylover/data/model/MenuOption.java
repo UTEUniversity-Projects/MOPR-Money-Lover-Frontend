@@ -11,10 +11,17 @@ public class MenuOption {
     private int icon;
     private String title;
     private boolean selected;
+    private int type;
 
-    public MenuOption(int icon, String title) {
+    public MenuOption(int icon, String title, int type) {
         this.icon = icon;
         this.title = title;
+        this.type = type;
+    }
+
+    public MenuOption(String title, int type) {
+        this.title = title;
+        this.type = type;
     }
 
     public MenuOption(String title) {
