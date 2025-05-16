@@ -93,7 +93,7 @@ Hoặc mở dự án bằng IntelliJ và chạy trực tiếp từ IDE.
 
 Dự án được phát triển bởi:
 
-* [dopaminee (Lê Tấn Trực)](https://github.com/dopaminee)
+* [dopaminee (Lê Tấn Trụ)](https://github.com/dopaminee)
 * [PhucLe0809 (Lê Hồng Phúc)](https://github.com/PhucLe0809)
 
 Mọi đóng góp hoặc phản hồi vui lòng tạo issue hoặc pull request trên GitHub.
