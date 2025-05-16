@@ -86,7 +86,6 @@ public class AuthActivity extends BaseActivity<ActivityAuthBinding, AuthViewMode
             finish();
         }
 
-        overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);
     }
 
     private void replaceFragment(Fragment fragment, boolean addToBackStack) {

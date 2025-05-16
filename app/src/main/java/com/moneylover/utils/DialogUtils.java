@@ -54,7 +54,7 @@ public class DialogUtils {
 
         View layout = inflater.inflate(R.layout.layout_progressbar, null);
         if(msg!=null) {
-            TextView progressbarMsg = (TextView) layout.findViewById(R.id.progressbar_msg);
+            TextView progressbarMsg = (TextView) layout.findViewById(R.id.progressbarMsg);
             progressbarMsg.setText(msg);
         }
 

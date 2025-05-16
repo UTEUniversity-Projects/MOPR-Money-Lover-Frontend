@@ -1,29 +1,29 @@
 package com.moneylover.ui.main.app;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.moneylover.BR;
 import com.moneylover.R;
 import com.moneylover.databinding.ActivityAppBinding;
 import com.moneylover.di.component.ActivityComponent;
 import com.moneylover.ui.base.activity.BaseActivity;
-import com.moneylover.ui.main.app.account.AccountFragment;
-import com.moneylover.ui.main.app.budget.BudgetFragment;
-import com.moneylover.ui.main.app.overview.OverviewFragment;
-import com.moneylover.ui.main.app.transactionLog.TransactionLogFragment;
-import com.moneylover.utils.NavigationUtils;
+import com.moneylover.ui.base.adapter.RefreshableFragment;
 
 import java.util.Stack;
 
 public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> {
 
-    private final Stack<String> fragmentTagHistory = new Stack<>();
+    private Stack<Integer> fragmentStack = new Stack<>();
+    private int currentPage = 0;
+    private boolean isBackPressing = false;
+    private boolean isBottomNavClick = false;
+    private AppPagerAdapter pagerAdapter;
 
     @Override
     public int getLayoutId() {
@@ -42,172 +42,113 @@ public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        SplashScreen.installSplashScreen(this);
+        setTheme(R.style.Theme_MoneyLover);
         super.onCreate(savedInstanceState);
 
         viewBinding.bottomNavigationView.setBackground(null);
         viewBinding.bottomNavigationView.setOnApplyWindowInsetsListener(null);
         viewBinding.bottomNavigationView.getMenu().getItem(2).setEnabled(false);
 
-        String initialTag = "OverviewFragment";
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.app_frame_layout, new OverviewFragment(), initialTag)
-                .commit();
-        fragmentTagHistory.push(initialTag);
-        viewBinding.bottomNavigationView.setSelectedItemId(R.id.home);
+        pagerAdapter = new AppPagerAdapter(this);
+        viewBinding.viewPager.setAdapter(pagerAdapter);
+        viewBinding.viewPager.setOffscreenPageLimit(1);
 
-        viewBinding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-
-            String targetTag = getTagFromMenuId(id);
-            if (fragmentTagHistory.peek().equals(targetTag)) return true;
-
-            final View iconView = viewBinding.bottomNavigationView.findViewById(id);
-            if (iconView != null) {
-                Animator animator = AnimatorInflater.loadAnimator(this, R.animator.icon_click_animator);
-                animator.setTarget(iconView);
-                animator.start();
-            }
-
-            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.app_frame_layout);
-            int currentIndex = getIndexFromFragment(currentFragment);
-            int targetIndex = getIndexFromMenuId(id);
-            boolean leftToRight = targetIndex < currentIndex;
-
-            Fragment targetFragment = getFragmentByTag(targetTag);
-            if (targetFragment != null) {
-                pushFragment(targetTag);
-                try {
-                    NavigationUtils.navigateWithSlide(this, R.id.app_frame_layout, targetFragment.getClass(), targetTag, leftToRight);
-                } catch (IllegalAccessException | InstantiationException e) {
-                    throw new RuntimeException(e);
+        viewBinding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (currentPage != position) {
+                    if (!isBackPressing && !isBottomNavClick) {
+                        fragmentStack.push(currentPage);
+                    }
+                    currentPage = position;
+                    viewBinding.bottomNavigationView.setSelectedItemId(getBottomNavItemId(position));
+                    isBottomNavClick = false;
                 }
-                return true;
             }
-
-            return false;
         });
 
+        viewBinding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            int position = getPagePositionForMenuId(item.getItemId());
+
+            if (position != currentPage) {
+                isBottomNavClick = true;
+                fragmentStack.push(currentPage);
+                viewBinding.viewPager.setCurrentItem(position, true);
+                currentPage = position;
+            } else {
+                // The same tab was clicked again - refresh the fragment
+                refreshCurrentFragment();
+            }
+            return true;
+        });
+
+        // Initial setup
+        currentPage = 0;
+        viewBinding.bottomNavigationView.setSelectedItemId(R.id.home);
+        viewBinding.viewPager.setCurrentItem(currentPage, false);
+
+        viewBinding.fabAddTransaction.setOnClickListener(v -> {
+            Intent intent = new Intent(this, AddTransactionActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_up, R.anim.no_anim);
+        });
+    }
+
+    /**
+     * Refreshes the current fragment if it implements RefreshableFragment
+     */
+    private void refreshCurrentFragment() {
+        if (pagerAdapter != null) {
+            Fragment fragment = pagerAdapter.getFragment(currentPage);
+
+            if (fragment instanceof RefreshableFragment) {
+                ((RefreshableFragment) fragment).onRefresh();
+            }
+        }
     }
 
     @Override
     public void onBackPressed() {
-
-        if (fragmentTagHistory.size() <= 1 && fragmentTagHistory.peek().equals("OverviewFragment")) {
-            finishAffinity(); // Thoát ứng dụng
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
             return;
         }
 
-        if (fragmentTagHistory.size() == 2 && fragmentTagHistory.peek().equals("AccountFragment")) {
-            finishAffinity();
+        if (!fragmentStack.isEmpty()) {
+            isBackPressing = true;
+            int previousPosition = fragmentStack.pop();
+            viewBinding.viewPager.setCurrentItem(previousPosition, true);
+            currentPage = previousPosition;
+            isBackPressing = false;
             return;
         }
 
-        String currentTag = fragmentTagHistory.pop();
-        String previousTag = fragmentTagHistory.peek();
+        super.onBackPressed();
+    }
 
-        int currentIndex = getIndexFromTag(currentTag);
-        int previousIndex = getIndexFromTag(previousTag);
-        boolean leftToRight = previousIndex < currentIndex;
-
-        Fragment targetFragment = getFragmentByTag(previousTag);
-        if (targetFragment != null) {
-            try {
-                NavigationUtils.navigateWithSlide(this, R.id.app_frame_layout, targetFragment.getClass(), previousTag, leftToRight);
-            } catch (IllegalAccessException | InstantiationException e) {
-                throw new RuntimeException(e);
-            }
-            updateBottomNavSelection(previousTag);
-        } else {
-            super.onBackPressed();
+    private int getBottomNavItemId(int position) {
+        switch (position) {
+            case 0: return R.id.home;
+            case 1: return R.id.transaction_history;
+            case 2: return R.id.budget;
+            case 3: return R.id.account;
+            default: throw new IllegalStateException("Unexpected position: " + position);
         }
     }
 
-    private void pushFragment(String tag) {
-        if (fragmentTagHistory.empty() || !fragmentTagHistory.peek().equals(tag)) {
-            fragmentTagHistory.push(tag);
-        }
-    }
-
-    private void updateBottomNavSelection(String tag) {
-        switch (tag) {
-            case "OverviewFragment":
-                viewBinding.bottomNavigationView.setSelectedItemId(R.id.home);
-                break;
-            case "TransactionLogFragment":
-                viewBinding.bottomNavigationView.setSelectedItemId(R.id.wallet);
-                break;
-            case "BudgetFragment":
-                viewBinding.bottomNavigationView.setSelectedItemId(R.id.budget);
-                break;
-            case "AccountFragment":
-                viewBinding.bottomNavigationView.setSelectedItemId(R.id.account);
-                break;
-        }
-    }
-
-    private Fragment getFragmentByTag(String tag) {
-        switch (tag) {
-            case "OverviewFragment":
-                return new OverviewFragment();
-            case "TransactionLogFragment":
-                return new TransactionLogFragment();
-            case "BudgetFragment":
-                return new BudgetFragment();
-            case "AccountFragment":
-                return new AccountFragment();
-            default:
-                return null;
-        }
-    }
-
-    private int getIndexFromFragment(Fragment fragment) {
-        if (fragment instanceof OverviewFragment) return 0;
-        if (fragment instanceof TransactionLogFragment) return 1;
-        if (fragment instanceof BudgetFragment) return 2;
-        if (fragment instanceof AccountFragment) return 3;
-        return -1;
-    }
-
-    private int getIndexFromMenuId(int id) {
-        if (id == R.id.home) {
+    private int getPagePositionForMenuId(int menuId) {
+        if (menuId == R.id.home) {
             return 0;
-        } else if (id == R.id.wallet) {
+        } else if (menuId == R.id.transaction_history) {
             return 1;
-        } else if (id == R.id.budget) {
+        } else if (menuId == R.id.budget) {
             return 2;
-        } else if (id == R.id.account) {
+        } else if (menuId == R.id.account) {
             return 3;
         } else {
-            return -1;
-        }
-    }
-
-    private int getIndexFromTag(String tag) {
-        switch (tag) {
-            case "OverviewFragment":
-                return 0;
-            case "TransactionLogFragment":
-                return 1;
-            case "BudgetFragment":
-                return 2;
-            case "AccountFragment":
-                return 3;
-            default:
-                return -1;
-        }
-    }
-
-    private String getTagFromMenuId(int id) {
-        if (id == R.id.home) {
-            return "OverviewFragment";
-        } else if (id == R.id.wallet) {
-            return "TransactionLogFragment";
-        } else if (id == R.id.budget) {
-            return "BudgetFragment";
-        } else if (id == R.id.account) {
-            return "AccountFragment";
-        } else {
-            return "OverviewFragment";
+            throw new IllegalStateException("Unexpected menuId: " + menuId);
         }
     }
 }

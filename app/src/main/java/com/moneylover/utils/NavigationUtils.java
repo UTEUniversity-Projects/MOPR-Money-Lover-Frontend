@@ -2,8 +2,6 @@ package com.moneylover.utils;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.FrameLayout;
 
 import androidx.annotation.AnimRes;
 import androidx.annotation.IdRes;
@@ -17,6 +15,27 @@ import com.moneylover.R;
 public class NavigationUtils {
 
     // ============================= Activity Navigation =============================
+    public static void navigateToActivityDefault(AppCompatActivity currentActivity, Class<?> targetActivity, Bundle data) {
+        Intent intent = new Intent(currentActivity, targetActivity);
+        if (data != null) {
+            intent.putExtras(data);
+        }
+        currentActivity.startActivity(intent);
+    }
+
+    public static void navigateToActivityDefaultClearStack(AppCompatActivity currentActivity, Class<?> targetActivity, Bundle data) {
+        Intent intent = new Intent(currentActivity, targetActivity);
+        if (data != null) {
+            intent.putExtras(data);
+        }
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        currentActivity.startActivity(intent);
+
+        currentActivity.finish();
+    }
+
 
     // Method to navigate to an Activity without data and default animation
     public static void navigateToActivity(AppCompatActivity currentActivity, Class<?> targetActivity) {
@@ -169,7 +188,7 @@ public class NavigationUtils {
         }
     }
 
-     // Navigate to a Fragment with a container ID, data (Bundle), and custom animations, clearing the back stack
+    // Navigate to a Fragment with a container ID, data (Bundle), and custom animations, clearing the back stack
     public static void navigateToFragmentClearBackStack(AppCompatActivity activity, int containerId, Class<? extends Fragment> fragmentClass, String tag, Bundle data, @AnimRes int enterAnim, @AnimRes int exitAnim) {
         activity.getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
@@ -201,59 +220,6 @@ public class NavigationUtils {
             e.printStackTrace();
             throw new RuntimeException("Could not instantiate fragment: " + fragmentClass.getName(), e);
         }
-    }
-
-    public static void navigateWithSlide(AppCompatActivity activity, @IdRes int containerId, Class<? extends Fragment> fragmentClass, String tag, boolean leftToRight)
-            throws IllegalAccessException, InstantiationException {
-
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        Fragment currentFragment = fragmentManager.findFragmentById(containerId);
-        FrameLayout container = activity.findViewById(containerId);
-
-        Fragment fragment = fragmentClass.newInstance();
-
-        if (currentFragment == null) {
-            fragmentManager.beginTransaction()
-                    .replace(containerId, fragment, tag)
-                    .commit();
-            return;
-        }
-
-        View currentView = currentFragment.getView();
-        if (currentView == null) return;
-
-        // Thêm fragment mới nhưng ẩn ngay từ đầu để lấy view
-        fragmentManager.beginTransaction()
-                .add(containerId, fragment, tag)
-                .commitNow(); // commit ngay để lấy view
-
-        View newView = fragment.getView();
-        if (newView == null) return;
-
-        int width = container.getWidth();
-        int fromX = leftToRight ? -width : width;
-        int toX = 0;
-
-        // Đặt vị trí ban đầu cho fragment mới
-        newView.setTranslationX(fromX);
-
-        // Animate cả hai fragment
-        currentView.animate()
-                .translationX(leftToRight ? width : -width)
-                .setDuration(300)
-                .start();
-
-        newView.animate()
-                .translationX(toX)
-                .setDuration(300)
-                .withEndAction(() -> {
-                    // Khi hoàn thành animation → Replace và lưu vào BackStack
-                    fragmentManager.beginTransaction()
-                            .replace(containerId, fragment, tag)
-                            .addToBackStack(tag) // Lưu lại để hỗ trợ back
-                            .commit();
-                })
-                .start();
     }
 
 }

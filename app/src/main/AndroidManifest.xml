@@ -13,7 +13,7 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher2"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -22,18 +22,114 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.main.app.budget.AddBudgetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.AddEventActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.EventActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.AddTransactionNoteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.TagActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.CategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.WalletOptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.AddTransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.overview.mywallet.MyWalletEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.overview.mywallet.AddWalletActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.overview.mywallet.MyWalletEditListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.overview.mywallet.MyWalletActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.WalletIconOptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.CurrencyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.CreateFirstWalletActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.group.ViewReportByGroupTransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.group.ViewReportByGroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.income.IncomeTransactionByGroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.income.IncomeTransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.netIncome.NetIncomeTransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.expenditure.ExpenditureTransactionByGroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.expenditure.ExpenditureTransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.group.ViewReportByGroupTypeOptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.income.IncomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.expenditure.ExpenditureActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.netIncome.NetIncomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.viewReport.ViewReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.WalletEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.AddNoteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.TransactionHistoryEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.TransactionHistoryDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.app.transactionHistory.WalletActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.onboarding.OnboardingActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.app.AppActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.auth.AuthActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.app.AppActivity"
+            android:name=".ui.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.MoneyLover">
+            android:theme="@style/SplashscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

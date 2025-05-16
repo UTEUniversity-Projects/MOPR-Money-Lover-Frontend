@@ -9,7 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.moneylover.BR;
 import com.moneylover.R;
 import com.moneylover.constants.Constants;
-import com.moneylover.data.model.OnboardingItem;
+import com.moneylover.data.model.Onboarding;
 import com.moneylover.databinding.ActivityOnboardingBinding;
 import com.moneylover.di.component.ActivityComponent;
 import com.moneylover.ui.base.activity.BaseActivity;
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class OnboardingActivity extends BaseActivity<ActivityOnboardingBinding, OnboardingViewModel> {
 
-    private List<OnboardingItem> onboardingItemList;
+    private List<Onboarding> onboardingList;
     private OnboardingAdapter onboardingAdapter;
     private Handler handler;
     private Runnable runnable;
@@ -32,8 +32,8 @@ public class OnboardingActivity extends BaseActivity<ActivityOnboardingBinding, 
         viewBinding.setA(this);
         viewBinding.setVm(viewModel);
 
-        onboardingItemList = getOnboardingItems();
-        onboardingAdapter = new OnboardingAdapter(onboardingItemList);
+        onboardingList = getOnboardingItems();
+        onboardingAdapter = new OnboardingAdapter(onboardingList);
         viewBinding.viewPager2.setAdapter(onboardingAdapter);
 
         viewBinding.circleIndicator.setViewPager(viewBinding.viewPager2);
@@ -43,7 +43,7 @@ public class OnboardingActivity extends BaseActivity<ActivityOnboardingBinding, 
             @Override
             public void run() {
                 int currentItem = viewBinding.viewPager2.getCurrentItem();
-                if (currentItem == onboardingItemList.size() - 1) {
+                if (currentItem == onboardingList.size() - 1) {
                     viewBinding.viewPager2.setCurrentItem(0);
                 } else {
                     viewBinding.viewPager2.setCurrentItem(currentItem + 1);
@@ -64,13 +64,13 @@ public class OnboardingActivity extends BaseActivity<ActivityOnboardingBinding, 
     public void onLoginClick() {
         Bundle bundle = new Bundle();
         bundle.putString("type", Constants.LOGIN_TYPE);
-        NavigationUtils.navigateToActivity(this, AuthActivity.class, bundle);
+        NavigationUtils.navigateToActivityDefault(this, AuthActivity.class, bundle);
     }
 
     public void onRegisterClick() {
         Bundle bundle = new Bundle();
         bundle.putString("type", Constants.REGISTER_TYPE);
-        NavigationUtils.navigateToActivity(this, AuthActivity.class, bundle);
+        NavigationUtils.navigateToActivityDefault(this, AuthActivity.class, bundle);
     }
 
     @Override
@@ -88,14 +88,14 @@ public class OnboardingActivity extends BaseActivity<ActivityOnboardingBinding, 
         buildComponent.inject(this);
     }
 
-    private List<OnboardingItem> getOnboardingItems() {
-        List<OnboardingItem> imagesList = new ArrayList<>();
-        imagesList.add(new OnboardingItem(R.drawable.onboarding1, "1", "1"));
-        imagesList.add(new OnboardingItem(R.drawable.onboarding2, "2", "2"));
-        imagesList.add(new OnboardingItem(R.drawable.onboarding3, "3", "3"));
-        imagesList.add(new OnboardingItem(R.drawable.onboarding1, "1", "1"));
-        imagesList.add(new OnboardingItem(R.drawable.onboarding2, "2", "2"));
-        imagesList.add(new OnboardingItem(R.drawable.onboarding3, "3", "3"));
+    private List<Onboarding> getOnboardingItems() {
+        List<Onboarding> imagesList = new ArrayList<>();
+        imagesList.add(new Onboarding(R.drawable.onboarding1, "1", "1"));
+        imagesList.add(new Onboarding(R.drawable.onboarding2, "2", "2"));
+        imagesList.add(new Onboarding(R.drawable.onboarding3, "3", "3"));
+        imagesList.add(new Onboarding(R.drawable.onboarding1, "1", "1"));
+        imagesList.add(new Onboarding(R.drawable.onboarding2, "2", "2"));
+        imagesList.add(new Onboarding(R.drawable.onboarding3, "3", "3"));
         return imagesList;
     }
 }

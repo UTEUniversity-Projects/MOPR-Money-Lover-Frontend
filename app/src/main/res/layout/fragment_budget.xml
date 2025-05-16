@@ -1,14 +1,172 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.main.app.budget.BudgetFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <data>
+
+        <variable
+            name="f"
+            type="com.moneylover.ui.main.app.budget.BudgetFragment" />
+
+        <variable
+            name="vm"
+            type="com.moneylover.ui.main.app.budget.BudgetViewModel" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/budget"
-        android:textAlignment="center"
-        android:gravity="center"/>
-</FrameLayout>
+        android:background="@color/lavender_gray"
+        android:paddingBottom="@dimen/_40ssp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:fontFamily="@font/be_vietnam_pro_medium"
+                android:text="Ngân sách"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/llEmptyBudget"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Icon hộp -->
+            <ImageView
+                android:id="@+id/imgEmptyBox"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/ic_empty_box" />
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvEmptyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Bạn chưa có ngân sách"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Description -->
+            <TextView
+                android:id="@+id/tvEmptyDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="Bắt đầu tiết kiệm bằng cách tạo ngân sách\nvà chúng tôi sẽ giúp bạn kiểm soát ngân sách"
+                android:textColor="@color/gray"
+                android:textSize="14sp" />
+
+            <!-- Button Tạo ngân sách -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCreateBudget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@color/sea_green"
+                android:drawablePadding="8dp"
+                android:paddingVertical="12dp"
+                android:text="Tạo ngân sách"
+                android:textColor="@color/white"
+                app:shapeAppearanceOverlay="@style/rounded_full" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llBudget"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/wallet_options"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/bg_filter_button"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="8dp">
+
+                    <!-- Icon trái -->
+                    <ImageView
+                        android:id="@+id/ivWalletIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="21dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_wallet_2" />
+
+                    <!-- Text -->
+                    <TextView
+                        android:id="@+id/tvWalletName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="Tổng cộng"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <!-- Mũi tên xuống -->
+                    <ImageView
+                        android:id="@+id/ivArrow"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_drop_down" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                android:paddingTop="@dimen/_8ssp"
+                android:textSize="@dimen/_8ssp"
+                app:tabGravity="fill"
+                app:tabIndicator="@drawable/tab_indicator_rounded"
+                app:tabIndicatorColor="@android:color/black"
+                app:tabIndicatorFullWidth="false"
+                app:tabIndicatorGravity="bottom"
+                app:tabIndicatorHeight="3dp"
+                app:tabMode="fixed"
+                app:tabRippleColor="@null"
+                app:tabSelectedTextColor="@color/black"
+                app:tabTextColor="@color/gray" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPagerBudget"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

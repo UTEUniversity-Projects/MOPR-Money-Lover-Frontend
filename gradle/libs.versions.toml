@@ -29,6 +29,7 @@ recaptcha = "18.7.0"
 safetynet = "18.1.0"
 splashscreen = "1.0.1"
 tooltips = "1.1.1"
+mpAndroidChart = "v3.1.0"
 
 [libraries]
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
@@ -65,6 +66,7 @@ recaptcha = { group = "com.google.android.recaptcha", name = "recaptcha", versio
 safetynet = { group = "com.google.android.gms", name = "play-services-safetynet", version.ref = "safetynet" }
 splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 tooltips = { group = "com.tomergoldst.android", name = "tooltips", version.ref = "tooltips" }
+mpAndroidChart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpAndroidChart" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

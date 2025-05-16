@@ -16,7 +16,7 @@ public class BaseFragmentViewModel extends ViewModel {
     protected final Repository repository;
     protected final MVVMApplication application;
     protected CompositeDisposable compositeDisposable;
-        protected MutableLiveData<ToastMessage> mErrorMessage = new MutableLiveData<>();
+    protected MutableLiveData<ToastMessage> mErrorMessage = new MutableLiveData<>();
     protected final ObservableBoolean mIsLoading = new ObservableBoolean();
 
     @Setter

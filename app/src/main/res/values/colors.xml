@@ -34,6 +34,7 @@
     <color name="fire_brick">#B22222</color>
     <color name="crimson">#DC143C</color>
     <color name="dark_red">#8B0000</color>
+    <color name="bean_red">#F35B56</color>
 
     <!-- Hồng -->
     <color name="pink">#FFC0CB</color>
@@ -79,6 +80,7 @@
     <color name="sky_blue">#87CEEB</color>
     <color name="light_sky_blue">#87CEFA</color>
     <color name="powder_blue">#B0E0E6</color>
+    <color name="curious_blue">#329ecc</color>
 
     <!-- Tím -->
     <color name="purple">#800080</color>
@@ -105,8 +107,21 @@
     <color name="silver">#C0C0C0</color>
     <color name="gainsboro">#DCDCDC</color>
     <color name="dim_gray">#696969</color>
+    <color name="lavender_gray">#F4F3F8</color>
 
     <!-- Đen -->
     <color name="black">#000000</color>
+    <color name="jet_black">#343434</color>
+    <color name="charcoal">#444444</color>
+    <color name="slate_gray">#708090</color>
+    <color name="gunmetal">#2C3539</color>
+    <color name="onyx">#353839</color>
+    <color name="raisin_black">#242124</color>
+    <color name="eerie_black">#1B1B1B</color>
+    <color name="nero_black">#252525</color>
+    <color name="dark_slate_gray">#2F4F4F</color>
+    <color name="outer_space">#2D383A</color>
+    <color name="licorice">#1A1110</color>
+    <color name="rich_black">#0B0C10</color>
 
 </resources>

@@ -3,6 +3,7 @@ package com.moneylover.ui.main.auth;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.recaptcha.Recaptcha;
 import com.google.android.recaptcha.RecaptchaAction;
@@ -24,12 +25,15 @@ import javax.inject.Inject;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import lombok.Getter;
 import timber.log.Timber;
 
+@Getter
 public class RegisterViewModel extends BaseFragmentViewModel {
 
     @Nullable
     private RecaptchaTasksClient recaptchaTasksClient = null;
+    private final MutableLiveData<String> recaptchaToken = new MutableLiveData<>();
 
     @Inject
     public RegisterViewModel(Repository repository, MVVMApplication application) {
@@ -47,15 +51,17 @@ public class RegisterViewModel extends BaseFragmentViewModel {
 
     public void executeRecaptchaTask() {
         if (recaptchaTasksClient != null) {
-            recaptchaTasksClient.executeTask(RecaptchaAction.LOGIN).addOnSuccessListener(task -> {
-                String token = task.toString();
-                Timber.tag("Recaptcha").d("Token đã được ghi vào Downloads: %s", token);
-                writeToInternalStorage(application, "recaptcha_token.txt", token);
-            }).addOnFailureListener(e -> {
-                Timber.tag("Recaptcha").e("Recaptcha failed: %s", e.getMessage());
-            });
-        } else {
-            Timber.tag("Recaptcha").w("Recaptcha client not initialized yet.");
+            recaptchaTasksClient.executeTask(RecaptchaAction.SIGNUP)
+                    .addOnSuccessListener(task -> {
+                        String token = task.toString();
+                        recaptchaToken.postValue(token);
+
+                        writeToInternalStorage(application, "recaptcha_token.txt", token);
+                    })
+                    .addOnFailureListener(e -> {
+                        Timber.tag("Recaptcha").e("Recaptcha failed: %s", e.getMessage());
+                        recaptchaToken.postValue(null);
+                    });
         }
     }
 

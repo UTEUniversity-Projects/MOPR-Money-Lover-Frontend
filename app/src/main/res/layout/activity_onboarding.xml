@@ -29,7 +29,7 @@
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imgViewHeader"
+                android:id="@+id/ivViewHeader"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
@@ -53,7 +53,7 @@
             android:layout_marginTop="@dimen/_10sdp" />
 
         <me.relex.circleindicator.CircleIndicator3
-            android:id="@+id/circle_indicator"
+            android:id="@+id/circleIndicator"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_40sdp"
             android:layout_above="@+id/btns"

@@ -80,5 +80,6 @@ dependencies {
     implementation(libs.safetynet)
     implementation(libs.splashscreen)
     implementation(libs.tooltips)
+    implementation(libs.mpAndroidChart)
 }
 

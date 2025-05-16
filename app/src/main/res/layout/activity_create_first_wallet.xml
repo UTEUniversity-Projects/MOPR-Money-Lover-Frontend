@@ -1,0 +1,149 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="a"
+            type="com.moneylover.ui.main.app.CreateFirstWalletActivity" />
+
+        <variable
+            name="vm"
+            type="com.moneylover.ui.main.app.CreateFirstWalletViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <!-- Tiêu đề -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12ssp"
+                android:fontFamily="@font/be_vietnam_pro_medium"
+                android:text="Đầu tiên, hãy tạo ví"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_18ssp"
+                android:textStyle="bold" />
+
+            <!-- Mô tả -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="MoneyLover giúp bạn ghi chép chi tiêu từ nhiều Ví khác nhau. Mỗi ví đại diện cho một nguồn tiền như Tiền mặt, Tài khoản ngân hàng."
+                android:textColor="@color/silver"
+                android:textSize="@dimen/_12ssp" />
+
+            <!-- Icon ví -->
+            <ImageView
+                android:id="@+id/img_wallet_icon"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/ic_wallet_2" />
+
+            <TextView
+                android:id="@+id/tvChangeAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8ssp"
+                android:text="ĐỔI HÌNH ĐẠI DIỆN"
+                android:textColor="@color/sea_green"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_30ssp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tên ví"
+                    android:layout_marginStart="@dimen/_3ssp"
+                    android:textSize="@dimen/_12ssp" />
+
+                <EditText
+                    android:id="@+id/edtWalletName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4ssp"
+                    android:backgroundTint="@color/gray"
+                    android:hint="Tên ví"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <!-- Đơn vị tiền tệ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12ssp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đơn vị tiền tệ"
+                    android:textSize="@dimen/_12ssp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_currency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4ssp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvCurrency"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Việt Nam Đồng"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/btnEditCurrency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SỬA"
+                        android:textColor="#4CAF50"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_4ssp"
+                    android:background="@color/gray" />
+            </LinearLayout>
+
+        </LinearLayout>
+        <!-- Nút tạo ví -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCreateFirstWallet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/sea_green"
+            android:text="TẠO VÍ"
+            android:textColor="@color/white"
+            app:shapeAppearanceOverlay="@style/rounded_full" />
+    </LinearLayout>
+</layout>

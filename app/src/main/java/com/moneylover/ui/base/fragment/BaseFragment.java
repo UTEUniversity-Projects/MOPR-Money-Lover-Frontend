@@ -99,7 +99,6 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends BaseFrag
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     public void hideKeyboard() {
@@ -133,13 +132,21 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends BaseFrag
     }
 
     public void showProgressbar(String msg) {
-        if (progressDialog != null) {
+        if (!isAdded() || getActivity() == null || getActivity().isFinishing()) return;
+
+        if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
-            progressDialog = null;
         }
+
         progressDialog = DialogUtils.createDialogLoading(requireContext(), msg);
-        progressDialog.show();
+
+        try {
+            progressDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
     public void hideProgress() {
         if (progressDialog != null) {
@@ -147,7 +154,5 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends BaseFrag
             progressDialog = null;
         }
     }
-
-
 
 }
