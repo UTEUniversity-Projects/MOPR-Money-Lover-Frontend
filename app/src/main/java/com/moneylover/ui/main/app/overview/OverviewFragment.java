@@ -36,7 +36,7 @@ import com.github.mikephil.charting.utils.MPPointD;
 import com.google.android.material.tabs.TabLayout;
 import com.moneylover.BR;
 import com.moneylover.R;
-import com.moneylover.data.model.LatestTransaction;
+import com.moneylover.data.model.api.response.BillResponse;
 import com.moneylover.data.model.api.response.WalletResponse;
 import com.moneylover.databinding.FragmentOverviewBinding;
 import com.moneylover.di.component.FragmentComponent;
@@ -55,9 +55,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import timber.log.Timber;
+
 public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, OverviewViewModel> {
 
     ToolTipsManager mToolTipsManager;
+    LatestTransactionAdapter adapter;
 
     @Override
     public int getBindingVariable() {
@@ -80,7 +83,7 @@ public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, Over
 //            setupBalance();
 //            setupLineChart();
 //            setupMonthlySpendingTabs();
-//            setupLatestTransaction();
+            setupLatestTransaction();
             setupTotalBalance();
             setupWallet();
             setupInfoClick();
@@ -480,34 +483,38 @@ public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, Over
     }
 
     private void setupLatestTransaction() {
-        List<LatestTransaction> arrayList = new ArrayList<>();
-        arrayList.add(new LatestTransaction("Ăn uống", "01/04", "50,000 ₫", R.drawable.ic_drink, R.drawable.ic_wallet_2));
-        arrayList.add(new LatestTransaction("Ăn uống", "01/04", "50,000 ₫", R.drawable.ic_drink, R.drawable.ic_wallet_2));
-        arrayList.add(new LatestTransaction("Ăn uống", "01/04", "50,000 ₫", R.drawable.ic_drink, R.drawable.ic_wallet_2));
-        arrayList.add(new LatestTransaction("Ăn uống", "01/04", "50,000 ₫", R.drawable.ic_drink, R.drawable.ic_wallet_2));
-        arrayList.add(new LatestTransaction("Ăn uống", "01/04", "50,000 ₫", R.drawable.ic_drink, R.drawable.ic_wallet_2));
-        arrayList.add(new LatestTransaction("Ăn uống", "01/04", "50,000 ₫", R.drawable.ic_drink, R.drawable.ic_wallet_2));
-        arrayList.add(new LatestTransaction("Ăn uống", "01/04", "50,000 ₫", R.drawable.ic_drink, R.drawable.ic_wallet_2));
-        arrayList.add(new LatestTransaction("Ăn uống", "01/04", "50,000 ₫", R.drawable.ic_drink, R.drawable.ic_wallet_2));
-        arrayList.add(new LatestTransaction("Ăn uống", "01/04", "50,000 ₫", R.drawable.ic_drink, R.drawable.ic_wallet_2));
-        arrayList.add(new LatestTransaction("Ăn uống", "01/04", "50,000 ₫", R.drawable.ic_drink, R.drawable.ic_wallet_2));
-        arrayList.add(new LatestTransaction("Ăn uống", "01/04", "50,000 ₫", R.drawable.ic_drink, R.drawable.ic_wallet_2));
-        arrayList.add(new LatestTransaction("Ăn uống", "01/04", "50,000 ₫", R.drawable.ic_drink, R.drawable.ic_wallet_2));
-
-        LatestTransactionAdapter adapter = new LatestTransactionAdapter(arrayList, new OnItemClickListener() {
+        viewModel.doGetTop3LatestTransaction(new MainCallback<List<BillResponse>>() {
             @Override
-            public void onItemClick(int position) {
-                LatestTransaction item = arrayList.get(position);
-                viewModel.showNormalMessage(item.getCategory());
+            public void doError(Throwable error) {
+                Timber.tag("OverviewFragment").e(error, "Error fetching latest transactions");
             }
 
             @Override
-            public void onItemDelete(int position) {
+            public void doSuccess() {
+
+            }
+
+            @Override
+            public void doSuccess(List<BillResponse> billResponses) {
+                adapter = new LatestTransactionAdapter(getContext(), billResponses, new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                    }
+
+                    @Override
+                    public void onItemDelete(int position) {
+
+                    }
+                });
+                binding.rcvLatestTransaction.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+                binding.rcvLatestTransaction.setAdapter(adapter);
+            }
+
+            @Override
+            public void doFail() {
 
             }
         });
-        binding.rcvLatestTransaction.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
-        binding.rcvLatestTransaction.setAdapter(adapter);
     }
 
     private boolean isBalanceVisible = true;

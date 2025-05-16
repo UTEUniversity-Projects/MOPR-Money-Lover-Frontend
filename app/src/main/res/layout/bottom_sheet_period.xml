@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvWeek"
+        style="@style/ItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tuần này" />
+
+    <TextView
+        android:id="@+id/tvMonth"
+        style="@style/ItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tháng này" />
+
+    <TextView
+        android:id="@+id/tvQuarter"
+        style="@style/ItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quý này" />
+
+    <TextView
+        android:id="@+id/tvYear"
+        style="@style/ItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Năm này" />
+
+    <TextView
+        android:id="@+id/tvCustom"
+        style="@style/ItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đợt này" />
+</LinearLayout>

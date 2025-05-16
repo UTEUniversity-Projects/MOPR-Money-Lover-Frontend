@@ -2,6 +2,7 @@ package com.moneylover.ui.main.app.overview;
 
 import com.moneylover.MVVMApplication;
 import com.moneylover.data.Repository;
+import com.moneylover.data.model.api.response.BillResponse;
 import com.moneylover.data.model.api.response.WalletResponse;
 import com.moneylover.ui.base.fragment.BaseFragmentViewModel;
 import com.moneylover.ui.main.MainCallback;
@@ -19,7 +20,6 @@ public class OverviewViewModel extends BaseFragmentViewModel {
     }
 
     public void doGetFirstWallet(MainCallback<List<WalletResponse>> callback) {
-        showLoading();
         Map<String, Object> params = Map.of(
                 "page", 0,
                 "size", 1000,
@@ -34,10 +34,27 @@ public class OverviewViewModel extends BaseFragmentViewModel {
                     } else {
                         callback.doFail();
                     }
-                    hideLoading();
                 }, throwable -> {
                     callback.doError(throwable);
-                    hideLoading();
+                }));
+    }
+
+    public void doGetTop3LatestTransaction(MainCallback<List<BillResponse>> callback) {
+        Map<String, Object> params = Map.of(
+                "page", 0,
+                "size", 3
+        );
+        compositeDisposable.add(repository.getApiService().getBillList(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    if (response.isResult()) {
+                        callback.doSuccess(response.getData().getContent());
+                    } else {
+                        callback.doFail();
+                    }
+                }, throwable -> {
+                    callback.doError(throwable);
                 }));
     }
 }

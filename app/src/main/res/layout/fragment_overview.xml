@@ -16,6 +16,7 @@
         android:id="@+id/rootContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="@dimen/_50ssp"
         android:background="@color/lavender_gray">
 
         <!-- Scrollable content -->
@@ -193,7 +194,6 @@
                             android:textSize="@dimen/_12ssp"
                             android:textStyle="bold" />
                     </LinearLayout>
-
 
                 </LinearLayout>
 

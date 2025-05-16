@@ -1,7 +1,6 @@
 package com.moneylover.data.model.api.request;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
 import lombok.Builder;
 import lombok.Data;
@@ -15,9 +14,9 @@ public class CreateBudgetRequest {
 
     private Integer periodType;
 
-    private Instant startDate;
+    private String startDate;
 
-    private Instant endDate;
+    private String endDate;
 
     private BigDecimal amount;
 }

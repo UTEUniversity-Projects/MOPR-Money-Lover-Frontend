@@ -14,18 +14,28 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 import com.moneylover.BR;
 import com.moneylover.R;
+import com.moneylover.data.model.api.ResponseWrapper;
+import com.moneylover.data.model.api.request.CreateBillRequest;
+import com.moneylover.data.model.api.request.CreateReminderRequest;
 import com.moneylover.data.model.api.response.CategoryResponse;
 import com.moneylover.data.model.api.response.EventResponse;
+import com.moneylover.data.model.api.response.ReminderResponse;
 import com.moneylover.data.model.api.response.TagResponse;
 import com.moneylover.data.model.api.response.WalletResponse;
 import com.moneylover.databinding.ActivityAddTransactionBinding;
 import com.moneylover.di.component.ActivityComponent;
 import com.moneylover.ui.base.activity.BaseActivity;
+import com.moneylover.ui.main.MainCallback;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class AddTransactionActivity extends BaseActivity<ActivityAddTransactionBinding, AddTransactionViewModel> {
@@ -38,6 +48,7 @@ public class AddTransactionActivity extends BaseActivity<ActivityAddTransactionB
 
     private ArrayList<TagResponse> selectedTags = new ArrayList<>();
     private CategoryResponse selectedCategory;
+    private WalletResponse selectedWallet;
     private String note;
     private EventResponse selectedEvent;
 
@@ -74,8 +85,8 @@ public class AddTransactionActivity extends BaseActivity<ActivityAddTransactionB
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        WalletResponse selectedWallet = (WalletResponse) result.getData().getSerializableExtra("selected_wallet");
-
+                        selectedWallet = (WalletResponse) result.getData().getSerializableExtra("selected_wallet");
+                        Glide.with(this).load(selectedWallet.getIcon().getFileUrl()).into(viewBinding.ivWalletIcon);
                         viewBinding.tvWalletName.setText(selectedWallet.getName());
                     }
                 }
@@ -125,7 +136,8 @@ public class AddTransactionActivity extends BaseActivity<ActivityAddTransactionB
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        // Handle the result from the event activity
+                        selectedEvent = (EventResponse) result.getData().getSerializableExtra("selected_event");
+                        viewBinding.tvEventName.setText(selectedEvent.getName());
                     }
                 }
         );
@@ -138,6 +150,7 @@ public class AddTransactionActivity extends BaseActivity<ActivityAddTransactionB
 
         viewBinding.llWallet.setOnClickListener(v -> {
             Intent intent = new Intent(this, WalletOptionActivity.class);
+            intent.putExtra("selected_wallet", selectedWallet);
             walletLauncher.launch(intent);
         });
 
@@ -161,7 +174,7 @@ public class AddTransactionActivity extends BaseActivity<ActivityAddTransactionB
 
         setTodayToTextView();
 
-        viewBinding.tvDate.setOnClickListener(v -> showDatePicker());
+        setupCreateDate();
 
         viewBinding.llEvent.setOnClickListener(v -> {
             Intent intent = new Intent(this, EventActivity.class);
@@ -169,7 +182,11 @@ public class AddTransactionActivity extends BaseActivity<ActivityAddTransactionB
             eventLauncher.launch(intent);
         });
 
+        setupReminder();
+        setupCreateBill();
+
     }
+
 
     private void addDefaultChip() {
         viewBinding.chipGroupTags.removeAllViews();
@@ -200,25 +217,28 @@ public class AddTransactionActivity extends BaseActivity<ActivityAddTransactionB
         }
     }
 
-    private void showDatePicker() {
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+    private void setupCreateDate() {
+        viewBinding.tvDate.setOnClickListener(v -> {
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                (view, _year, _month, dayOfMonth) -> {
-                    Calendar selectedDate = Calendar.getInstance();
-                    selectedDate.set(_year, _month, dayOfMonth);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    this,
+                    (view, _year, _month, dayOfMonth) -> {
+                        Calendar selectedDate = Calendar.getInstance();
+                        selectedDate.set(_year, _month, dayOfMonth);
 
-                    String formattedDate = formatDateToVietnamese(selectedDate.getTimeInMillis());
-                    viewBinding.tvDate.setText(formattedDate);
-                },
-                year, month, day
-        );
+                        String formattedDate = formatDateToVietnamese(selectedDate.getTimeInMillis());
+                        viewBinding.tvDate.setText(formattedDate);
+                    },
+                    year, month, day
+            );
 
-        datePickerDialog.show();
+            datePickerDialog.show();
+        });
+
     }
 
     private String formatDateToVietnamese(long timestamp) {
@@ -233,6 +253,174 @@ public class AddTransactionActivity extends BaseActivity<ActivityAddTransactionB
         String today = sdf.format(new Date());
 
         viewBinding.tvDate.setText(today);
+    }
+
+    private void setupReminder() {
+        viewBinding.tvReminderDate.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    this,
+                    (view, year, month, dayOfMonth) -> {
+                        calendar.set(year, month, dayOfMonth);
+
+                        String formatted = formatDateToVietnamese(calendar.getTimeInMillis());
+                        viewBinding.tvReminderDate.setText(formatted);
+                    },
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)
+            );
+
+            datePickerDialog.show();
+        });
+    }
+
+    private void setupCreateBill() {
+        viewBinding.btnSave.setOnClickListener(v -> {
+            try {
+                if (selectedWallet == null) {
+                    viewModel.showErrorMessage("Vui lòng chọn ví");
+                    return;
+                }
+
+                String rawAmount = viewBinding.etAmount.getText().toString().trim();
+                if (rawAmount.isEmpty()) {
+                    viewModel.showErrorMessage("Vui lòng nhập số tiền");
+                    return;
+                }
+
+                BigDecimal amount;
+                try {
+                    NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
+                    Number parsed = nf.parse(rawAmount);
+                    amount = new BigDecimal(parsed.toString());
+                } catch (ParseException e) {
+                    viewModel.showErrorMessage("Số tiền không hợp lệ");
+                    return;
+                }
+
+                if (selectedCategory == null) {
+                    viewModel.showErrorMessage("Vui lòng chọn nhóm");
+                    return;
+                }
+
+                String dateStr = viewBinding.tvDate.getText().toString();
+                if (dateStr.isEmpty()) {
+                    viewModel.showErrorMessage("Vui lòng chọn ngày giao dịch");
+                    return;
+                }
+
+                String isoDate = parseDateToInstant(dateStr).toString();
+
+                // Kiểm tra nếu người dùng đã chọn reminder
+                String reminderDateStr = viewBinding.tvReminderDate.getText().toString();
+                if (!reminderDateStr.equals("Đặt nhắc hẹn") && !reminderDateStr.isEmpty()) {
+                    Instant reminderInstant = parseDateToInstant(reminderDateStr);
+
+                    CreateReminderRequest reminderRequest = CreateReminderRequest.builder()
+                            .time(reminderInstant.toString())
+                            .build();
+
+                    viewModel.doCreateReminder(new MainCallback<ResponseWrapper<?>>() {
+                        @Override
+                        public void doSuccess() {
+                            // Gọi lấy reminder mới tạo
+                            viewModel.doGetLatestReminder(new MainCallback<List<ReminderResponse>>() {
+                                @Override
+                                public void doSuccess(List<ReminderResponse> list) {
+                                    if (!list.isEmpty()) {
+                                        Long reminderId = list.get(0).getId();
+                                        createBill(amount, isoDate, reminderId);
+                                    } else {
+                                        createBill(amount, isoDate, null);
+                                    }
+                                }
+
+                                @Override
+                                public void doFail() {
+                                    createBill(amount, isoDate, null);
+                                }
+
+                                @Override
+                                public void doError(Throwable throwable) {
+                                    createBill(amount, isoDate, null);
+                                }
+
+                                @Override
+                                public void doSuccess() {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void doFail() {
+                            createBill(amount, isoDate, null);
+                        }
+
+                        @Override
+                        public void doError(Throwable throwable) {
+                            createBill(amount, isoDate, null);
+                        }
+                    }, reminderRequest);
+                } else {
+                    createBill(amount, isoDate, null);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                viewModel.showErrorMessage("Lỗi xử lý dữ liệu");
+            }
+        });
+    }
+
+    private void createBill(BigDecimal amount, String isoDate, Long reminderId) {
+        CreateBillRequest request = CreateBillRequest.builder()
+                .amount(amount)
+                .date(isoDate)
+                .note(note)
+                .walletId(selectedWallet.getId())
+                .categoryId(selectedCategory.getId())
+                .tagIds(getTagIdsFromSelectedTags())
+                .eventId(selectedEvent != null ? selectedEvent.getId() : null)
+                .reminderId(reminderId)
+                .isIncludedReport(!viewBinding.cbExcludeFromReport.isChecked())
+                .build();
+
+        viewModel.doCreateBill(new MainCallback<ResponseWrapper<?>>() {
+            @Override
+            public void doSuccess() {
+                viewModel.showSuccessMessage("Thêm giao dịch thành công");
+                finish();
+                overridePendingTransition(R.anim.no_anim, R.anim.slide_out_down);
+            }
+
+            @Override
+            public void doFail() {
+                viewModel.showErrorMessage("Không thể tạo giao dịch");
+            }
+
+            @Override
+            public void doError(Throwable throwable) {
+                viewModel.showErrorMessage("Lỗi: " + throwable.getMessage());
+            }
+        }, request);
+    }
+
+    private List<Long> getTagIdsFromSelectedTags() {
+        List<Long> tagIds = new ArrayList<>();
+        for (TagResponse tag : selectedTags) {
+            tagIds.add(tag.getId());
+        }
+        return tagIds;
+    }
+
+    private Instant parseDateToInstant(String dateStr) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd/MM/yyyy", new Locale("vi", "VN"));
+        sdf.setTimeZone(java.util.TimeZone.getDefault());
+        Date date = sdf.parse(dateStr);
+        return date.toInstant();
     }
 
 

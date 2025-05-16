@@ -17,18 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/ic_drink"
-            android:scaleType="centerCrop"
-            android:padding="6dp" />
+            android:scaleType="centerCrop" />
 
         <ImageView
             android:id="@+id/ivSubIcon"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_gravity="bottom|end"
-            android:src="@drawable/ic_wallet_2"
             android:background="@drawable/bg_sub_icon_circle"
             android:scaleType="centerInside"
-            android:padding="2dp"
             android:layout_margin="2dp"/>
     </FrameLayout>
 

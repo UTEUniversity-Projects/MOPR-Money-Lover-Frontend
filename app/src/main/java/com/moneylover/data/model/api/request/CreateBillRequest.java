@@ -1,6 +1,6 @@
 package com.moneylover.data.model.api.request;
 
-import java.time.Instant;
+import java.math.BigDecimal;
 import java.util.List;
 
 import lombok.Builder;
@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 @Builder
 public class CreateBillRequest {
-    private Double amount;
+    private BigDecimal amount;
 
-    private Instant date;
+    private String date;
 
     private String note;
 
