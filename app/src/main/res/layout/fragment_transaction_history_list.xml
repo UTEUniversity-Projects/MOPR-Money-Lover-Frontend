@@ -47,7 +47,7 @@
                         android:paddingVertical="4dp">
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Tiền vào"
@@ -60,7 +60,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="end"
                             android:text="0"
-                            android:textColor="@color/black"
+                            android:textColor="@color/deep_sky_blue"
                             android:textSize="@dimen/_12ssp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -145,6 +145,7 @@
                 android:id="@+id/transactionHistory"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/white"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView

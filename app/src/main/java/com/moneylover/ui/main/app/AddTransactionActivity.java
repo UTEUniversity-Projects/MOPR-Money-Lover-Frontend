@@ -392,6 +392,8 @@ public class AddTransactionActivity extends BaseActivity<ActivityAddTransactionB
             @Override
             public void doSuccess() {
                 viewModel.showSuccessMessage("Thêm giao dịch thành công");
+                Intent resultIntent = new Intent();
+                setResult(RESULT_OK, resultIntent);
                 finish();
                 overridePendingTransition(R.anim.no_anim, R.anim.slide_out_down);
             }
@@ -422,6 +424,5 @@ public class AddTransactionActivity extends BaseActivity<ActivityAddTransactionB
         Date date = sdf.parse(dateStr);
         return date.toInstant();
     }
-
 
 }

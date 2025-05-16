@@ -3,7 +3,10 @@ package com.moneylover.ui.main.app;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.moneylover.BR;
@@ -20,6 +23,7 @@ import java.util.List;
 import timber.log.Timber;
 
 public class EventActivity extends BaseActivity<ActivityEventBinding, EventViewModel> {
+    private ActivityResultLauncher<Intent> addEventLauncher;
 
     private EventResponse selectedEvent;
     private EventAdapter adapter;
@@ -44,6 +48,28 @@ public class EventActivity extends BaseActivity<ActivityEventBinding, EventViewM
         super.onCreate(savedInstanceState);
         viewBinding.setA(this);
         viewBinding.setVm(viewModel);
+
+        addEventLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        setupEventList();
+                    }
+                }
+        );
+
+        viewBinding.btnAddWallet.setOnClickListener(v -> {
+            Intent intent = new Intent(EventActivity.this, AddEventActivity.class);
+
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(
+                    this,
+                    R.anim.slide_in_up,
+                    R.anim.no_anim
+            );
+
+            addEventLauncher.launch(intent, options);
+        });
 
 //        setupTabLayout();
         setupEventList();

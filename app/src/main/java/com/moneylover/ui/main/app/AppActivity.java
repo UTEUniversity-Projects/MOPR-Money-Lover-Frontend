@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.moneylover.BR;
@@ -12,6 +13,7 @@ import com.moneylover.R;
 import com.moneylover.databinding.ActivityAppBinding;
 import com.moneylover.di.component.ActivityComponent;
 import com.moneylover.ui.base.activity.BaseActivity;
+import com.moneylover.ui.base.adapter.RefreshableFragment;
 
 import java.util.Stack;
 
@@ -21,6 +23,7 @@ public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> 
     private int currentPage = 0;
     private boolean isBackPressing = false;
     private boolean isBottomNavClick = false;
+    private AppPagerAdapter pagerAdapter;
 
     @Override
     public int getLayoutId() {
@@ -47,10 +50,9 @@ public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> 
         viewBinding.bottomNavigationView.setOnApplyWindowInsetsListener(null);
         viewBinding.bottomNavigationView.getMenu().getItem(2).setEnabled(false);
 
-        AppPagerAdapter adapter = new AppPagerAdapter(this);
-        viewBinding.viewPager.setAdapter(adapter);
+        pagerAdapter = new AppPagerAdapter(this);
+        viewBinding.viewPager.setAdapter(pagerAdapter);
         viewBinding.viewPager.setOffscreenPageLimit(1);
-
 
         viewBinding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -69,15 +71,20 @@ public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> 
 
         viewBinding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int position = getPagePositionForMenuId(item.getItemId());
+
             if (position != currentPage) {
                 isBottomNavClick = true;
                 fragmentStack.push(currentPage);
                 viewBinding.viewPager.setCurrentItem(position, true);
                 currentPage = position;
+            } else {
+                // The same tab was clicked again - refresh the fragment
+                refreshCurrentFragment();
             }
             return true;
         });
 
+        // Initial setup
         currentPage = 0;
         viewBinding.bottomNavigationView.setSelectedItemId(R.id.home);
         viewBinding.viewPager.setCurrentItem(currentPage, false);
@@ -87,6 +94,19 @@ public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> 
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_up, R.anim.no_anim);
         });
+    }
+
+    /**
+     * Refreshes the current fragment if it implements RefreshableFragment
+     */
+    private void refreshCurrentFragment() {
+        if (pagerAdapter != null) {
+            Fragment fragment = pagerAdapter.getFragment(currentPage);
+
+            if (fragment instanceof RefreshableFragment) {
+                ((RefreshableFragment) fragment).onRefresh();
+            }
+        }
     }
 
     @Override
@@ -107,7 +127,6 @@ public class AppActivity extends BaseActivity<ActivityAppBinding, AppViewModel> 
 
         super.onBackPressed();
     }
-
 
     private int getBottomNavItemId(int position) {
         switch (position) {

@@ -43,6 +43,7 @@
                     <ImageView
                         android:id="@+id/btnBack"
                         android:layout_width="24dp"
+                        android:onClick="@{() -> a.onBackPressed()}"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_back" />
 
@@ -165,7 +166,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20ssp"
                         android:fontFamily="@font/be_vietnam_pro_medium"
-                        android:text="Thứ Hai, 14/04/2025"
+                        android:text="Ngày bắt đầu"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </LinearLayout>
@@ -193,7 +194,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20ssp"
                         android:fontFamily="@font/be_vietnam_pro_medium"
-                        android:text="Thứ Hai, 14/04/2025"
+                        android:text="Ngày kết thúc"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </LinearLayout>
@@ -223,7 +224,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_15ssp"
                         android:fontFamily="@font/be_vietnam_pro_medium"
-                        android:text="Tiền mặt"
+                        android:text="Chọn ví"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </LinearLayout>

@@ -24,11 +24,16 @@ import com.moneylover.R;
 import com.moneylover.constants.Constants;
 import com.moneylover.data.model.MenuOption;
 import com.moneylover.data.model.Wallet;
+import com.moneylover.data.model.api.response.BillDetailStatisticsResponse;
 import com.moneylover.databinding.FragmentTransactionHistoryBinding;
 import com.moneylover.di.component.FragmentComponent;
+import com.moneylover.ui.base.adapter.RefreshableFragment;
 import com.moneylover.ui.base.fragment.BaseFragment;
 import com.moneylover.ui.custom.menu.OptionAdapter;
+import com.moneylover.ui.main.MainCallback;
+import com.moneylover.ui.main.app.WalletOptionActivity;
 import com.moneylover.ui.main.app.transactionHistory.adapter.TransactionHistoryViewPagerAdapter;
+import com.moneylover.utils.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +41,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class TransactionHistoryFragment extends BaseFragment<FragmentTransactionHistoryBinding, TransactionHistoryViewModel> {
+public class TransactionHistoryFragment extends BaseFragment<FragmentTransactionHistoryBinding, TransactionHistoryViewModel> implements RefreshableFragment {
 
     private Wallet selectedWallet = new Wallet(R.drawable.bg_green_circle, R.drawable.ic_wallet_2, "Tổng cộng", -4156598);
 
@@ -48,7 +53,6 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
                         selectedWallet = wallet;
                         binding.ivWalletIcon.setImageResource(wallet.getIcon());
                         binding.tvWalletName.setText(wallet.getName());
-
                     }
 
                 }
@@ -69,6 +73,7 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
         binding.setF(this);
         binding.setVm(viewModel);
         setupTabLayout();
+        setupStatisticsDetail();
     }
 
     @Override
@@ -167,7 +172,7 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
     }
 
     public void onWalletClick() {
-        Intent intent = new Intent(getActivity(), WalletActivity.class);
+        Intent intent = new Intent(getActivity(), WalletOptionActivity.class);
         intent.putExtra("selected_wallet", selectedWallet);
         walletLauncher.launch(intent);
     }
@@ -232,20 +237,50 @@ public class TransactionHistoryFragment extends BaseFragment<FragmentTransaction
         List<String> months = new ArrayList<>();
 
         Calendar calendar = Calendar.getInstance();
+        int currentMonth = calendar.get(Calendar.MONTH); // 0-based index (0 = January)
+
+        calendar.set(Calendar.MONTH, 0); // Start from January
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
-        calendar.add(Calendar.MONTH, -6);
-
-        for (int i = 0; i < 13; i++) {
+        for (int i = 1; i <= currentMonth; i++) {
             int month = calendar.get(Calendar.MONTH) + 1;
             int year = calendar.get(Calendar.YEAR);
             months.add(String.format(Locale.getDefault(), "%02d/%d", month, year));
             calendar.add(Calendar.MONTH, 1);
         }
 
-        months.add("THÁNG TRƯỚC");
+        months.add("THÁNG NÀY");
 
         return months;
     }
 
+    public void setupStatisticsDetail() {
+        viewModel.doGetStatisticsDetail(new MainCallback<BillDetailStatisticsResponse>() {
+            @Override
+            public void doError(Throwable error) {
+
+            }
+
+            @Override
+            public void doSuccess() {
+
+            }
+
+            @Override
+            public void doSuccess(BillDetailStatisticsResponse billDetailStatisticsResponse) {
+                binding.tvTotalBalance.setText(NumberUtils.formatNumberWithComma(billDetailStatisticsResponse.getTotalIncome().subtract(billDetailStatisticsResponse.getTotalExpense())));
+            }
+
+            @Override
+            public void doFail() {
+
+            }
+        });
+    }
+
+    @Override
+    public void onRefresh() {
+        setupTabLayout();
+        setupStatisticsDetail();
+    }
 }

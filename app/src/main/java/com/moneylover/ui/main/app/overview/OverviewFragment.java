@@ -36,11 +36,13 @@ import com.github.mikephil.charting.utils.MPPointD;
 import com.google.android.material.tabs.TabLayout;
 import com.moneylover.BR;
 import com.moneylover.R;
+import com.moneylover.data.model.api.response.BillDetailStatisticsResponse;
 import com.moneylover.data.model.api.response.BillResponse;
 import com.moneylover.data.model.api.response.WalletResponse;
 import com.moneylover.databinding.FragmentOverviewBinding;
 import com.moneylover.di.component.FragmentComponent;
 import com.moneylover.ui.base.adapter.OnItemClickListener;
+import com.moneylover.ui.base.adapter.RefreshableFragment;
 import com.moneylover.ui.base.fragment.BaseFragment;
 import com.moneylover.ui.custom.tooltips.ToolTip;
 import com.moneylover.ui.custom.tooltips.ToolTipsManager;
@@ -49,6 +51,7 @@ import com.moneylover.ui.main.app.overview.mywallet.MyWalletActivity;
 import com.moneylover.utils.NavigationUtils;
 import com.moneylover.utils.NumberUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -57,7 +60,7 @@ import java.util.Locale;
 
 import timber.log.Timber;
 
-public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, OverviewViewModel> {
+public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, OverviewViewModel> implements RefreshableFragment {
 
     ToolTipsManager mToolTipsManager;
     LatestTransactionAdapter adapter;
@@ -79,15 +82,15 @@ public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, Over
         mToolTipsManager = new ToolTipsManager();
 
         new Handler(Looper.getMainLooper()).post(() -> {
-//            setupMonthlyReportTabs();
-//            setupBalance();
-//            setupLineChart();
-//            setupMonthlySpendingTabs();
+            setupMonthlyReportTabs();
+            setupLineChart();
+            setupMonthlySpendingTabs();
             setupLatestTransaction();
             setupTotalBalance();
             setupWallet();
             setupInfoClick();
             setupViewAllWallet();
+            setupStatisticsDetail();
         });
     }
 
@@ -582,7 +585,7 @@ public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, Over
                         .load(walletResponse.getIcon().getFileUrl())
                         .into(binding.ivWalletIcon);
                 binding.tvWalletName.setText(walletResponse.getName());
-                binding.tvWalletBalance.setText(NumberUtils.formatNumberWithComma(walletResponse.getBalance()) + " " + walletResponse.getCurrency().getCode());
+                binding.tvWalletBalance.setText(NumberUtils.formatNumberWithComma(walletResponse.getBalance().subtract(BigDecimal.valueOf(50000))) + " " + walletResponse.getCurrency().getCode());
             }
         });
     }
@@ -591,5 +594,43 @@ public class OverviewFragment extends BaseFragment<FragmentOverviewBinding, Over
     public void onResume() {
         super.onResume();
         setupWallet();
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler(Looper.getMainLooper()).post(() -> {
+            setupMonthlyReportTabs();
+//            setupBalance();
+            setupLatestTransaction();
+            setupTotalBalance();
+            setupWallet();
+            setupInfoClick();
+            setupViewAllWallet();
+            setupStatisticsDetail();
+        });
+    }
+
+    public void setupStatisticsDetail() {
+        viewModel.doGetStatisticsDetail(new MainCallback<BillDetailStatisticsResponse>() {
+            @Override
+            public void doError(Throwable error) {
+
+            }
+
+            @Override
+            public void doSuccess() {
+
+            }
+
+            @Override
+            public void doSuccess(BillDetailStatisticsResponse billDetailStatisticsResponse) {
+                binding.tvTotalBalance.setText(NumberUtils.formatNumberWithComma(billDetailStatisticsResponse.getTotalIncome().subtract(billDetailStatisticsResponse.getTotalExpense())));
+            }
+
+            @Override
+            public void doFail() {
+
+            }
+        });
     }
 }

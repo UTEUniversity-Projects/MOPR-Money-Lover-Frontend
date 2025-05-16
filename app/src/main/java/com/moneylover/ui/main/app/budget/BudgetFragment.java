@@ -20,6 +20,7 @@ import com.moneylover.R;
 import com.moneylover.data.model.api.response.BudgetResponse;
 import com.moneylover.databinding.FragmentBudgetBinding;
 import com.moneylover.di.component.FragmentComponent;
+import com.moneylover.ui.base.adapter.RefreshableFragment;
 import com.moneylover.ui.base.fragment.BaseFragment;
 import com.moneylover.ui.main.MainCallback;
 import com.moneylover.ui.main.app.transactionHistory.viewReport.adapter.ViewPager2Adapter;
@@ -27,7 +28,7 @@ import com.moneylover.ui.main.app.transactionHistory.viewReport.adapter.ViewPage
 import java.util.Arrays;
 import java.util.List;
 
-public class BudgetFragment extends BaseFragment<FragmentBudgetBinding, BudgetViewModel> {
+public class BudgetFragment extends BaseFragment<FragmentBudgetBinding, BudgetViewModel> implements RefreshableFragment {
 
     private ActivityResultLauncher<Intent> addBudgetLauncher;
 
@@ -50,11 +51,7 @@ public class BudgetFragment extends BaseFragment<FragmentBudgetBinding, BudgetVi
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            String note = data.getStringExtra("note");
-                            // Handle the note here
-                        }
+                        setupBudget();
                     }
                 }
         );
@@ -97,8 +94,7 @@ public class BudgetFragment extends BaseFragment<FragmentBudgetBinding, BudgetVi
                 } else {
                     binding.llEmptyBudget.setVisibility(View.GONE);
                     binding.llBudget.setVisibility(View.VISIBLE);
-
-//                    setupTabLayout();
+                    setupTabLayout();
                 }
             }
 
@@ -136,5 +132,11 @@ public class BudgetFragment extends BaseFragment<FragmentBudgetBinding, BudgetVi
         });
 
         binding.viewPagerBudget.setCurrentItem(0, false);
+    }
+
+    @Override
+    public void onRefresh() {
+        setupBudget();
+        setupTabLayout();
     }
 }

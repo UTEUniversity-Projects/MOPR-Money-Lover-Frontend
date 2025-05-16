@@ -56,8 +56,6 @@ public class EventListFragment extends BaseFragment<FragmentEventListBinding, Ev
 
             addEventLauncher.launch(intent, options);
         });
-
-
     }
 
     @Override

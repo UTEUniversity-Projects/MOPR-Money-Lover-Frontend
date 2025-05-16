@@ -95,7 +95,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_20ssp"
                                 android:fontFamily="@font/be_vietnam_pro_medium"
-                                android:text="Tiền mặt"
+                                android:text="Chọn ví"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_14ssp" />
                         </LinearLayout>

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.moneylover.R;
 import com.moneylover.data.model.api.response.BillResponse;
 import com.moneylover.databinding.ItemLatestTransactionBinding;
 import com.moneylover.ui.base.adapter.OnItemClickListener;
@@ -15,6 +16,7 @@ import com.moneylover.utils.NumberUtils;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -22,7 +24,7 @@ import java.util.Locale;
 public class LatestTransactionAdapter extends RecyclerView.Adapter<LatestTransactionAdapter.ViewHolder> {
 
     private final Context context;
-    private final List<BillResponse> transactionList;
+    private List<BillResponse> transactionList;
     private final OnItemClickListener listener;
 
     public LatestTransactionAdapter(Context context, List<BillResponse> transactionList, OnItemClickListener listener) {
@@ -69,6 +71,11 @@ public class LatestTransactionAdapter extends RecyclerView.Adapter<LatestTransac
             binding.tvCategoryName.setText(billResponse.getCategory().getName());
             binding.tvDate.setText(formatIsoDateToVietnamese(billResponse.getDate()));
             binding.tvAmount.setText(NumberUtils.formatNumberWithComma(billResponse.getAmount()));
+            if (billResponse.getCategory().getIsExpense()) {
+                binding.tvAmount.setTextColor(context.getResources().getColor(R.color.red));
+            } else {
+                binding.tvAmount.setTextColor(context.getResources().getColor(R.color.deep_sky_blue));
+            }
             Glide.with(context)
                     .load(billResponse.getCategory().getIcon().getFileUrl())
                     .into(binding.ivCategoryIcon);
@@ -88,5 +95,35 @@ public class LatestTransactionAdapter extends RecyclerView.Adapter<LatestTransac
             e.printStackTrace();
             return isoDateStr;
         }
+    }
+
+    // Add these methods to your LatestTransactionAdapter class
+
+    /**
+     * Clear all data from the adapter
+     */
+    public void clearData() {
+        if (transactionList != null) {
+            transactionList.clear();
+            notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * Update adapter with new bill data
+     * @param newBills List of new bill data
+     */
+    public void updateData(List<BillResponse> newBills) {
+        if (this.transactionList == null) {
+            this.transactionList = new ArrayList<>();
+        } else {
+            this.transactionList.clear();
+        }
+
+        if (newBills != null) {
+            this.transactionList.addAll(newBills);
+        }
+
+        notifyDataSetChanged();
     }
 }

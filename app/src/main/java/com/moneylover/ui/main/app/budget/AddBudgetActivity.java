@@ -207,6 +207,8 @@ public class AddBudgetActivity extends BaseActivity<ActivityAddBudgetBinding, Ad
                     @Override
                     public void doSuccess() {
                         viewModel.showSuccessMessage("Tạo ngân sách thành công");
+                        Intent resultIntent = new Intent();
+                        setResult(RESULT_OK, resultIntent);
                         finish();
                     }
 

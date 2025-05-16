@@ -2,6 +2,7 @@ package com.moneylover.ui.main.app.overview;
 
 import com.moneylover.MVVMApplication;
 import com.moneylover.data.Repository;
+import com.moneylover.data.model.api.response.BillDetailStatisticsResponse;
 import com.moneylover.data.model.api.response.BillResponse;
 import com.moneylover.data.model.api.response.WalletResponse;
 import com.moneylover.ui.base.fragment.BaseFragmentViewModel;
@@ -57,4 +58,25 @@ public class OverviewViewModel extends BaseFragmentViewModel {
                     callback.doError(throwable);
                 }));
     }
+
+    public void doGetStatisticsDetail(MainCallback<BillDetailStatisticsResponse> callback) {
+
+        Map<String, Object> params = Map.of(
+                "page", 0,
+                "size", 1000
+        );
+        compositeDisposable.add(repository.getApiService().getDetailBillStatistics(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    if (response.isResult()) {
+                        callback.doSuccess(response.getData());
+                    } else {
+                        callback.doFail();
+                    }
+                }, throwable -> {
+                    callback.doError(throwable);
+                }));
+    }
+
 }

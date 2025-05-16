@@ -234,7 +234,7 @@ public interface ApiService {
 
 //    ----------------------------STATISTICS API-----------------------------
     @GET("api/v1/statistics/bill-detail")
-    Observable<ResponseContentWrapper<BillDetailStatisticsResponse>> getDetailBillStatistics(@QueryMap Map<String, Object> queryMap);
+    Observable<ResponseWrapper<BillDetailStatisticsResponse>> getDetailBillStatistics(@QueryMap Map<String, Object> queryMap);
 
     @GET("api/v1/statistics/category-detail")
     Observable<ResponseContentWrapper<CategoryStatisticsResponse>> getCategoryStatistics(@QueryMap Map<String, Object> queryMap);

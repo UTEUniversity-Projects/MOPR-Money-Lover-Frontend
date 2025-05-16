@@ -18,7 +18,7 @@ public class BudgetResponse {
 
     private String endDate;
 
-    private BigDecimal amount;
+    private BigDecimal amount = BigDecimal.ZERO;
 
-    private BigDecimal spentAmount;
+    private BigDecimal spentAmount = BigDecimal.ZERO;
 }

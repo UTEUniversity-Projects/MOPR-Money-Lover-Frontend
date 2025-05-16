@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/lavender_gray"
+        android:paddingBottom="@dimen/_40ssp"
         android:orientation="vertical">
 
         <LinearLayout
